@@ -35,11 +35,11 @@ function getStatus( exeContent ) {
     }
     
     if(statuscode.getValue() === 778210002) {
-        ap_comienzoreal.setValue( new Date( fecha.toLocaleDateString() ) );
+        ap_comienzoreal.setValue( new Date( ) );
     }
   
     if( statuscode.getValue() === 778210003 ||  statuscode.getValue() === 778210008 || statuscode.getValue() === 778210009 ){
-        ap_finreal.setValue( new Date( fecha.toLocaleDateString() ) );
+        ap_finreal.setValue( new Date(  ) );
     }
 }
 

@@ -17,9 +17,6 @@ function getSubGrid(executeContext) {
         console.log(GridPursuit_Team.getGrid().getTotalRecordCount());
         console.log(gridContext.getGrid().getTotalRecordCount());
 
-
-
-
         if (gridContext.getGrid().getTotalRecordCount() > 0) {
             identifycompetitors.setValue(true);
         }
