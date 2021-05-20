@@ -4,7 +4,6 @@ function getCuenta(exeContext) {
   //formContext.getAttribute('parentaccountid').addOnChange(setAccount);
   console.log(exeContext.getDepth() + " getdepth ");
   formContext.data.removeOnLoad(removeSetAccountOnLoadForm);
-  formContext.getAttribute("ap_ciudad").addOnChange(addCiudad);
 }
 
 function setAccount(exeContent) {
@@ -16,20 +15,18 @@ function setAccount(exeContent) {
   let ap_actividadeconomica = formContext.getAttribute("ap_actividadeconomica");
   let websiteurl = formContext.getAttribute("websiteurl");
   let address1_line1 = formContext.getAttribute("address1_line1");
-  let ap_ciudad = formContext.getAttribute("ap_ciudad");
 
   console.log(exeContent.getDepth() + " getdepth ");
 
   if (parentaccountid.getValue() != null) {
     let userID = parentaccountid.getValue()[0].id;
     console.log(userID);
-    console.log(ap_ciudad.getValue());
     //$select=name&$expand=ap_Ciudad($select=contactid,fullname)"
     Xrm.WebApi
       .retrieveRecord(
         "account",
         userID,
-        "?$select=name,cr5c5_nombrecomercial,websiteurl,address1_line1&$expand=ap_Ciudad($select=ap_codigociudad,ap_ciudad)"
+        "?$select=name&$expand=ap_Ciudad($select=ap_codigociudad,ap_ciudad)"
       )
       .then(
         function success(result) {
@@ -41,11 +38,6 @@ function setAccount(exeContent) {
               ", Primary Contact Name: " +
               result.ap_Ciudad.ap_codigociudad
           );
-          ap_ciudad.setValue({
-            id:result.ap_Ciudad.ap_territorioid,
-            name:result.ap_Ciudad.name,
-            entityType:"ap_territorio"
-          });
           console.log(result);
           // perform operations on record retrieval
         },
@@ -103,10 +95,4 @@ function removeSetAccountOnLoadForm(executeContext) {
   console.log(executeContext.getDepth() + " getdepth ");
   let formContext = executeContext.getFormContext();
   formContext.getAttribute("parentaccountid").addOnChange(setAccount);
-}
-
-function addCiudad(executeContext) {
-  let formContext = executeContext.getFormContext();
-
-  console.log(formContext.getAttribute("ap_ciudad").getValue());
 }
