@@ -18,20 +18,45 @@ function ObtenerDivisa(executeContext) {
       console.log(transactioncurrencyid.getValue());
       console.log(transactioncurrencyid.getValue()[0].name);
 
-      let xml = new XMLHttpRequest();
+      let xrm = new XMLHttpRequest();
 
-      req.onreadystatechange = function(aEvt) {
-        if (req.readyState == 4) {
+      xhr.addEventListener("readystatechange", (e) => {
+        if (xhr.readyState !== 4) return
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+            // console.log(xhr)
+            // console.log(xhr.status)
+            // console.log("exito")
+            // $xhr.innerHTML = xhr.responseText;
+            let json = JSON.parse(xhr.responseText);
+
             
-            console.log(aEvt);
+            // console.log(json)
+        } else {
+            // console.log("error")
+            // console.log(xhr.status)
+         
+          
+            $fragmen.appendChild(error);
+           
         }
-      };
-      xml.setRequestHeader("Content-Type", "application/json");
-      xml.open("POST", "http://192.168.30.187/D365/oferta/trm", {
-        username: "prueba",
-        pass: "123"
-      });
-      xml.send();
+
+    });
+      //xrm.addEventListener("readystatechange",(e))
+
+
+    //   req.onreadystatechange = function(aEvt) {
+    //     if (req.readyState == 4) {
+            
+    //         console.log(aEvt);
+    //     }
+    //   };
+    //   xml.setRequestHeader("Content-Type", "application/json");
+    //   xml.open("POST", "http://192.168.30.187/D365/oferta/trm", {
+    //     username: "prueba",
+    //     password: "123"
+    //   });
+    //   xml.send();
     }
   }
 }
