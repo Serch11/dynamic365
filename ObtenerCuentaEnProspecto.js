@@ -17,6 +17,8 @@ function setAccount(exeContent) {
   let websiteurl = formContext.getAttribute("websiteurl");
   let address1_line1 = formContext.getAttribute("address1_line1");
   let ap_ciudad = formContext.getAttribute("ap_ciudad");
+  let ap_departamento = formContext.getAttribute("ap_departamento");
+  let ap_pais = formContext.getAttribute("ap_pais");
 
   console.log(exeContent.getDepth() + " getdepth ");
 
@@ -41,11 +43,17 @@ function setAccount(exeContent) {
               ", Primary Contact Name: " +
               result.ap_Ciudad.ap_codigociudad
           );
-          ap_ciudad.setValue({
-            id:result.ap_Ciudad.ap_territorioid,
-            name:result.ap_Ciudad.name,
-            entityType:"ap_territorio"
-          });
+          var lookupVal = new Array();
+          lookupVal[0] = new Object();
+          lookupVal[0].id = result.ap_Ciudad.ap_territorioid;
+          lookupVal[0].name = result.ap_Ciudad.ap_ciudad;
+          lookupVal[0].entityType = "ap_territorio";
+          // {
+          //   id: result.ap_Ciudad.ap_territorioid,
+          //   name: result.ap_Ciudad.name,
+          //   entityType: "ap_territorio"
+          // }
+          ap_ciudad.setValue(lookupVal);
           console.log(result);
           // perform operations on record retrieval
         },
@@ -95,6 +103,9 @@ function setAccount(exeContent) {
     companyname.setValue(String(""));
     websiteurl.setValue(String(""));
     address1_line1.setValue(String(""));
+    ap_ciudad.setValue(null);
+    ap_pais.setValue(null);
+    ap_departamento.setValue(null);
   }
 }
 
