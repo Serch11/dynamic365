@@ -1,8 +1,6 @@
 function obtenerTrm(executeContext) {
+
   let formContext = executeContext.getFormContext();
-
-  let transactioncurrencyid = formContext.getAttribute("transactioncurrencyid");
-
   formContext.getAttribute("transactioncurrencyid").addOnChange(ObtenerDivisa);
 }
 
@@ -13,6 +11,7 @@ function ObtenerDivisa(executeContext) {
   let transactioncurrencyid = formContext.getAttribute("transactioncurrencyid");
 
   if (transactioncurrencyid.getValue()) {
+    alert( transactioncurrencyid.getValue()[0].name);
     if (transactioncurrencyid.getValue()[0].name === "US Dollar") {
 
       const datosAcceso = new FormData();
@@ -46,21 +45,7 @@ function ObtenerDivisa(executeContext) {
 
 
 
-      //xrm.addEventListener("readystatechange",(e))
 
-
-      //   req.onreadystatechange = function(aEvt) {
-      //     if (req.readyState == 4) {
-
-      //         console.log(aEvt);
-      //     }
-      //   };
-      //   xml.setRequestHeader("Content-Type", "application/json");
-      //   xml.open("POST", "http://192.168.30.187/D365/oferta/trm", {
-      //     username: "prueba",
-      //     password: "123"
-      //   });
-      //   xml.send();
     }
   }
 }
