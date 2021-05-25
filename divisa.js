@@ -20,10 +20,11 @@ function obtenerDivisa(executeContext) {
         .then(
           function success(result) {
             console.log(result);
-            let trm = result.entities[0].exchangerate;
-
-            ap_trm.setValue(trm);
-            // perform additional operations on retrieved records
+            if (result.entities[0].exchangerate) {
+              let trm = result.entities[0].exchangerate;
+              ap_trm.setValue(trm);
+              // perform additional operations on retrieved records
+            }
           },
           function(error) {
             console.log(error.message);
