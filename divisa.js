@@ -61,5 +61,7 @@ function removerFuncion(executeContext) {
   console.log(executeContext.getDepth() + " getdepth  3");
   console.log("entro a remover la function");
   let formContext = executeContext.getFormContext();
+  console.log("estado");
+  console.log(formContext.ui.process.getDisplayState());
   formContext.getAttribute("transactioncurrencyid").addOnChange(obtenerDivisa);
 }
