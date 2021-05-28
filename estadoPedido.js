@@ -1,9 +1,18 @@
-function stateProcess(executeContext) {
+function estadoPedido(executeContext) {
+    let formContext = executeContext.getFormContext();
+    //formContext.data.process.addOnProcessStatusChange(cambioEstado);
+    formContext.data.process.addOnStageChange(cambioEstado);
+}
+function cambioEstado(executeContext){
+    
     let formContext = executeContext.getFormContext();
     var objEstado = formContext.data.process.getActiveStage();
     var estado = formContext.getAttribute("statuscode");
+    //var estate = formContext.getAttribute("statecode");
     var fase = objEstado.getName();
-    console.log(objEstado.getName());
+    console.clear();
+    alert("JS Estado Pedido: Fase = "+fase);
+    console.log("JS Estado Pedido: Fase = "+fase);
     if(fase === "En Elaboración"){
       estado.setValue(1);
     }
@@ -30,6 +39,10 @@ function stateProcess(executeContext) {
     }
     if(fase === "Facturado"){
       estado.setValue(100003);
-    } 
+    }
+    console.log("Estado Pedido: "+estado.getValue());
+    Xrm.Page.data.entity.save();
+    alert("JS Estado Pedido: "+estado.getValue());
     
-  }
+
+}
