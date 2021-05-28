@@ -40,4 +40,9 @@ function stateProcess(executeContext) {
   console.log(stepObj.getAttribute()); // devuelve el nombre logico de la columna asociada
   console.log(stepObj.getName()); // nombre del paso
   console.log(stepObj.getProgress()); // progreso del paso 
+
+
+
+  formContext.data.process.addOnPreProcessStatusChange(); 
+
 }
