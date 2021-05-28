@@ -18,6 +18,7 @@ function stateProcess(executeContext) {
   var stageCollection = activeProcess.getStages(); // devuelve una coleeccion de fases del procesos
   var processRendered = activeProcess.isRendered(); // devuelve un valor booleano de indica si el procesos se ha representado
   var stageObj = formContext.data.process.getActiveStage();
+  var stepObj = stageObj.getSteps();
 
   console.log(formContext.data.process.getStatus() + " estado de la cinta"); // devuelve el estado actual de la instancia de procesos
   console.log(activeProcess);
@@ -34,4 +35,9 @@ function stateProcess(executeContext) {
   console.log(stageObj.getSteps());
   console.log(statuscode);
   console.log(statuscode.getValue());
+
+  console.log(stageObj.getSteps().getAttribute());
+  console.log(stepObj.getAttribute()); // devuelve el nombre logico de la columna asociada
+  console.log(stepObj.getName()); // nombre del paso
+  console.log(stepObj.getProgress()); // progreso del paso 
 }
