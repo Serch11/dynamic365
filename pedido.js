@@ -36,13 +36,31 @@ function stateProcess(executeContext) {
   console.log(statuscode);
   console.log(statuscode.getValue());
 
-  console.log(stageObj.getSteps().getAttribute());
-  console.log(stepObj.getAttribute()); // devuelve el nombre logico de la columna asociada
-  console.log(stepObj.getName()); // nombre del paso
-  console.log(stepObj.getProgress()); // progreso del paso 
+  //   console.log(stageObj.getSteps().getAttribute());
+  //   console.log(stepObj.getAttribute()); // devuelve el nombre logico de la columna asociada
+  //   console.log(stepObj.getName()); // nombre del paso
+  //   console.log(stepObj.getProgress()); // progreso del paso
 
+  formContext.data.process.addOnPreProcessStatusChange(preProcess);
+  formContext.data.process.addOnProcessStatusChange(OnProcessStatus);
+  formContext.data.process.addOnStageChange(OnProcessStatus);
+  formContext.data.process.addOnStageSelected(addOnStageSelected);
+}
 
+function preProcess(executeContext) {
+  console.log("preProcess");
+}
 
-  formContext.data.process.addOnPreProcessStatusChange(); 
+function OnProcessStatus(executeContext) {
+    
+  executeContext.getEventArgs().preventDefault();
+  console.log("OnProcessStatus");
+}
 
+function addOnStageChange(executeContext) {
+  console.log("addOnStageChange");
+}
+
+function addOnStageSelected(executeContext) {
+  console.log("addOnStageSelected");
 }
