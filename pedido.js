@@ -43,22 +43,30 @@ function stateProcess(executeContext) {
 
   formContext.data.process.addOnPreProcessStatusChange(preProcess);
   formContext.data.process.addOnProcessStatusChange(OnProcessStatus);
-  formContext.data.process.addOnStageChange(OnProcessStatus);
+  formContext.data.process.addOnStageChange(addOnStageChange);
   formContext.data.process.addOnStageSelected(addOnStageSelected);
 }
 
 function preProcess(executeContext) {
+  executeContext.getEventArgs().preventDefault();
   console.log("preProcess");
 }
 
 function OnProcessStatus(executeContext) {
-    
   executeContext.getEventArgs().preventDefault();
   console.log("OnProcessStatus");
 }
 
 function addOnStageChange(executeContext) {
+  let formContext = executeContext.getFormContext();
   console.log("addOnStageChange");
+  let  processInstanceId = formContext.data.process.getInstanceId()
+  console.log(formContext.data.process.getInstanceId()); //Devuelve el identificador único de la instancia de proceso.
+  console.log(formContext.data.process.getInstanceName()); //devuelve el nombre de la instancia de proceso
+  formContext.data.process.setActiveProcessInstance(processInstanceId, function(result){
+      console.log(result);
+  });
+
 }
 
 function addOnStageSelected(executeContext) {
