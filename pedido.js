@@ -43,22 +43,53 @@ function stateProcess(executeContext) {
 
   formContext.data.process.addOnPreProcessStatusChange(preProcess);
   formContext.data.process.addOnProcessStatusChange(OnProcessStatus);
-  formContext.data.process.addOnStageChange(OnProcessStatus);
+  formContext.data.process.addOnStageChange(addOnStageChange);
   formContext.data.process.addOnStageSelected(addOnStageSelected);
 }
 
 function preProcess(executeContext) {
+  executeContext.getEventArgs().preventDefault();
   console.log("preProcess");
 }
 
 function OnProcessStatus(executeContext) {
-    
   executeContext.getEventArgs().preventDefault();
   console.log("OnProcessStatus");
 }
 
 function addOnStageChange(executeContext) {
+  let formContext = executeContext.getFormContext();
   console.log("addOnStageChange");
+  let processInstanceId = formContext.data.process.getInstanceId();
+  let stageObj = formContext.data.process.getActiveStage();
+  let header_statuscode = Xrm.Page.getAttribute("header_statuscode");
+
+  var moveToNext = true;
+  // Para adquirir información del Stage activo del proceso.
+  var activeStage = Xrm.Page.data.process.getActiveStage();
+  // Para adquirir la colección de Stages del proceso.
+  var activePathCollection = Xrm.Page.data.process.getActivePath();
+  // Para adquirir el Stage actual
+  var StageSelect = Xrm.Page.data.process.getSelectedStage();
+  //Para adquirir el nombre del Stage actual
+  var StageName = StageSelect.getName();
+  // Para adquirir el ID de la Stage actual
+  var idstages = StageSelect.getId();
+
+  console.log(idstages);
+  console.log(StageName);
+
+  console.log(formContext.data.process.getInstanceId()); //Devuelve el identificador único de la instancia de proceso.
+  console.log(formContext.data.process.getInstanceName()); //devuelve el nombre de la instancia de proceso
+  formContext.data.process.setActiveProcessInstance(processInstanceId, function(
+    result
+  ) {
+    console.log(result);
+  });
+  formContext.data.process.setActiveStage(idstages, function(result) {
+    console.log("fase colocada como activa");
+    console.log(result);
+  });
 }
 
 function addOnStageSelected(executeContext) {

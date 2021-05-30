@@ -1,14 +1,14 @@
 function estadoPedido(executeContext) {
-    let formContext = executeContext.getFormContext();
-    //formContext.data.process.addOnProcessStatusChange(cambioEstado);
-    formContext.data.process.addOnStageChange(cambioEstado);
+  let formContext = executeContext.getFormContext();
+  //formContext.data.process.addOnProcessStatusChange(cambioEstado);
+  formContext.data.process.addOnStageChange(cambioEstado);
 }
 function cambioEstado(executeContext){
     
     let formContext = executeContext.getFormContext();
     var objEstado = formContext.data.process.getActiveStage();
     var estado = formContext.getAttribute("statuscode");
-    var estate = formContext.getAttribute("billto_line3");
+    //var estate = formContext.getAttribute("billto_line3");
     var fase = objEstado.getName();
     console.clear();
     //alert("JS Estado Pedido: Fase = "+fase);
@@ -57,6 +57,4 @@ function cambioEstado(executeContext){
     console.log("Estado Pedido: "+estado.getValue());
     //Xrm.Page.data.entity.save();
     //alert("JS Estado Pedido: "+estado.getValue());
-    
-
 }
