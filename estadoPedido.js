@@ -59,3 +59,9 @@ function cambioEstado(executeContext) {
   //Xrm.Page.data.entity.save();
   //alert("JS Estado Pedido: "+estado.getValue());
 }
+
+try {
+  
+} catch (error) {
+  
+}
