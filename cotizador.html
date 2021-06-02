@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+    <script src="https://redsisdesarrollo.crm2.dynamics.com//WebResources/new_js_cargar_archivo_cotizacion"
+        type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"></script>
+
+</head>
+
+<body id="bdy" style="overflow-wrap: break-word;" onfocusout="parent.setEmailRange();">
+    <br>
+    <div id="navbar"><span>Leer Excel </span></div>
+    <div id="wrapper">
+        <input type="file" id="input-excel">
+    </div>
+    <script>
+        $('#input-excel').change(function (e) {
+            var queryString = window.parent.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var reader = new FileReader();
+            var productid;
+            reader.readAsArrayBuffer(e.target.files[0]);
+            reader.onload = function (e) {
+                var data = new Uint8Array(e.target.result);
+                var workbook = XLSX.read(data, { type: 'array' });
+                var result = XLSX.utils.sheet_to_json(workbook.Sheets["Tabla de costos"], { header: "A" });
+                var referencia = result[3]["B"];
+                var precio_lista_unitario = result[3]["E"];
+                var cantidad = result[3]["D"];
+
+                
+                alert(referencia);
+                console.log("errror");
+                    Xrm.WebApi.retrieveMultipleRecords('product', "?$select=productid&$filter=productnumber eq  '"+ referencia + "' ").then(
+                        function success(result) {
+                            // perform operations on on retrieved records
+                            console.log(result)
+                        },
+                        function (error) {
+                            console.log(error.message);
+                            // handle error conditions
+                        }
+                    );
+                
+
+                // Xrm.WebApi
+                //     .retrieveMultipleRecords("product", "?$select=productid&$filter=productnumber eq '" + referencia + "'   ").then(
+                //         function success(result) {
+                //             console.log(result);
+                //             if (result.entities[0].productid) {
+                //                 productid = result.entities[0].productid;
+                //                 console.log(productid);
+                //             }
+                //         },
+                //         function (error) {
+                //             console.log(error.message);
+                //             console.log(" error desde functions ");
+                //             // handle error conditions
+                //         }
+                //     );
+                let id = "5f2b4fc4-673a-eb11-a813-000d3a887093";
+                var data = {
+                    "productid@odata.bind": "/products(" + id + ")",
+                    "priceperunit": Number(precio_lista_unitario),
+                    "quantity": Number(cantidad),
+                    "quoteid@odata.bind": "/quotes(" + urlParams.get('id') + ")",
+                    "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
+                }
+                // create  record
+                parent.Xrm.WebApi.createRecord("quotedetail", data).then(
+                    function success(result) {
+                        console.log("QuoteDetail created with ID: " + result.id);
+                    },
+                    function (error) {
+                        console.log(error.message);
+                    }
+                );
+                cerrar();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
