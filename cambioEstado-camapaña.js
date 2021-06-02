@@ -8,7 +8,6 @@ function getChange(exeContext) {
 // completada = 3;
 //cancelada = 4;
 //suspendida = 5;
-
 function getStatus(exeContent) {
   let fecha = new Date();
 
