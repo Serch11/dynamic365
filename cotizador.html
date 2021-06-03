@@ -26,60 +26,86 @@
                 var data = new Uint8Array(e.target.result);
                 var workbook = XLSX.read(data, { type: 'array' });
                 var result = XLSX.utils.sheet_to_json(workbook.Sheets["Tabla de costos"], { header: "A" });
-                var referencia = result[3]["B"];
-                var precio_lista_unitario = result[3]["E"];
-                var cantidad = result[3]["D"];
 
-                
-                alert(referencia);
-                console.log("errror");
-                    Xrm.WebApi.retrieveMultipleRecords('product', "?$select=productid&$filter=productnumber eq  '"+ referencia + "' ").then(
-                        function success(result) {
-                            // perform operations on on retrieved records
-                            console.log(result)
-                        },
-                        function (error) {
-                            console.log(error.message);
-                            // handle error conditions
+                console.log(result);
+                result.forEach((value, index, array) => {
+                    //                    console.log(value);
+                    //if (value["B"]) console.log(value["B"]);
+                    if (!value["A"] && value["B"]) {
+                        console.log("entro en el if");
+                        console.log(value["B"]);
+                        //console.log(console.log(value));
+                        console.log(value["E"], value["D"]);
+                        console.log(urlParams.get("id"));
+
+                        webApi(value["B"], value["E"], value["D"], urlParams.get("id"));
+                    }
+
+
+
+                });
+                //var referencia = result[3]["B"];
+                //var precio_lista_unitario = result[3]["E"];
+                //var cantidad = result[3]["D"];
+
+                //console.log("probando0");
+                //console.log(`${referencia}`);
+
+
+
+            }
+        });
+
+
+        async function webApi(referencia, precio, cant, url) {
+            precio_lista_unitario = precio;
+            cantidad = cant;
+            Xrm.WebApi
+                .retrieveMultipleRecords(
+                    "product",
+                    "?$select=productid&$filter=productnumber eq  '" + referencia + "' "
+                )
+                .then(
+                    function success(result1) {
+                        console.log(result1);
+                        if (result1.entities[0].productid) {
+                            productid = result1.entities[0].productid;
+                            console.log(productid);
+                            
+                            // perform additional operations on retrieved records
+
+
+                            let id = "5f2b4fc4-673a-eb11-a813-000d3a887093";
+                            var data = {
+                                "productid@odata.bind": "/products(" + productid + ")",
+                                "priceperunit": Number(precio_lista_unitario),
+                                "quantity": Number(cantidad),
+                                "quoteid@odata.bind": "/quotes(" + url + ")",
+                                "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
+                            }
+                            console.log(data);
+                            // create  record
+                            parent.Xrm.WebApi.createRecord("quotedetail", data).then(
+                                function success(result2) {
+                                    console.log("QuoteDetail created with ID: " + result2.id);
+                                },
+                                function (error) {
+                                    console.log(error.message);
+                                }
+                            );
+                            cerrar();
                         }
-                    );
-                
-
-                // Xrm.WebApi
-                //     .retrieveMultipleRecords("product", "?$select=productid&$filter=productnumber eq '" + referencia + "'   ").then(
-                //         function success(result) {
-                //             console.log(result);
-                //             if (result.entities[0].productid) {
-                //                 productid = result.entities[0].productid;
-                //                 console.log(productid);
-                //             }
-                //         },
-                //         function (error) {
-                //             console.log(error.message);
-                //             console.log(" error desde functions ");
-                //             // handle error conditions
-                //         }
-                //     );
-                let id = "5f2b4fc4-673a-eb11-a813-000d3a887093";
-                var data = {
-                    "productid@odata.bind": "/products(" + id + ")",
-                    "priceperunit": Number(precio_lista_unitario),
-                    "quantity": Number(cantidad),
-                    "quoteid@odata.bind": "/quotes(" + urlParams.get('id') + ")",
-                    "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
-                }
-                // create  record
-                parent.Xrm.WebApi.createRecord("quotedetail", data).then(
-                    function success(result) {
-                        console.log("QuoteDetail created with ID: " + result.id);
                     },
                     function (error) {
                         console.log(error.message);
+                        // handle error conditions
                     }
                 );
-                cerrar();
-            }
-        });
+
+
+
+        }
+
     </script>
 
 </body>
