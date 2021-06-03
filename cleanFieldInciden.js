@@ -12,9 +12,9 @@ function borrar(executeContext) {
     "ap_tipodeservicio_plataforma"
   );
   let ap_categoraingeniera = formContext.getAttribute("ap_categoraingeniera");
-
   console.log(ap_plataforma.getValue());
-  if (executionContext.getDepth() === 1 || executeContext.getDepth() === 2 || executeContext.getDepth() === 3) {
+  console.log(executeContext.getDepth());
+  if (executeContext.getDepth() === 1 || executeContext.getDepth() === 2 || executeContext.getDepth() === 3) {
     ap_tipodeservicio_plataforma.setValue(null);
     ap_categoraingeniera.setValue(null);
   }

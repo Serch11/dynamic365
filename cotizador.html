@@ -16,53 +16,64 @@
         <input type="file" id="input-excel">
     </div>
     <script>
+
+        var i;
+        var count;
+        var contadora;
+        var res;
         $('#input-excel').change(function (e) {
             var queryString = window.parent.location.search;
             var urlParams = new URLSearchParams(queryString);
             var reader = new FileReader();
             var productid;
+
             reader.readAsArrayBuffer(e.target.files[0]);
             reader.onload = function (e) {
                 var data = new Uint8Array(e.target.result);
                 var workbook = XLSX.read(data, { type: 'array' });
                 var result = XLSX.utils.sheet_to_json(workbook.Sheets["Tabla de costos"], { header: "A" });
 
-                console.log(result);
+                //console.log(result);
+
                 result.forEach((value, index, array) => {
-                    //                    console.log(value);
+                    //console.log(value);
+                    // console.log(index);
                     //if (value["B"]) console.log(value["B"]);
+
+
                     if (!value["A"] && value["B"]) {
-                        console.log("entro en el if");
-                        console.log(value["B"]);
+
+
+                        //console.log("entro en el if");
+                        //console.log(value["B"]);
                         //console.log(console.log(value));
-                        console.log(value["E"], value["D"]);
-                        console.log(urlParams.get("id"));
+                        //console.log(value["E"], value["D"]);
+                        //console.log(urlParams.get("id"));
 
                         let referencia = value["B"];
                         let cantidad = value["D"];
                         let precio = value["E"];
-
                         webApi(referencia, precio, cantidad, urlParams.get("id"));
                     }
 
 
-
                 });
+
+
+
+
                 //var referencia = result[3]["B"];
                 //var precio_lista_unitario = result[3]["E"];
                 //var cantidad = result[3]["D"];
 
                 //console.log("probando0");
                 //console.log(`${referencia}`);
-
-
-
             }
         });
 
-
         async function webApi(referencia, precio, cant, url) {
-            console.log("inicio funcion api");
+
+            console.log("inicio funcion api____________________");
             console.log(referencia);
             console.log(precio);
             console.log(cant);
@@ -75,16 +86,15 @@
                     "?$select=productid&$filter=productnumber eq  '" + referencia + "' "
                 )
                 .then(
-                    function success(result1) {
+                    async function success(result1) {
+
+                        console.log("entro " + i++);
                         console.log(result1);
                         if (result1.entities[0].productid) {
-                            let productid =  result1.entities[0].productid;
+
+                            let productid = await result1.entities[0].productid;
                             console.log(productid);
 
-                            // perform additional operations on retrieved records
-
-
-                            //let id = "5f2b4fc4-673a-eb11-a813-000d3a887093";
                             var data = {
                                 "productid@odata.bind": "/products(" + productid + ")",
                                 "priceperunit": Number(precio),
@@ -92,7 +102,7 @@
                                 "quoteid@odata.bind": "/quotes(" + url + ")",
                                 "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
                             }
-                            console.log(data);
+                            // console.log(data);
                             // create  record
                             parent.Xrm.WebApi.createRecord("quotedetail", data).then(
                                 function success(result2) {
@@ -104,6 +114,8 @@
                             );
                             cerrar();
                         }
+
+
                     },
                     function (error) {
                         console.log(error.message);
@@ -112,9 +124,7 @@
                 );
 
 
-
         }
-
     </script>
 
 </body>
