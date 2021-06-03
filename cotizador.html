@@ -38,7 +38,11 @@
                         console.log(value["E"], value["D"]);
                         console.log(urlParams.get("id"));
 
-                        webApi(value["B"], value["E"], value["D"], urlParams.get("id"));
+                        let referencia = value["B"];
+                        let cantidad = value["D"];
+                        let precio = value["E"];
+
+                        webApi(referencia, precio, cantidad, urlParams.get("id"));
                     }
 
 
@@ -58,8 +62,13 @@
 
 
         async function webApi(referencia, precio, cant, url) {
-            precio_lista_unitario = precio;
-            cantidad = cant;
+            console.log("inicio funcion api");
+            console.log(referencia);
+            console.log(precio);
+            console.log(cant);
+            console.log("fin parametros________________________");
+            //precio_lista_unitario = precio;
+            //cantidad = cant;
             Xrm.WebApi
                 .retrieveMultipleRecords(
                     "product",
@@ -69,17 +78,17 @@
                     function success(result1) {
                         console.log(result1);
                         if (result1.entities[0].productid) {
-                            productid = result1.entities[0].productid;
+                            let productid = result1.entities[0].productid;
                             console.log(productid);
-                            
+
                             // perform additional operations on retrieved records
 
 
-                            let id = "5f2b4fc4-673a-eb11-a813-000d3a887093";
+                            //let id = "5f2b4fc4-673a-eb11-a813-000d3a887093";
                             var data = {
                                 "productid@odata.bind": "/products(" + productid + ")",
-                                "priceperunit": Number(precio_lista_unitario),
-                                "quantity": Number(cantidad),
+                                "priceperunit": Number(precio),
+                                "quantity": Number(cant),
                                 "quoteid@odata.bind": "/quotes(" + url + ")",
                                 "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
                             }
