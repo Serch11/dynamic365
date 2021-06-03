@@ -95,23 +95,37 @@
                             let productid = await result1.entities[0].productid;
                             console.log(productid);
 
-                            var data = {
-                                "productid@odata.bind": "/products(" + productid + ")",
-                                "priceperunit": Number(precio),
-                                "quantity": Number(cant),
-                                "quoteid@odata.bind": "/quotes(" + url + ")",
-                                "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
-                            }
-                            // console.log(data);
+                            // var data = await {
+                            //     "productid@odata.bind": "/products(" + productid + ")",
+                            //     "priceperunit": Number(precio),
+                            //     "quantity": Number(cant),
+                            //     "quoteid@odata.bind": "/quotes(" + url + ")",
+                            //     "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
+                            // }
+
+                            var data =
+                                await {
+                                    "productid": productid,
+                                    "creditonhold": false,
+                                    "address1_latitude": 47.639583,
+                                    "description": "This is the description of the sample account",
+                                    "revenue": 5000000,
+                                    "accountcategorycode": 1
+                                }
+                            console.log(data);
                             // create  record
-                            parent.Xrm.WebApi.createRecord("quotedetail", data).then(
+                            Xrm.WebApi.createRecord("quotedetail", data).then(
                                 function success(result2) {
+                                    console.log("hola");
                                     console.log("QuoteDetail created with ID: " + result2.id);
                                 },
                                 function (error) {
                                     console.log(error.message);
                                 }
                             );
+
+
+
                             cerrar();
                         }
 
