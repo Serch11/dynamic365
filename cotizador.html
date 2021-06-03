@@ -106,11 +106,10 @@
                             var data =
                                 await {
                                     "productid": productid,
-                                    "creditonhold": false,
-                                    "address1_latitude": 47.639583,
-                                    "description": "This is the description of the sample account",
-                                    "revenue": 5000000,
-                                    "accountcategorycode": 1
+                                    "priceperunit": Number(precio),
+                                    "quantity": Number(cant),
+                                    "quoteid": url,
+                                    "uomid": "f6008f58-2cf0-ea11-a815-000d3ac090ba"
                                 }
                             console.log(data);
                             // create  record
