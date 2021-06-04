@@ -17,10 +17,7 @@
     </div>
     <script>
 
-        var i;
-        var count;
-        var contadora;
-        var res;
+
         $('#input-excel').change(function (e) {
             var queryString = window.parent.location.search;
             var urlParams = new URLSearchParams(queryString);
@@ -88,44 +85,58 @@
                 .then(
                     async function success(result1) {
 
-                        console.log("entro " + i++);
+
                         console.log(result1);
                         if (result1.entities[0].productid) {
 
                             let productid = await result1.entities[0].productid;
-                            console.log(productid);
+                            //alert(productid);
+                            //0c7e1878-0df8-ea11-a815-000d3ac0a0b3
 
-                            // var data = await {
-                            //     "productid@odata.bind": "/products(" + productid + ")",
-                            //     "priceperunit": Number(precio),
-                            //     "quantity": Number(cant),
-                            //     "quoteid@odata.bind": "/quotes(" + url + ")",
-                            //     "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
-                            // }
+                            //f6008f58-2cf0-ea11-a815-000d3ac090ba
+                            var data = await {
+                                "productid@odata.bind": "/products(" + productid + ")",
+                                "priceperunit": Number(precio),
+                                "quantity": Number(cant),
+                                "quoteid@odata.bind": "/quotes(" + url + ")",
+                                "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
+                            }
 
-                            var data =
-                                await {
-                                    "productid": productid,
-                                    "priceperunit": Number(precio),
-                                    "quantity": Number(cant),
-                                    "quoteid": url,
-                                    "uomid": "f6008f58-2cf0-ea11-a815-000d3ac090ba"
-                                }
+                            // var data =
+                            //     await {
+                            //         "productid": productid,
+                            //         "priceperunit": Number(precio),
+                            //         "quantity": Number(cant),
+                            //         "quoteid": url,
+                            //         "uomid": "f6008f58-2cf0-ea11-a815-000d3ac090ba"
+                            //     }
                             console.log(data);
                             // create  record
-                            Xrm.WebApi.createRecord("quotedetail", data).then(
-                                function success(result2) {
+                            Xrm.WebApi.createRecord('quotedetail', data).then(
+                                function success(result) {
+                                    // perform operations on record creation
+                                    console.log(result);
                                     console.log("hola");
-                                    console.log("QuoteDetail created with ID: " + result2.id);
+                                    console.log("QuoteDetail created with ID: " + result.id);
                                 },
                                 function (error) {
                                     console.log(error.message);
+                                    // handle error conditions
                                 }
                             );
-
-
-
                             cerrar();
+                            // Xrm.WebApi.createRecord("quotedetail", data).then(
+                            //     function success(result2) {
+                            //         console.log(result2);
+                            //         console.log("hola");
+                            //         console.log("QuoteDetail created with ID: " + result2.id);
+                            //     },
+                            //     function (error) {
+                            //         console.log("error create recor");
+                            //         console.log(error.message);
+                            //     }
+                            // );
+
                         }
 
 
