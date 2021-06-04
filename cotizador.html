@@ -95,22 +95,22 @@
                             let productid = await result1.entities[0].productid;
                             console.log(productid);
 
-                            // var data = await {
-                            //     "productid@odata.bind": "/products(" + productid + ")",
-                            //     "priceperunit": Number(precio),
-                            //     "quantity": Number(cant),
-                            //     "quoteid@odata.bind": "/quotes(" + url + ")",
-                            //     "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
-                            // }
+                            var data = await {
+                                "productid@odata.bind": "/products(" + productid + ")",
+                                "priceperunit": Number(precio),
+                                "quantity": Number(cant),
+                                "quoteid@odata.bind": "/quotes(" + url + ")",
+                                "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
+                            }
 
-                            var data =
-                                await {
-                                    "productid": productid,
-                                    "priceperunit": Number(precio),
-                                    "quantity": Number(cant),
-                                    "quoteid": url,
-                                    "uomid": "f6008f58-2cf0-ea11-a815-000d3ac090ba"
-                                }
+                            // var data =
+                            //     await {
+                            //         "productid": productid,
+                            //         "priceperunit": Number(precio),
+                            //         "quantity": Number(cant),
+                            //         "quoteid": url,
+                            //         "uomid": "f6008f58-2cf0-ea11-a815-000d3ac090ba"
+                            //     }
                             console.log(data);
                             // create  record
                             Xrm.WebApi.createRecord("quotedetail", data).then(
@@ -119,6 +119,7 @@
                                     console.log("QuoteDetail created with ID: " + result2.id);
                                 },
                                 function (error) {
+                                    console.log("error desde createrecord");
                                     console.log(error.message);
                                 }
                             );
