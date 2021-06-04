@@ -17,7 +17,9 @@
     </div>
     <script>
 
-
+        var contadora = 0;
+        var cont = 0;
+        var conterror = 0;
         $('#input-excel').change(function (e) {
             var queryString = window.parent.location.search;
             var urlParams = new URLSearchParams(queryString);
@@ -40,7 +42,6 @@
 
                     if (!value["A"] && value["B"]) {
 
-
                         //console.log("entro en el if");
                         //console.log(value["B"]);
                         //console.log(console.log(value));
@@ -56,9 +57,6 @@
 
                 });
 
-
-
-
                 //var referencia = result[3]["B"];
                 //var precio_lista_unitario = result[3]["E"];
                 //var cantidad = result[3]["D"];
@@ -70,58 +68,77 @@
 
         async function webApi(referencia, precio, cant, url) {
 
-            console.log("inicio funcion api____________________");
-            console.log(referencia);
-            console.log(precio);
-            console.log(cant);
-            console.log("fin parametros________________________");
-            //precio_lista_unitario = precio;
-            //cantidad = cant;
-            Xrm.WebApi
-                .retrieveMultipleRecords(
-                    "product",
-                    "?$select=productid&$filter=productnumber eq  '" + referencia + "' "
-                )
-                .then(
-                    async function success(result1) {
+            try {
+                contadora++;
 
+                console.log("inicio funcion api____________________");
+                console.log(referencia);
+                console.log(precio);
+                console.log(cant);
+                console.log("fin parametros________________________");
+                //precio_lista_unitario = precio;
+                //cantidad = cant;
+                Xrm.WebApi
+                    .retrieveMultipleRecords(
+                        "product",
+                        "?$select=productid&$filter=productnumber eq  '" + referencia + "' "
+                    )
+                    .then(
+                        async function success(result1) {
 
-                        console.log(result1);
-                        if (result1.entities[0].productid) {
+                            console.log(result1);
+                            if (result1.entities[0].productid) {
+                                cont++;
+                                let productid = await result1.entities[0].productid;
+                                console.log(productid);
 
-                            let productid = await result1.entities[0].productid;
-                            console.log(productid);
-
-                            var data = await {
-                                "productid@odata.bind": "/products(" + productid + ")",
-                                "priceperunit": Number(precio),
-                                "quantity": Number(cant),
-                                "quoteid@odata.bind": "/quotes(" + url + ")",
-                                "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
-                            }
-                            console.log(data);
-                            // create  record
-                            Xrm.WebApi.createRecord('quotedetail', data).then(
-                                function success(result) {
-                                    // perform operations on record creation
-                                    console.log(result);
-                                    console.log("hola");
-                                    console.log("QuoteDetail created with ID: " + result.id);
-                                },
-                                function (error) {
-                                    console.log("error desde createrecord");
-                                    console.log(error.message);
-                                    // handle error conditions
+                                var data = await {
+                                    "productid@odata.bind": "/products(" + productid + ")",
+                                    "priceperunit": Number(precio),
+                                    "quantity": Number(cant),
+                                    "quoteid@odata.bind": "/quotes(" + url + ")",
+                                    "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
                                 }
-                            );
-                            cerrar();
+                                console.log(data);
+                                // create  record
+
+                                let res = await Xrm.WebApi.createRecord('quotedetail', data);
+                                console.log("******");
+                                console.log(res);
+
+                                // Xrm.WebApi.createRecord('quotedetail', data).then(
+                                //     async function success(result) {
+                                //         // perform operations on record creation
+                                //         let res = await result;
+                                //         console.log(res);
+                                //         if (success) {
+                                //             console.log(result);
+                                //             console.log("hola");
+                                //             console.log("QuoteDetail created with ID: " + result.id);
+                                //         }
+                                //     },
+                                //     function (error) {
+                                //         conterror++;
+                                //         console.log("error desde createrecord");
+                                //         console.log(error.message);
+                                //         // handle error conditions
+                                //     }
+                                // );
+                                cerrar();
+                                console.log("contadora " + contadora);
+                                console.log("cont " + cont);
+                                console.log(" error " + conterror)
+                            }
+                        },
+                        function (error) {
+                            console.log(error.message);
+                            // handle error conditions
                         }
-                    },
-                    function (error) {
-                        console.log(error.message);
-                        // handle error conditions
-                    }
-                );
+                    );  
+            } catch (error) {
+                console.log("error")
+                console.log(error)
+            }
         }
     </script>
 
