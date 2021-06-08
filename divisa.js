@@ -40,6 +40,7 @@ function obtenerDivisa(executeContext) {
                   " getdepth  entro a las dos condiciones y al resultado"
               );
               console.log(executeContext.getDepth() + " getdepth 2");
+              formContext.getControl("ap_trm").setVisible(true);
               ap_trm.setValue(trm);
               // perform additional operations on retrieved records
             }
@@ -51,8 +52,10 @@ function obtenerDivisa(executeContext) {
         );
     }
 
-    if (transactioncurrencyid.getValue()[0].name != "US Dollar") {
-      ap_trm.setValue(null);
+    if (transactioncurrencyid.getValue()[0].name === "Peso Colombiano") {
+      console.log("quitar valor divisa");
+      formContext.getControl("ap_trm").setVisible(false);
+      ap_trm.setValue(0);
     }
   }
 }
