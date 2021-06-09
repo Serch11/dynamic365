@@ -57,6 +57,16 @@ function obtenerDivisa(executeContext) {
       formContext.getControl("ap_trm").setVisible(false);
       ap_trm.setValue(0);
     }
+    if (transactioncurrencyid.getValue()[0].name === "Colombian Peso") {
+      console.log("quitar valor divisa");
+      formContext.getControl("ap_trm").setVisible(false);
+      ap_trm.setValue(0);
+    }
+    if (transactioncurrencyid.getValue()[0].name === "Peso") {
+      console.log("quitar valor divisa");
+      formContext.getControl("ap_trm").setVisible(false);
+      ap_trm.setValue(0);
+    }
   }
 }
 
