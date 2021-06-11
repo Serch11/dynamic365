@@ -2,7 +2,7 @@ function getProduct(executionContext) {
     console.log("datatatatatatattaa");
     let formContext = executionContext.getFormContext();
     let producid = formContext.getAttribute("productid");
-    formContext.data.removeOnLoad(setProduct);
+    //formContext.data.removeOnLoad(setProduct);
     formContext.getAttribute("productid").addOnChange(changeProduct);
 }
 

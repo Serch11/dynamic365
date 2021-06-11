@@ -35,45 +35,37 @@
                 console.log(result);
 
                 result.forEach((value, index, array) => {
-                    //console.log(value);
-                    // console.log(index);
-                    //if (value["B"]) console.log(value["B"]);
-
 
                     if (!value["A"] && value["B"]) {
 
-                        //console.log("entro en el if");
-                        //console.log(value["B"]);
-                        //console.log(console.log(value));
-                        //console.log(value["E"], value["D"]);
-                        //console.log(urlParams.get("id"));
-
+                        let precio = 0;
+                        let costo = 0;
                         let referencia = value["B"];
                         let cantidad = value["D"];
-                        let precio = value["E"];
-                        webApi(referencia, precio, cantidad, urlParams.get("id"));
+
+                        console.log(value["E"] + "columna e");
+                        console.log(value["H"] + "columna h");
+
+                        value["E"] ? precio = value["E"] : costo = value["H"];
+
+
+                        //llamo la funcion 
+                        agregarRegistro(referencia, precio, costo, cantidad, urlParams.get("id"));
                     }
-
-
                 });
-
-                //var referencia = result[3]["B"];
-                //var precio_lista_unitario = result[3]["E"];
-                //var cantidad = result[3]["D"];
-
-                //console.log("probando0");
-                //console.log(`${referencia}`);
             }
         });
 
-        async function webApi(referencia, precio, cant, url) {
 
+
+        async function agregarRegistro(referencia, precio, costo, cant, url) {
             try {
                 contadora++;
 
                 console.log("inicio funcion api____________________");
                 console.log(referencia);
-                console.log(precio);
+                console.log(precio + "precio");
+                console.log(costo + "costo");
                 console.log(cant);
                 console.log("fin parametros________________________");
                 //precio_lista_unitario = precio;
@@ -85,28 +77,74 @@
                     )
                     .then(
                         async function success(result1) {
-
                             console.log(result1);
                             if (result1.entities[0].productid) {
                                 cont++;
                                 let productid = await result1.entities[0].productid;
                                 console.log(productid);
+                                if (productid) {
+                                    let id = productid;
+                                    //&$filter=productid eq '" + id + "'
+                                    Xrm.WebApi
+                                        .retrieveMultipleRecords(
+                                            "ap_exhibit",
+                                            "?$select=ap_exhibitid,createdon,ap_porcentaje,_ap_producto_value&$filter=(statecode eq 0 and _ap_producto_value eq '" +
+                                            id +
+                                            "')&$orderby=createdon asc"
+                                        )
+                                        .then(
+                                            async function success(result) {
+                                                var porcentaje = 0;
+                                                // perform operations on on retrieved records
+                                                console.log(result);
+                                                console.log(result.entities);
+                                                if (result.entities[0]) {
+                                                    porcentaje = await result.entities[0].ap_porcentaje;
+                                                }
 
-                                var data = await {
-                                    "productid@odata.bind": "/products(" + productid + ")",
-                                    "priceperunit": Number(precio),
-                                    "quantity": Number(cant),
-                                    "quoteid@odata.bind": "/quotes(" + url + ")",
-                                    "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
+                                                console.log(" porcentaje fuera  " + porcentaje)
+
+                                                var data = await {
+                                                    "productid@odata.bind": "/products(" + productid + ")",
+                                                    "priceperunit": Number(precio),
+                                                    "quantity": Number(cant),
+                                                    "rd_costounit": Number(costo),
+                                                    "ap_exhibitpwrst": Number(porcentaje),
+                                                    "quoteid@odata.bind": "/quotes(" + url + ")",
+                                                    "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
+                                                }
+
+                                                console.log(data);
+                                                // create  record
+
+                                                let res = await Xrm.WebApi.createRecord('quotedetail', data);
+                                                console.log("******");
+                                                console.log(res);
+                                                cerrar();
+
+                                            },
+                                            function (error) {
+                                                console.log(error.message);
+                                                // handle error conditions
+                                            }
+                                        );
                                 }
-                                console.log(data);
-                                // create  record
+                            }
+                        },
+                        function (error) {
+                            console.log(error.message);
+                            // handle error conditions
+                        }
+                    );
+            } catch (error) {
+                console.log("error")
+                console.log(error)
+            }
+        }
 
-                                let res = await Xrm.WebApi.createRecord('quotedetail', data);
-                                console.log("******");
-                                console.log(res);
 
-                                // Xrm.WebApi.createRecord('quotedetail', data).then(
+
+        // Xrm.WebApi.createRecord('quotedetail', data).then(
                                 //     async function success(result) {
                                 //         // perform operations on record creation
                                 //         let res = await result;
@@ -124,22 +162,6 @@
                                 //         // handle error conditions
                                 //     }
                                 // );
-                                cerrar();
-                                console.log("contadora " + contadora);
-                                console.log("cont " + cont);
-                                console.log(" error " + conterror)
-                            }
-                        },
-                        function (error) {
-                            console.log(error.message);
-                            // handle error conditions
-                        }
-                    );  
-            } catch (error) {
-                console.log("error")
-                console.log(error)
-            }
-        }
     </script>
 
 </body>
