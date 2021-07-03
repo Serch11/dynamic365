@@ -2,7 +2,6 @@ function stateProcess(executeContext) {
   let formContext = executeContext.getFormContext();
 
   //formContext.getAttribute("transactioncurrencyid").addOnChange(obtenerDivisa);
-
   console.clear();
   console.log(executeContext.getDepth() + " getdepth 1");
   console.log("estado");
