@@ -1,173 +1,147 @@
 <html>
-  <head>
-    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
-    <script
-      src="https://redsisdesarrollo.crm2.dynamics.com//WebResources/new_js_cargar_archivo_cotizacion"
-      type="text/javascript"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script
-      type="text/javascript"
-      src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"
-    ></script>
-  </head>
 
-  <body
-    id="bdy"
-    style="overflow-wrap: break-word"
-    onfocusout="parent.setEmailRange();"
-  >
-    
-    <br />
+<head>
+    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+    <script src="https://redsisdesarrollo.crm2.dynamics.com//WebResources/new_js_cargar_archivo_cotizacion"
+        type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"></script>
+
+</head>
+
+<body id="bdy" style="overflow-wrap: break-word;" onfocusout="parent.setEmailRange();">
+    <br>
     <div id="navbar"><span>Leer Excel </span></div>
     <div id="wrapper">
-      <input type="file" id="input-excel" />
+        <input type="file" id="input-excel">
     </div>
     <script>
-      var contadora = 0;
-      var cont = 0;
-      var conterror = 0;
-      $("#input-excel").change(function (e) {
-        var queryString = window.parent.location.search;
-        var urlParams = new URLSearchParams(queryString);
-        var reader = new FileReader();
-        var productid;
 
-        reader.readAsArrayBuffer(e.target.files[0]);
-        reader.onload = function (e) {
-          var data = new Uint8Array(e.target.result);
-          var workbook = XLSX.read(data, { type: "array" });
-          var result = XLSX.utils.sheet_to_json(
-            workbook.Sheets["Tabla de costos"],
-            { header: "A" }
-          );
-          console.log(result);
-          result.forEach((value, index, array) => {
-            if (!value["A"] && value["B"]) {
-              let precio = 0;
-              let costo = 0;
-              let referencia = value["B"];
-              let cantidad = value["D"];
+        var contadora = 0;
+        var cont = 0;
+        var conterror = 0;
+        $('#input-excel').change(function (e) {
+            var queryString = window.parent.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var reader = new FileReader();
+            var productid;
 
-              console.log(value["E"] + "columna e");
-              console.log(value["H"] + "columna h");
+            reader.readAsArrayBuffer(e.target.files[0]);
+            reader.onload = function (e) {
+                var data = new Uint8Array(e.target.result);
+                var workbook = XLSX.read(data, { type: 'array' });
+                var result = XLSX.utils.sheet_to_json(workbook.Sheets["Tabla de costos"], { header: "A" });
 
-              value["E"] ? (precio = value["E"]) : (costo = value["H"]);
+                console.log(result);
 
-              //llamo la funcion
-              agregarRegistro(
-                referencia,
-                precio,
-                costo,
-                cantidad,
-                urlParams.get("id")
-              );
-            }
-          });
-        };
-      });
+                result.forEach((value, index, array) => {
+                    //console.log(value);
+                    // console.log(index);
+                    //if (value["B"]) console.log(value["B"]);
 
-      async function agregarRegistro(referencia, precio, costo, cant, url) {
-        try {
-          contadora++;
 
-          console.log("inicio funcion api____________________");
-          console.log(referencia);
-          console.log(precio + "precio");
-          console.log(costo + "costo");
-          console.log(cant);
-          console.log("fin parametros________________________");
-          //precio_lista_unitario = precio;
-          //cantidad = cant;
-          Xrm.WebApi.retrieveMultipleRecords(
-            "product",
-            "?$select=productid&$filter=productnumber eq  '" + referencia + "' "
-          ).then(
-            async function success(result1) {
-              console.log(result1);
-              if (result1.entities[0].productid) {
-                cont++;
-                let productid = await result1.entities[0].productid;
-                console.log(productid);
-                if (productid) {
-                  let id = productid;
-                  //&$filter=productid eq '" + id + "'
-                  Xrm.WebApi.retrieveMultipleRecords(
-                    "ap_exhibit",
-                    "?$select=ap_exhibitid,createdon,ap_porcentaje,_ap_producto_value&$filter=(statecode eq 0 and _ap_producto_value eq '" +
-                      id +
-                      "')&$orderby=createdon asc"
-                  ).then(
-                    async function success(result) {
-                      var porcentaje = 0;
-                      // perform operations on on retrieved records
-                      console.log(result);
-                      console.log(result.entities);
-                      if (result.entities[0]) {
-                        porcentaje = await result.entities[0].ap_porcentaje;
-                      }
+                    if (!value["A"] && value["B"]) {
 
-                      console.log(" porcentaje fuera  " + porcentaje);
+                        //console.log("entro en el if");
+                        //console.log(value["B"]);
+                        //console.log(console.log(value));
+                        //console.log(value["E"], value["D"]);
+                        //console.log(urlParams.get("id"));
 
-                      var data = await {
-                        "productid@odata.bind": "/products(" + productid + ")",
-                        priceperunit: Number(precio),
-                        quantity: Number(cant),
-                        rd_costounit: Number(costo),
-                        ap_exhibitpwrst: Number(porcentaje),
-                        "quoteid@odata.bind": "/quotes(" + url + ")",
-                        "uomid@odata.bind":
-                          "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)",
-                      };
-
-                      console.log(data);
-                      // create  record
-
-                      let res = await Xrm.WebApi.createRecord(
-                        "quotedetail",
-                        data
-                      );
-                      console.log("******");
-                      console.log(res);
-                      cerrar();
-                    },
-                    function (error) {
-                      console.log(error.message);
-                      // handle error conditions
+                        let referencia = value["B"];
+                        let cantidad = value["D"];
+                        let precio = value["E"];
+                        webApi(referencia, precio, cantidad, urlParams.get("id"));
                     }
-                  );
-                }
-              }
-            },
-            function (error) {
-              console.log(error.message);
-              // handle error conditions
-            }
-          );
-        } catch (error) {
-          console.log("error");
-          console.log(error);
-        }
-      }
 
-      // Xrm.WebApi.createRecord('quotedetail', data).then(
-      //     async function success(result) {
-      //         // perform operations on record creation
-      //         let res = await result;
-      //         console.log(res);
-      //         if (success) {
-      //             console.log(result);
-      //             console.log("hola");
-      //             console.log("QuoteDetail created with ID: " + result.id);
-      //         }
-      //     },
-      //     function (error) {
-      //         conterror++;
-      //         console.log("error desde createrecord");
-      //         console.log(error.message);
-      //         // handle error conditions
-      //     }
-      // );
+
+                });
+
+                //var referencia = result[3]["B"];
+                //var precio_lista_unitario = result[3]["E"];
+                //var cantidad = result[3]["D"];
+
+                //console.log("probando0");
+                //console.log(`${referencia}`);
+            }
+        });
+
+        async function webApi(referencia, precio, cant, url) {
+
+            try {
+                contadora++;
+
+                console.log("inicio funcion api____________________");
+                console.log(referencia);
+                console.log(precio);
+                console.log(cant);
+                console.log("fin parametros________________________");
+                //precio_lista_unitario = precio;
+                //cantidad = cant;
+                Xrm.WebApi
+                    .retrieveMultipleRecords(
+                        "product",
+                        "?$select=productid&$filter=productnumber eq  '" + referencia + "' "
+                    )
+                    .then(
+                        async function success(result1) {
+
+                            console.log(result1);
+                            if (result1.entities[0].productid) {
+                                cont++;
+                                let productid = await result1.entities[0].productid;
+                                console.log(productid);
+
+                                var data = await {
+                                    "productid@odata.bind": "/products(" + productid + ")",
+                                    "priceperunit": Number(precio),
+                                    "quantity": Number(cant),
+                                    "quoteid@odata.bind": "/quotes(" + url + ")",
+                                    "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)"
+                                }
+                                console.log(data);
+                                // create  record
+
+                                let res = await Xrm.WebApi.createRecord('quotedetail', data);
+                                console.log("******");
+                                console.log(res);
+
+                                // Xrm.WebApi.createRecord('quotedetail', data).then(
+                                //     async function success(result) {
+                                //         // perform operations on record creation
+                                //         let res = await result;
+                                //         console.log(res);
+                                //         if (success) {
+                                //             console.log(result);
+                                //             console.log("hola");
+                                //             console.log("QuoteDetail created with ID: " + result.id);
+                                //         }
+                                //     },
+                                //     function (error) {
+                                //         conterror++;
+                                //         console.log("error desde createrecord");
+                                //         console.log(error.message);
+                                //         // handle error conditions
+                                //     }
+                                // );
+                                cerrar();
+                                console.log("contadora " + contadora);
+                                console.log("cont " + cont);
+                                console.log(" error " + conterror)
+                            }
+                        },
+                        function (error) {
+                            console.log(error.message);
+                            // handle error conditions
+                        }
+                    );  
+            } catch (error) {
+                console.log("error")
+                console.log(error)
+            }
+        }
     </script>
-  </body>
+
+</body>
+
 </html>
