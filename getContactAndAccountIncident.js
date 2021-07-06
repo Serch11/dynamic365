@@ -1,3 +1,10 @@
+//BLOQUEADO POR CARTERA
+// DESANTEDIDO 
+// CLIENTE POR CARTERA 
+// CLIENTE INACTIVO 
+// NO TIENE CUPO 
+
+
 function getContactAndAccount(executionContext) {
   let formContext = executionContext.getFormContext();
 
