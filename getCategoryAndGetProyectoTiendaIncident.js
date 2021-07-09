@@ -5,6 +5,7 @@ function getTienda(executionContext) {
 
 async function setCampos(executionContext) {
   let formContext = executionContext.getFormContext();
+  let ap_regional = formContext.getAttribute("ap_regional");
   let ap_tiendaintervenida = formContext.getAttribute("ap_tiendaintervenida");
   let ap_categoriatienda = formContext.getAttribute("ap_categoriatienda");
   let ap_proyectotienda = formContext.getAttribute("ap_proyectotienda");
@@ -13,13 +14,13 @@ async function setCampos(executionContext) {
 
   if (ap_tiendaintervenida.getValue()) {
     let id = await ap_tiendaintervenida.getValue()[0].id;
-    console.log(ap_tiendaintervenida.getValue());
-    console.log(id);
 
     let result = await Xrm.WebApi.retrieveRecord("ap_tienda", id);
+    
     let id_categoriatienda = await result._ap_categoria_value;
     let id_proyectotienda = await result._ap_proyectotienda_value;
-    
+    let id_regional = await result._ap_regionaltienda_value;
+
     if (id_categoriatienda) {
       resCategoria = await Xrm.WebApi.retrieveRecord(
         "ap_categoriatienda",
@@ -50,6 +51,24 @@ async function setCampos(executionContext) {
         ap_proyectotienda.setValue(setProyectoTienda);
       }
     }
+
+    if (id_regional) {
+      let resRegional = await Xrm.WebApi.retrieveRecord(
+        "ap_regionales",
+        id_regional
+      );
+      
+      if (resRegional) {
+        let regional = [
+          {
+            id: id_regional,
+            name: resRegional.ap_nombre,
+            entityType: "ap_regionales",
+          },
+        ];
+        ap_regional.setValue(regional);
+      }
+    }
   }
 
   if (
@@ -60,5 +79,6 @@ async function setCampos(executionContext) {
   ) {
     ap_categoriatienda.setValue(null);
     ap_proyectotienda.setValue(null);
+    ap_regional.setValue(null);
   }
 }
