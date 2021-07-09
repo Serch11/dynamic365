@@ -120,6 +120,5 @@ function removeSetAccountOnLoadForm(executeContext) {
 
 function addCiudad(executeContext) {
   let formContext = executeContext.getFormContext();
-
   console.log(formContext.getAttribute("ap_ciudad").getValue());
 }

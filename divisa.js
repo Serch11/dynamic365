@@ -78,3 +78,4 @@ function removerFuncion(executeContext) {
   console.log(formContext.ui.process.getDisplayState());
   formContext.getAttribute("transactioncurrencyid").addOnChange(obtenerDivisa);
 }
+
