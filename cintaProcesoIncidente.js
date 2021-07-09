@@ -3,6 +3,7 @@ function cintaProcesoIncidente(executionContext) {
 
   let activeProcess = formContext.data.process.getActiveProcess();
   let objEstado = formContext.data.process.getActiveStage();
+  
   console.log(activeProcess);
   console.log(formContext.data);
   console.log(formContext.data.process);
@@ -40,6 +41,16 @@ function cintaProcesoIncidente(executionContext) {
     actions: [actionCollection],
   });
 
+  console.log(formContext.getAttribute("statuscode"));
+  let estado = formContext.getAttribute("statuscode").getValue();
+
+  if (formContext.getAttribute("statuscode").getValue()) {
+    console.log(estado);
+    //formContext.getAttribute('ap_iniciorealdeatencion').setRequiredLevel('required');
+  }
+
+
+ 
   /*var alertStrings = {
     confirmButtonLabel: "Yes",
     text: "This is an alert.",
