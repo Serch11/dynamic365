@@ -3,16 +3,17 @@ async function ObtenerPlataforma(executionContext) {
   let productid = formContext.getAttribute("productid");
   let ap_plataforma = formContext.getAttribute("ap_plataforma");
 
-  console.log(productid.getValue());
+  //console.log(productid.getValue());
   if (productid.getValue()) {
-    console.log(productid.getValue());
+    //console.log(productid.getValue());
     let id = productid.getValue()[0].id;
     let entidad = productid.getValue()[0].entityType;
 
     let result = await consultaPlataforma(id, entidad);
 
     if (result.ap_Plataforma) {
-      let data = [
+      let data =
+       [
         {
           id: result.ap_Plataforma.ap_plataformaid,
           name: result.ap_Plataforma.ap_plataforma,
@@ -23,7 +24,7 @@ async function ObtenerPlataforma(executionContext) {
     }
   }
 
-  console.log(executionContext.getDepth());
+  //console.log(executionContext.getDepth());
   if (
     !productid.getValue() &&
     (executionContext.getDepth() === 0 ||
