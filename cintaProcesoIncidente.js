@@ -33,7 +33,7 @@ function cintaProcesoIncidente(executionContext) {
     actions: null,
   };
 
-  actionCollection.actions = [function () {}];
+  actionCollection.actions = [function () { }];
   formContext.getControl("ap_valordelestado").addNotification({
     messages: ["Notification title"],
     notificationLevel: "RECOMMENDATION",
