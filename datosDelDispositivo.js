@@ -11,11 +11,17 @@ async function datosDelDispositivo(executionContext) {
 
   if (ap_serialfisico.getValue()) {
     console.log(ap_serialfisico.getValue());
-    let options = "?$select=ap_activofijo,ap_serialcliente,";
+    //let options = "?$select=ap_activofijo,ap_serialcliente,";
+    let options =
+      "msdyn_customerassets?$select=_msdyn_product_value,_msdyn_parentasset_value,_msdyn_masterasset_value,msdyn_customerassetid,_ap_tipodedispositivo_value,ap_serialfisico,ap_serialdefabricante,ap_serialcliente,_ap_modelo_value,statecode,ap_activofijo&$filter=(contains(ap_serialfisico, '122'))&$orderby=_msdyn_product_value desc";
     let result = await Xrm.WebApi.retrieveMultipleRecords(
-      "msdyn_customerasset"
+      "msdyn_customerasset",options
     );
- 
+
     console.log(result);
   }
 }
+
+/*
+msdyn_customerassets?$select=_msdyn_product_value,_msdyn_parentasset_value,_msdyn_masterasset_value,msdyn_customerassetid,_ap_tipodedispositivo_value,ap_serialfisico,ap_serialdefabricante,ap_serialcliente,_ap_modelo_value,statecode,ap_activofijo&$filter=(contains(ap_serialfisico, '%25123%25'))&$orderby=_msdyn_product_value desc
+*/
