@@ -22,7 +22,6 @@ Campos para mostrar  en CAC
  Rollout equipos = 778.210.016
  Plan Proactivo = 778.210.017
  Soporte Incluido = 778.210.018
-
 */
 
 /**
@@ -52,6 +51,7 @@ function getForm(executeContext) {
   let ap_procedimientodelcaso = formContext.getAttribute(
     "ap_procedimientodelcaso"
   );
+  
 
   var FORM_NAME = formContext.ui.formSelector.getCurrentItem()._label;
   //alert(FORM_NAME);
@@ -82,6 +82,7 @@ function getForm(executeContext) {
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210005);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210006);
   }
+  
 }
 
 function viewData(executionContext) {
