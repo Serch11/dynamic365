@@ -13,9 +13,10 @@ async function datosDelDispositivo(executionContext) {
     console.log(ap_serialfisico.getValue());
     //let options = "?$select=ap_activofijo,ap_serialcliente,";
     let options =
-      "msdyn_customerassets?$select=_msdyn_product_value,_msdyn_parentasset_value,_msdyn_masterasset_value,msdyn_customerassetid,_ap_tipodedispositivo_value,ap_serialfisico,ap_serialdefabricante,ap_serialcliente,_ap_modelo_value,statecode,ap_activofijo&$filter=(contains(ap_serialfisico, '122'))&$orderby=_msdyn_product_value desc";
+      "?$select=_msdyn_product_value,_msdyn_parentasset_value,_msdyn_masterasset_value,msdyn_customerassetid,_ap_tipodedispositivo_value,ap_serialfisico,ap_serialdefabricante,ap_serialcliente,_ap_modelo_value,statecode,ap_activofijo&$filter=(contains(ap_serialfisico, '122'))&$orderby=_msdyn_product_value desc";
     let result = await Xrm.WebApi.retrieveMultipleRecords(
-      "msdyn_customerasset",options
+      "msdyn_customerasset",
+      options
     );
 
     console.log(result);
