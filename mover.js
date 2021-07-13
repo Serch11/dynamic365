@@ -27,7 +27,7 @@ function Move(){
 	// Condicionamos el estado
 	if (estadotxt === "Hold On"){
 		//Según me informaron en el foro, se usa esta: Xrm.Page.data.process.setActiveStage(stageId, callbackFunction);
-	 Xrm.Page.data.process.setActiveStage("757da4d7-bc58-c063-2ede-1291171cbc6d", function ())}
+	 Xrm.Page.data.process.setActiveStage("757da4d7-bc58-c063-2ede-1291171cbc6d")}
 		//-----------------------------------------------------------------------------
 	
 	// Condicionemos el proceso	 para fase 1-5
@@ -70,7 +70,7 @@ function Move(){
 	if (moveToNext) {
 	    //Move to the next stage
 	    Xrm.Page.data.process.moveNext();
-	}	
+	}	 
 	}
 	if (StageName === "Etapa 4- Resolución De Aprensiones"){
 		console.log(idstages);
