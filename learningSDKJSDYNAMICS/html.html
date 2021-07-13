@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="crcaf_HelperGlobal" type="text/javascript"></script>
+    <script>
+      function buttonClick() {
+        var accountName = parent.Xrm.Page.getAttribute("firstname").getValue();
+        console.log(accountName);
+        document.getElementById("text").innerHTML = accountName;
+        Helper.DoSomeThing();
+      }
+    </script>
+  </head>
+
+  <body onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word">
+    <input
+      type="button"
+      value="MY  Button"
+      id="miButton"
+      onclick="buttonClick()"
+    />
+    <p id="text"></p>
+  </body>
+</html>
