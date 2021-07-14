@@ -13,10 +13,12 @@ async function setCampos(executionContext) {
   let resProyecto;
 
   if (ap_tiendaintervenida.getValue()) {
+    formContext.getControl("ap_regional").setDisabled(true);
+
     let id = await ap_tiendaintervenida.getValue()[0].id;
 
     let result = await Xrm.WebApi.retrieveRecord("ap_tienda", id);
-    
+
     let id_categoriatienda = await result._ap_categoria_value;
     let id_proyectotienda = await result._ap_proyectotienda_value;
     let id_regional = await result._ap_regionaltienda_value;
@@ -57,7 +59,7 @@ async function setCampos(executionContext) {
         "ap_regionales",
         id_regional
       );
-      
+
       if (resRegional) {
         let regional = [
           {
@@ -77,6 +79,7 @@ async function setCampos(executionContext) {
       executionContext.getDepth() === 2 ||
       executionContext.getDepth() === 0)
   ) {
+    formContext.getControl("ap_regional").setDisabled(false);
     ap_categoriatienda.setValue(null);
     ap_proyectotienda.setValue(null);
     ap_regional.setValue(null);

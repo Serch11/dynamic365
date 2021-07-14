@@ -14,6 +14,19 @@ function borrar(executeContext) {
 
   console.log(ap_plataforma.getValue());
   console.log(executeContext.getDepth());
+<<<<<<< HEAD
+  if (
+    executeContext.getDepth() === 1 ||
+    executeContext.getDepth() === 2 ||
+    executeContext.getDepth() === 3
+  ) {
+    ap_tipodeservicio_plataforma.setValue(null);
+    ap_categoraingeniera.setValue(null);
+  }
+  if (!ap_plataforma.getValue()) {
+    ap_tipodeservicio_plataforma.setValue(null);
+    ap_categoraingeniera.setValue(null);
+=======
 
   if (
     !ap_plataforma.getValue() &&
@@ -22,5 +35,6 @@ function borrar(executeContext) {
       executeContext.getDepth() === 3)
   ) {
     ap_tipoactividadporplataforma.setValue(null);
+>>>>>>> 5be0d57456c4ecdebfa2e7f5818c8c351d1bf4a4
   }
 }

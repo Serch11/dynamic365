@@ -2,6 +2,7 @@ function estadoPedido(executeContext) {
   let formContext = executeContext.getFormContext();
   //formContext.data.process.addOnProcessStatusChange(cambioEstado);
   formContext.data.process.addOnStageChange(cambioEstado);
+
 }
 function cambioEstado(executeContext) {
   let formContext = executeContext.getFormContext();
