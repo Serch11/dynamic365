@@ -1,5 +1,9 @@
 function getTienda(executionContext) {
   let formContext = executionContext.getFormContext();
+
+  if (!formContext.getAttribute("ap_tiendaintervenida").getValue())
+    formContext.getControl("ap_regional").setDisabled(false);
+
   formContext.getAttribute("ap_tiendaintervenida").addOnChange(setCampos);
 }
 

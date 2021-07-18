@@ -10,7 +10,25 @@
       function buttonClick() {
         var accountName = parent.Xrm.Page.getAttribute("firstname").getValue();
         console.log(accountName);
-        document.getElementById("text").innerHTML = accountName;
+
+        var contact = {
+          firstname: "sample contact",
+          lastname: "sample lastname",
+        };
+
+        parent.Xrm.WebApi.createRecord("contact", contact).then(
+          function success(result) {
+            // perform operations on record creation
+            console.log(result);
+            document.getElementById("text").innerHTML = result.id;
+          },
+          function (error) {
+            document.getElementById("text").innerHTML = error.message;
+            console.log(error.message);
+            // handle error conditions
+          }
+        );
+
         Helper.DoSomeThing();
       }
     </script>

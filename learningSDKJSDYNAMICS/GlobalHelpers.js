@@ -10,7 +10,6 @@
  */
 
 
-
 var Helper = window.Helper || {};
 
 (function () {
