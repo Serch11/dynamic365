@@ -70,7 +70,7 @@ function Move(){
 	if (moveToNext) {
 	    //Move to the next stage
 	    Xrm.Page.data.process.moveNext();
-	}	
+	}	 
 	}
 	if (StageName === "Etapa 4- Resolución De Aprensiones"){
 		console.log(idstages);

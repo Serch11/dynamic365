@@ -51,7 +51,6 @@ function getForm(executeContext) {
   let ap_procedimientodelcaso = formContext.getAttribute(
     "ap_procedimientodelcaso"
   );
-  
 
   var FORM_NAME = formContext.ui.formSelector.getCurrentItem()._label;
   //alert(FORM_NAME);
@@ -65,11 +64,15 @@ function getForm(executeContext) {
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210016);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210017);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210018);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210019);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210020);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210008);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210010);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210012);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210014);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210015);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210021);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210022);
   }
 
   if (FORM_NAME === "Caso SINCO") {
@@ -81,8 +84,34 @@ function getForm(executeContext) {
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210004);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210005);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210006);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210009);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210011);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210019);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210020);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210021);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210022);
   }
-  
+
+  if (FORM_NAME === "Caso CAS") {
+    formContext.getControl("ap_procedimientodelcaso").removeOption(1);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(2);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(3);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(4);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210001);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210002);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210004);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210005);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210006);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210008);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210009);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210010);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210011);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210016);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210017);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210018);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210014);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210015);
+  }
 }
 
 function viewData(executionContext) {
@@ -93,9 +122,3 @@ function viewData(executionContext) {
 
   console.log(ap_procedimientodelcaso.getValue());
 }
-
-
-
-
-
-
