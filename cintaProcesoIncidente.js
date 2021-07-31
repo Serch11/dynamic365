@@ -1,7 +1,7 @@
 function cintaProcesoIncidente(executionContext) {
+  
+  
   let formContext = executionContext.getFormContext();
-
-  //
   let activeProcess = formContext.data.process.getActiveProcess();
   let objEstado = formContext.data.process.getActiveStage();
 

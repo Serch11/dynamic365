@@ -102,6 +102,7 @@ msdyn_customerassets?$select=_msdyn_product_value,_msdyn_parentasset_value,_msdy
 */
 const consultarApi = async (entidad, id) => {
   try {
+    
     let result = await Xrm.WebApi.retrieveRecord(entidad, id);
 
     if (entidad === "ap_fabricante") {

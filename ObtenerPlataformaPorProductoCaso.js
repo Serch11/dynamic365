@@ -31,8 +31,7 @@ async function ObtenerPlataforma(executionContext) {
     !productid.getValue() &&
     (executionContext.getDepth() === 0 ||
       executionContext.getDepth() === 1 ||
-      executionContext.getDepth() === 2 ||
-      executionContext.getDepth() === 3)
+      executionContext.getDepth() === 2)
   ) {
     ap_plataforma.setValue(null);
   }
