@@ -107,7 +107,7 @@ async function listentChange(executionContext) {
   }
 
   if (!customerid.getValue()) {
-    ap_informadopor.setValue(null);
-    primarycontactid.setValue(null);
+    if (ap_informadopor) ap_informadopor.setValue(null);
+    if (primarycontactid) primarycontactid.setValue(null);
   }
 }

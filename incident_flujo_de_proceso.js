@@ -1,4 +1,4 @@
-function getChangeStage(executionContext) {
+async function getChangeStage(executionContext) {
 
 
     //declaracion de varibales
@@ -8,40 +8,103 @@ function getChangeStage(executionContext) {
     let FORM_REQUERIMIENTO = "Caso Requerimiento Interno";
     let formContext = executionContext.getFormContext();
     let FORM_NAME = formContext.ui.formSelector.getCurrentItem()._label;
-    let BPF_ACTIVA = formContext.data.process.getActiveProcess();
+    var BPF_ACTIVA = formContext.data.process.getActiveProcess();
 
-    if (BPF_ACTIVA) var BPF_NAME = BPF_ACTIVA.getName(); var BPF_ID = BPF_ACTIVA.getId();
+    let ID_PROCES_CASO = "627e1aca-0b86-40d7-9755-1a3060ca56c9";
+    let ID_PROCES_CASO_REQUERIMIENTO = "0d7e7b55-5654-49fd-bf66-78fb5d17e4ab";
 
-    if (BPF_NAME === 'Caso cinta de proceso') {
+
+    //formContext.data.process.setActiveProcess(ID_PROCES_CASO);
 
 
-        console.log(BPF_ACTIVA.getName());
-        console.log(FORM_NAME);
-        console.log(BPF_ID);
-        if (FORM_NAME === FORM_CAC) {
+    //if (BPF_ACTIVA) { var BPF_NAME = BPF_ACTIVA.getName(); var BPF_ID = BPF_ACTIVA.getId(); console.log(BPF_NAME); }
 
-            console.log("entro CAC")
-            formContext.getControl("header_process_ap_regional").setVisible(false);
-            formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+
+    //if (BPF_NAME === 'Caso cinta de proceso') {
+
+
+    //console.log(BPF_ACTIVA.getName());
+    console.log(FORM_NAME);
+    //console.log(BPF_ID);
+    if (FORM_NAME === FORM_CAC) {
+
+        console.log("entro CAC")
+
+        formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAC);
+
+        function CALLBACK_CAC(result) {
+            console.log(result);
+            if (result === "success") {
+                formContext.getControl("header_process_ap_regional").setVisible(false);
+                formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+            }
+
         }
-        if (FORM_NAME === FORM_SINCO) {
-            console.log("entro SINCO")
-            formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
-        }
-        if (FORM_NAME === FORM_CAS) {
-            console.log("entro CAS")
-            formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
-        }
 
-        if (FORM_NAME === FORM_REQUERIMIENTO) {
-            console.log("entro INTERNO")
-            formContext.getControl("header_process_ap_requerimientointerno").setVisible(true);
-            formContext.getControl('header_process_ap_requerimientointerno').setDisabled(true);
-            formContext.getControl("ap_requerimientointerno").getAttribute().setRequiredLevel("required");
-        }
 
-        formContext.data.process.addOnStageChange(cambioStage);
+
+
     }
+    if (FORM_NAME === FORM_SINCO) {
+        console.log("entro SINCO")
+
+        formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_SINCO);
+
+        function CALLBACK_SINCO(result) {
+            console.log(result);
+            if (result === "success") {
+                formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+            }
+
+        }
+
+
+    }
+    if (FORM_NAME === FORM_CAS) {
+        console.log("entro CAS")
+
+        formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAS);
+        function CALLBACK_CAS(result) {
+            console.log(result);
+            if (result === "success") {
+                formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+            }
+
+        }
+
+
+    }
+
+    if (FORM_NAME === FORM_REQUERIMIENTO) {
+        console.log("entro INTERNO")
+
+
+        formContext.data.process.setActiveProcess(ID_PROCES_CASO_REQUERIMIENTO, CALLBACK_REQINTERNOS);
+        function CALLBACK_REQINTERNOS(result) {
+            if (result === "success") {
+
+                let ActiveProcess = formContext.data.process.getActiveProcess();
+                let NameActiveProcess = ActiveProcess.getName();
+
+
+                if (NameActiveProcess === NAME_BPF_REQ) {
+                    console.log(ActiveProcess);
+                    console.log(NameActiveProcess);
+
+                    formContext.getControl("header_process_ap_requerimientointerno").setVisible(true);
+                    formContext.getControl('header_process_ap_requerimientointerno').setDisabled(true);
+                    formContext.getControl("ap_requerimientointerno").getAttribute().setRequiredLevel("required");
+
+
+
+                }
+            }
+        }
+
+    }
+
+    formContext.data.process.addOnStageChange(cambioStage);
+    //}
 
 }
 
