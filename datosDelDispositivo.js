@@ -37,7 +37,7 @@ async function datosDelDispositivo(executionContext) {
           query.ap_serialcliente ? query.ap_serialcliente : null
         );
 
-        if (query._msdyn_product_value) {
+        if (query._ap_fabricante_value) {
           let resFabricante = await consultarApi(
             "ap_fabricante",
             query._ap_fabricante_value
@@ -102,7 +102,7 @@ msdyn_customerassets?$select=_msdyn_product_value,_msdyn_parentasset_value,_msdy
 */
 const consultarApi = async (entidad, id) => {
   try {
-    
+
     let result = await Xrm.WebApi.retrieveRecord(entidad, id);
 
     if (entidad === "ap_fabricante") {
@@ -112,7 +112,7 @@ const consultarApi = async (entidad, id) => {
             name: result.ap_fabricante,
             id: result.ap_fabricanteid,
             entityType: entidad,
-          },
+          }
         ];
       }
     }

@@ -2,10 +2,30 @@
 
 function loadCargaRequeInternos(executionContext) {
 
-    let formContext = executionContext.getformContext();
+
+
+    let formContext = executionContext.getFormContext();
     let ap_tieneoportunidadasociada = formContext.getAttribute("ap_tieneoportunidadasociada");
     let entitlementid = formContext.getAttribute("entitlementid");
     let ap_oportunidadasociada = formContext.getAttribute("ap_oportunidadasociada");
+    let ap_area = formContext.getAttribute("ap_area");
+    let customerid = formContext.getAttribute("customerid");
+
+    try {
+        let usuario = [
+            {
+                id: "a2af42ea-e434-eb11-a813-000d3a887093",
+                entityType: "account",
+                name: "REDSIS PRUEBAS"
+            }
+        ];
+        customerid.setValue(usuario);
+    } catch (error) {
+        console.log(error);
+    }
+
+
+    ap_area.setRequiredLevel("required");
 
     if (ap_oportunidadasociada.getValue()) {
         formContext.getControl('entitlementid').setDisabled(true);
@@ -35,5 +55,28 @@ function reqInternos(executeContext) {
         entitlementid.setValue(null);
         formContext.getControl('entitlementid').setDisabled(false);
         formContext.getAttribute('ap_oportunidadasociada').setRequiredLevel('none');
+    }
+}
+
+
+
+function cambioApcuentaRequerimiento(executionContext) {
+
+
+
+
+    try {
+
+        let formContext = executionContext.getFormContext();
+        let ap_cuentarequerimientointerno = formContext.getAttribute("ap_cuentarequerimientointerno");
+        let primarycontactid = formContext.getAttribute("primarycontactid");
+
+        
+        if (!ap_cuentarequerimientointerno.getValue()) {
+            primarycontactid.setValue(null);
+        }
+
+    } catch (error) {
+        console.log(error);
     }
 }
