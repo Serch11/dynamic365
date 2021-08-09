@@ -27,7 +27,7 @@ async function getContactAndAccount(executionContext) {
 
     try {
       let result = await Xrm.WebApi.retrieveRecord(entidad, id);
-      console.log(result);
+      //       console.log(result);
 
       let statecode = await result.statecode;
       let statuscode = await result.statuscode;
@@ -52,9 +52,10 @@ async function listentChange(executionContext) {
   let ap_valordelestado = formContext.getAttribute("ap_valordelestado");
   let primarycontactid = formContext.getAttribute("primarycontactid");
   let ap_informadopor = formContext.getAttribute("ap_informadopor");
+  let ap_avaladopor = formContext.getAttribute("ap_avaladopor");
 
   if (customerid.getValue()) {
-    console.log(customerid.getValue());
+    //console.log(customerid.getValue());
 
     let entidad = customerid.getValue()[0].entityType;
     let id = customerid.getValue()[0].id;
@@ -62,10 +63,28 @@ async function listentChange(executionContext) {
 
     try {
       let result = await Xrm.WebApi.retrieveRecord(entidad, id);
-      console.log(result);
+      // console.log(result);
 
       let statecode = await result.statecode;
       let statuscode = await result.statuscode;
+      let idvendedor = await result._ownerid_value;
+
+      if (idvendedor) {
+        let result = await Xrm.WebApi.retrieveRecord("systemuser", idvendedor);
+        if (result) {
+          //  console.log(result);
+
+          //console.log(idvendedor);
+          let vendedor = [
+            {
+              name: result.domainname,
+              id: idvendedor,
+              entityType: "systemuser",
+            },
+          ];
+          ap_avaladopor.setValue(vendedor);
+        }
+      }
 
       if (statecode === 1) ap_valordelestado.setValue(778210001); // inactivo
       if (statuscode === 1) ap_valordelestado.setValue(778210000); // activo
@@ -88,7 +107,7 @@ async function listentChange(executionContext) {
   }
 
   if (!customerid.getValue()) {
-    ap_informadopor.setValue(null);
-    primarycontactid.setValue(null);
+    if (ap_informadopor) ap_informadopor.setValue(null);
+    if (primarycontactid) primarycontactid.setValue(null);
   }
 }

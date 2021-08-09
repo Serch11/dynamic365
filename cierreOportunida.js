@@ -21,7 +21,7 @@ function cierreoportunidad(executionContext) {
                         setUserValue[0].name = UENname;
                         formContext.getAttribute("ap_uen").setValue(setUserValue);
 
-                        
+
 
                         var estado = Xrm.Page.getAttribute("opportunitystatuscode").getValue();
 

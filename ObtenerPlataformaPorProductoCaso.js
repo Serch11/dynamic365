@@ -2,6 +2,9 @@ async function ObtenerPlataforma(executionContext) {
   let formContext = executionContext.getFormContext();
   let productid = formContext.getAttribute("productid");
   let ap_plataforma = formContext.getAttribute("ap_plataforma");
+  let ap_actividadporplataforma = formContext.getAttribute(
+    "ap_actividadporplataforma"
+  );
 
   //console.log(productid.getValue());
   if (productid.getValue()) {
@@ -12,8 +15,7 @@ async function ObtenerPlataforma(executionContext) {
     let result = await consultaPlataforma(id, entidad);
 
     if (result.ap_Plataforma) {
-      let data =
-       [
+      let data = [
         {
           id: result.ap_Plataforma.ap_plataformaid,
           name: result.ap_Plataforma.ap_plataforma,
@@ -29,8 +31,7 @@ async function ObtenerPlataforma(executionContext) {
     !productid.getValue() &&
     (executionContext.getDepth() === 0 ||
       executionContext.getDepth() === 1 ||
-      executionContext.getDepth() === 2 ||
-      executionContext.getDepth() === 3)
+      executionContext.getDepth() === 2)
   ) {
     ap_plataforma.setValue(null);
   }
