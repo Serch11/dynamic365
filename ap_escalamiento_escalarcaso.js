@@ -27,8 +27,10 @@ async function escalarCaso(executionContext) {
       let entidad = ap_caso.getValue()[0].entityType;
       let id = ap_caso.getValue()[0].id;
       var entity = {};
-      var externoID;
-      var casoID;
+      let externoID;
+      let casoID;
+      let equipoAsignadoID;
+      let asignarCasoId;
 
       casoID = ap_caso.getValue()[0].id.slice(1, 37);
       console.log(casoID);
@@ -46,6 +48,17 @@ async function escalarCaso(executionContext) {
       }
 
       if (ap_tipodeescalamiento.getSelectedOption().text === "Interno") {
+        if (ap_equipoasignado.getValue())
+          equipoAsignadoID = ap_equipoasignado.getValue()[0].id.slice(1, 37);
+        if (ap_asignarcaso.getValue())
+          asignarCasoId = ap_asignarcaso.getValue()[0].id.slice(1, 37);
+
+        entity["ap_Equipoasignado@odata.bind"] =
+          "/teams(" + equipoAsignadoID + ")";
+        entity["ap_Asignarcaso@odata.bind"] =
+          "/systemusers(" + asignarCasoId + ")";
+        entity.ap_area = ap_area.getValue();
+        entity.contractservicelevelcode = ap_niveldeservicio.getValue();
       }
     }
 
@@ -69,6 +82,7 @@ async function escalarCaso(executionContext) {
         req.onreadystatechange = null;
         if (this.status === 204) {
           //Success - No Return Data - Do Somethingth
+          console.log("data actualizada");
           console.log(this.responseText);
         } else {
           Xrm.Utility.alertDialog(this.statusText);
