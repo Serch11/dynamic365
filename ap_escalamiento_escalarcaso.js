@@ -27,11 +27,12 @@ async function escalarCaso(executionContext) {
       let entidad = ap_caso.getValue()[0].entityType;
       let id = ap_caso.getValue()[0].id;
       var entity = {};
-      let externoID;
-      let casoID;
-      let equipoAsignadoID;
-      let asignarCasoId;
+      var externoID;
+      var casoID;
+      var equipoAsignadoID;
+      var asignarCasoId;
 
+      
       casoID = ap_caso.getValue()[0].id.slice(1, 37);
       console.log(casoID);
       if (ap_tipodeescalamiento.getValue()) {
@@ -59,6 +60,7 @@ async function escalarCaso(executionContext) {
           "/systemusers(" + asignarCasoId + ")";
         entity.ap_area = ap_area.getValue();
         entity.contractservicelevelcode = ap_niveldeservicio.getValue();
+        entity.ap_seguimientodelcaso = ap_tipodeescalamiento.getValue();
       }
     }
 
@@ -67,7 +69,7 @@ async function escalarCaso(executionContext) {
     var req = new XMLHttpRequest();
     req.open(
       "PATCH",
-      Xrm.Page.context.getClientUrl() +
+      formContext.context.getClientUrl() +
         "/api/data/v9.1/incidents(" +
         casoID +
         ")",
