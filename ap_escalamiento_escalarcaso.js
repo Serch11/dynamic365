@@ -28,32 +28,38 @@ async function escalarCaso(executionContext) {
       let id = ap_caso.getValue()[0].id;
       var entity = {};
       var externoID;
+      var casoID;
 
+      casoID = ap_caso.getValue()[0].id.slice(1, 37);
+      console.log(casoID);
       if (ap_tipodeescalamiento.getValue()) {
         if (ap_tipodeescalamiento.getSelectedOption().text === "Externo") {
-
-          externoID = ap_asignarcasoaexterno.getValue()[0].id.slice(1,37);
+          externoID = ap_asignarcasoaexterno.getValue()[0].id.slice(1, 37);
 
           //entity["ap_seguimientodelcaso"] = ap_numerocasofabricante.getValue();
-          entity["ap_AsignaciondecasoafabricanteExterno@odata.bind"] = "/accounts(" + externoID + ")";
-          entity.ap_numerocasodelfabricanteexterno = ap_numerocasofabricante.getValue();
-
-  
-        };
+          entity["ap_AsignaciondecasoafabricanteExterno@odata.bind"] =
+            "/accounts(" + externoID + ")";
+          entity.ap_seguimientodelcaso = ap_tipodeescalamiento.getValue();
+          entity.ap_numerocasodelfabricanteexterno =
+            ap_numerocasofabricante.getValue();
+        }
       }
 
       if (ap_tipodeescalamiento.getSelectedOption().text === "Interno") {
-
-      };
+      }
     }
 
-    console.log(data);
-
-
-
+    console.log(entity);
 
     var req = new XMLHttpRequest();
-    req.open("PATCH", Xrm.Page.context.getClientUrl() + '/api/data/v9.1/incidents(" ' + ap_caso.getValue()[0].id + ' ")', true);
+    req.open(
+      "PATCH",
+      Xrm.Page.context.getClientUrl() +
+        "/api/data/v9.1/incidents(" +
+        casoID +
+        ")",
+      true
+    );
     req.setRequestHeader("OData-MaxVersion", "4.0");
     req.setRequestHeader("OData-Version", "4.0");
     req.setRequestHeader("Accept", "application/json");
@@ -62,15 +68,14 @@ async function escalarCaso(executionContext) {
       if (this.readyState === 4) {
         req.onreadystatechange = null;
         if (this.status === 204) {
-          //Success - No Return Data - Do Something
+          //Success - No Return Data - Do Somethingth
+          console.log(this.responseText);
         } else {
           Xrm.Utility.alertDialog(this.statusText);
         }
       }
     };
     req.send(JSON.stringify(entity));
-
-
   } catch (error) {
     console.log(error);
   }
