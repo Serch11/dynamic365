@@ -32,7 +32,6 @@ async function escalarCaso(executionContext) {
       var equipoAsignadoID;
       var asignarCasoId;
 
-      
       casoID = ap_caso.getValue()[0].id.slice(1, 37);
       console.log(casoID);
       if (ap_tipodeescalamiento.getValue()) {
@@ -45,6 +44,7 @@ async function escalarCaso(executionContext) {
           entity.ap_seguimientodelcaso = ap_tipodeescalamiento.getValue();
           entity.ap_numerocasodelfabricanteexterno =
             ap_numerocasofabricante.getValue();
+          entity.ap_necesidaddeescalaraterceros = true;
         }
       }
 
