@@ -26,6 +26,8 @@ async function getChangeStage(executionContext) {
     //console.log(BPF_ACTIVA.getName());
     console.log(FORM_NAME);
     //console.log(BPF_ID);
+
+    //FORMULARIO CAC
     if (FORM_NAME === FORM_CAC) {
 
         console.log("entro CAC")
@@ -37,6 +39,7 @@ async function getChangeStage(executionContext) {
             if (result === "success") {
                 formContext.getControl("header_process_ap_regional").setVisible(false);
                 formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+                formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
             }
 
         }
@@ -45,21 +48,27 @@ async function getChangeStage(executionContext) {
 
 
     }
+    //FORMULARIO SINCO 
     if (FORM_NAME === FORM_SINCO) {
         console.log("entro SINCO")
 
-        formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_SINCO);
+        try {
+            formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_SINCO);
 
-        function CALLBACK_SINCO(result) {
-            console.log(result);
-            if (result === "success") {
-                formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+            function CALLBACK_SINCO(result) {
+                console.log(result);
+                if (result === "success") {
+                    formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+                    formContext.getControl("ap_tiendaintervenida").getAttribute().setRequiredLevel('required');
+                    formContext.getControl("header_process_ap_regional").setVisible(false);
+                }
             }
-
+        } catch (error) {
+            console.log(error);
+            console.log("Error script incidet_flujo_de_proceso_js SINCO");
         }
-
-
     }
+    //FORMULARIO CAS 
     if (FORM_NAME === FORM_CAS) {
         console.log("entro CAS")
 
@@ -68,13 +77,14 @@ async function getChangeStage(executionContext) {
             console.log(result);
             if (result === "success") {
                 formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+                formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
+                formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
             }
 
         }
-
-
     }
 
+    //FORMULARIO REQUERIMIENTOS INTERNOS
     if (FORM_NAME === FORM_REQUERIMIENTO) {
         console.log("entro INTERNO")
 
