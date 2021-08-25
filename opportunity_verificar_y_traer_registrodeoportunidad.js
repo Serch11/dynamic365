@@ -37,9 +37,11 @@ function verificarOportunidad(executionContext) {
                                             if (results.value.length > 0) {
                                                 results.value.forEach((value, index) => {
 
+
                                                     let ap_codigodeasignaciondelprospectoid = results.value[index].ap_codigodeasignaciondelprospectoid;
 
                                                     if (ap_codigodeasignaciondelprospectoid) {
+                                                        //actualizamos el codigo de asignacion de prospecto a la oportunidad creada
                                                         let entity = {};
                                                         entity["ap_IDOportunidad@odata.bind"] = "/opportunities(" + idOportunidad + ")";
 

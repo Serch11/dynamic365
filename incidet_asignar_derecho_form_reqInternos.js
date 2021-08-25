@@ -10,16 +10,30 @@ function loadCargaRequeInternos(executionContext) {
     let ap_oportunidadasociada = formContext.getAttribute("ap_oportunidadasociada");
     let ap_area = formContext.getAttribute("ap_area");
     let customerid = formContext.getAttribute("customerid");
+    let primarycontactid = formContext.getAttribute("primarycontactid");
+
 
     try {
-        let usuario = [
-            {
-                id: "a2af42ea-e434-eb11-a813-000d3a887093",
-                entityType: "account",
-                name: "REDSIS PRUEBAS"
-            }
-        ];
-        customerid.setValue(usuario);
+
+        if (formContext.ui.getFormType() === 1) {
+
+            let usuario = [
+                {
+                    id: "a2af42ea-e434-eb11-a813-000d3a887093",
+                    entityType: "account",
+                    name: "REDSIS PRUEBAS"
+                }
+            ];
+            let contacto = [
+                {
+                    entityType: "contact",
+                    id: "{2B88E66B-AEF4-EB11-94EF-0022483702DF}",
+                    name: "CONTACTO REDIS PRUEBAS PRUEBA",
+                }
+            ];
+            customerid.setValue(usuario);
+            primarycontactid.setValue(contacto);
+        }
     } catch (error) {
         console.log(error);
     }
@@ -71,7 +85,7 @@ function cambioApcuentaRequerimiento(executionContext) {
         let ap_cuentarequerimientointerno = formContext.getAttribute("ap_cuentarequerimientointerno");
         let primarycontactid = formContext.getAttribute("primarycontactid");
 
-        
+
         if (!ap_cuentarequerimientointerno.getValue()) {
             primarycontactid.setValue(null);
         }
