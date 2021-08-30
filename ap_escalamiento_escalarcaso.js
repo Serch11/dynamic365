@@ -2,7 +2,6 @@ async function escalarCaso(executionContext) {
   // tipo de escalamiento
   // externo === 778210000
   // interno === 778210001
-
   try {
     let formContext = executionContext.getFormContext();
 

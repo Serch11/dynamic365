@@ -38,19 +38,15 @@ function loadCargaRequeInternos(executionContext) {
         console.log(error);
     }
 
-
     ap_area.setRequiredLevel("required");
-
     if (ap_oportunidadasociada.getValue()) {
         formContext.getControl('entitlementid').setDisabled(true);
     }
-
 }
 
 
 
 function reqInternos(executeContext) {
-
     let formContext = executeContext.getFormContext();
     let ap_tieneoportunidadasociada = formContext.getAttribute("ap_tieneoportunidadasociada");
     let entitlementid = formContext.getAttribute("entitlementid");
@@ -76,20 +72,13 @@ function reqInternos(executeContext) {
 
 function cambioApcuentaRequerimiento(executionContext) {
 
-
-
-
     try {
-
         let formContext = executionContext.getFormContext();
         let ap_cuentarequerimientointerno = formContext.getAttribute("ap_cuentarequerimientointerno");
         let primarycontactid = formContext.getAttribute("primarycontactid");
-
-
         if (!ap_cuentarequerimientointerno.getValue()) {
             primarycontactid.setValue(null);
         }
-
     } catch (error) {
         console.log(error);
     }
