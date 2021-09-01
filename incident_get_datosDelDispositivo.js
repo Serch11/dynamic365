@@ -12,6 +12,15 @@ async function datosDelDispositivo(executionContext) {
 
   //condicionales
   if (ap_dispositivo.getValue()) {
+
+    ap_serialfisico.setValue(null);
+    ap_serialcliente.setValue(null);
+    ap_activofijo.setValue(null);
+    ap_fabricante.setValue(null);
+    ap_modelo.setValue(null);
+
+
+    
     //let options = "?$select=ap_activofijo,ap_serialcliente,";
     let idDispositivo = ap_dispositivo.getValue()[0].id;
     let options =
@@ -43,7 +52,7 @@ async function datosDelDispositivo(executionContext) {
             query._ap_fabricante_value
           );
 
-          if (resFabricante) ap_fabricante.setValue(resFabricante);
+          if (resFabricante) ap_fabricante.setValue(resFabricante ? resFabricante : null);
         }
 
         if (query._ap_modelo_value) {
@@ -51,7 +60,6 @@ async function datosDelDispositivo(executionContext) {
             "ap_modelo",
             query._ap_modelo_value
           );
-
           if (resModelo) ap_modelo.setValue(resModelo);
         }
       }
@@ -102,7 +110,8 @@ msdyn_customerassets?$select=_msdyn_product_value,_msdyn_parentasset_value,_msdy
 */
 const consultarApi = async (entidad, id) => {
   try {
-
+    //console.log("hizo cambio");
+    //console.log(entidad, id);
     let result = await Xrm.WebApi.retrieveRecord(entidad, id);
 
     if (entidad === "ap_fabricante") {
