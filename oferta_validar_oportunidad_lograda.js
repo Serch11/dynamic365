@@ -29,7 +29,7 @@ async function validarOportunidad(executionContext) {
                 let resultOportunidad = await consultarDatos("opportunity", idOportunidad);
                 let estadoOportunidad = resultOportunidad.statuscode;
                 if (estadoOportunidad != 3) {
-                    formContext.ui.setFormNotification('NECESITA COMPLETAR LA OPORTUNIDAD COMO LOGRADA PARA PODER GENERAR EL PEDIDO', 'ERROR', '1');
+                    formContext.ui.setFormNotification('NECESITA COMPLETAR Y CERRAR COMO LOGRADA LA OPORTUNIDAD PARA PODER GENERAR EL PEDIDO', 'ERROR', '1');
                 }
             }
 
