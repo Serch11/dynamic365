@@ -21,6 +21,7 @@ async function validarOportunidad(executionContext) {
 
         let idOferta = formContext.data.entity.getId();
         let resultOferta = await consultarDatos("quote", idOferta);
+        let statuscode = formContext.getAttribute("statuscode");
         if (resultOferta) {
 
             let idOportunidad = resultOferta._ap_oportunidadid_value;
@@ -28,7 +29,7 @@ async function validarOportunidad(executionContext) {
             if (idOportunidad) {
                 let resultOportunidad = await consultarDatos("opportunity", idOportunidad);
                 let estadoOportunidad = resultOportunidad.statuscode;
-                if (estadoOportunidad != 3) {
+                if (estadoOportunidad != 3 && statuscode.getValue() === 2) {
                     formContext.ui.setFormNotification('NECESITA COMPLETAR Y CERRAR COMO LOGRADA LA OPORTUNIDAD PARA PODER GENERAR EL PEDIDO', 'ERROR', '1');
                 }
             }
