@@ -12,7 +12,7 @@ function quemarValorSincoEnPlataforma(exeuctionContext) {
     let ap_plataforma = formContext.getAttribute("ap_plataforma");
 
     let FORM_SINCO = "Caso SINCO";
-
+    let FORM_CAS = "Caso CAS"
     let SINCO = [
       {
         entityType: "ap_plataforma",
@@ -22,7 +22,7 @@ function quemarValorSincoEnPlataforma(exeuctionContext) {
     ];
     console.log(formContext.ui.formSelector.getCurrentItem().getLabel());
     if (
-      FORM_SINCO === formContext.ui.formSelector.getCurrentItem().getLabel()
+      FORM_SINCO === formContext.ui.formSelector.getCurrentItem().getLabel() || FORM_CAS === formContext.ui.formSelector.getCurrentItem().getLabel()
     ) {
       if (formContext.ui.getFormType() === 1) {
         ap_plataforma.setValue(SINCO);
