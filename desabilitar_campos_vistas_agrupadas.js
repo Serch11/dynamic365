@@ -9,10 +9,7 @@ function onRecordSelect(exeContext) {
     });
     //console.log(data);
     
-    
     var disableFields = ["ap_exhibitpwrst", "ownerid", "parentaccountid", "estimatedvalue"];
-
-
     lockFields(exeContext, data);
 }
 

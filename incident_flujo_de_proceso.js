@@ -175,7 +175,7 @@ function cambioStage(executionContext) {
     // Cumplido 2
     // Asignado 1
     try {
-        
+
         let formContext = executionContext.getFormContext();
         let faseActiva = formContext.data.process.getActiveStage();
         let razon_para_el_estado = formContext.getAttribute("statuscode");

@@ -1,4 +1,13 @@
+function loadFunctionGetSubGrid(executionContext) {
+
+  getSubGrid(executionContext);
+  mensajeOportunidad(executionContext);
+}
+
+
+
 function getSubGrid(executeContext) {
+
   let formContext = executeContext.getFormContext();
   let cintaName = "Proceso de venta de la oportunidad";
   let cintaProspecto = "Proceso de venta de cliente potencial a oportunidad";

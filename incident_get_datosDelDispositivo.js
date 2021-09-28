@@ -20,7 +20,7 @@ async function datosDelDispositivo(executionContext) {
     ap_modelo.setValue(null);
 
 
-    
+
     //let options = "?$select=ap_activofijo,ap_serialcliente,";
     let idDispositivo = ap_dispositivo.getValue()[0].id;
     let options =

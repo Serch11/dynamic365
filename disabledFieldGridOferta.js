@@ -16,9 +16,9 @@ function lockFields(exeContext, disableFields) {
     var _formContext = exeContext.getFormContext();
     var currentEntity = _formContext.data.entity;
     currentEntity.attributes.forEach(function (attribute, i) {
-        console.log(attribute.getName());
+        //console.log(attribute.getName());
         if (disableFields.indexOf(attribute.getName()) > -1) {
-            console.log(attribute.controls.get(0));
+            //console.log(attribute.controls.get(0));
             var attributeToDisable = attribute.controls.get(0);
             attributeToDisable.setDisabled(true);
         }
@@ -36,3 +36,6 @@ function prueba(executionContext) {
         }
     }
 }
+
+
+// Xrm.Page.data.entity.attributes.forEach(  e => { console.log(e.controls.get(0).setDisabled(true)) } )
