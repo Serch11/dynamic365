@@ -33,6 +33,8 @@
         var reader = new FileReader();
         var productid;
 
+        document.querySelector("body").style.display = "none"
+
         reader.readAsArrayBuffer(e.target.files[0]);
         reader.onload = function (e) {
           var data = new Uint8Array(e.target.result);
@@ -168,6 +170,7 @@
       //         // handle error conditions
       //     }
       // );
+      
     </script>
   </body>
 </html>

@@ -28,43 +28,57 @@ async function changeApMoneda(executionContext) {
 
   try {
     if (transactioncurrencyid.getValue()) {
-      if (transactioncurrencyid.getValue()[0].name === "Peso colombiano") {
+      if (
+        transactioncurrencyid.getValue()[0].name === "Peso colombiano" ||
+        transactioncurrencyid.getValue()[0].name === "Peso Colombiano"
+      ) {
+        // Xrm.Page.getControl("header_estimatedvalue").getAttribute().setValue(null);
         header_ap_ingestdolarControl.setVisible(false);
-        header_estimatedvalueControl.setDisable(false);
-
+        header_estimatedvalueControl.setDisabled(false);
         formContext.getAttribute("estimatedvalue").setRequiredLevel("required");
         formContext.getAttribute("ap_ingestdolar").setRequiredLevel("none");
-        exchangerateControl.setVisible(true);
+        exchangerateControl.setVisible(false);
         //ap_trmControl.setVisible(false);
 
         if (
+          ((transactioncurrencyid.getValue()[0].name === "Peso colombiano" ||
+            transactioncurrencyid.getValue()[0].name === "Peso Colombiano") &&
+            executionContext.getDepth() === 0) ||
           executionContext.getDepth() === 1 ||
-          executionContext.getDepth() === 2 ||
-          executionContext.getDepth() === 0
+          executionContext.getDepth() === 2
         ) {
+          console.log("entro a esmitated PESO COLOMBIANOS");
+          console.log(executionContext.getDepth());
           formContext.getAttribute("ap_ingestdolar").setValue(null);
-          formContext.getAttribute("estimatedvalue").setValue(null);
+          exchangerate.setValue(1);
           //ap_trm.setValue(1);
         }
       }
 
       if (transactioncurrencyid.getValue()[0].name === "US Dollar") {
+        console.log("entro dolar");
         //ap_trmControl.setVisible(true);
         //ap_trmControl.setDisabled(true);
+        //Xrm.Page.getControl("header_estimatedvalue").getAttribute().setValue(null);
         header_ap_ingestdolarControl.setVisible(true);
         header_estimatedvalueControl.setDisabled(true);
+        exchangerateControl.setVisible(true);
         //formContext.getAttribute("ap_ingestdolar").setValue(null);
 
         formContext.getAttribute("ap_ingestdolar").setRequiredLevel("required");
         formContext.getAttribute("estimatedvalue").setRequiredLevel("none");
 
         if (
+          ((transactioncurrencyid.getValue()[0].name === "Peso colombiano" ||
+            transactioncurrencyid.getValue()[0].name === "Peso Colombiano") &&
+            executionContext.getDepth() === 0) ||
           executionContext.getDepth() === 1 ||
-          executionContext.getDepth() === 2 ||
-          executionContext.getDepth() === 0
+          executionContext.getDepth() === 2
         ) {
-          formContext.getAttribute("estimatedvalue").setValue(null);
+          console.log("entro a esmitated US");
+
           let result = await consultaTRM();
+          console.log(result);
           if (result) {
             let valor = result.entities[0].exchangerate;
             console.log(valor);

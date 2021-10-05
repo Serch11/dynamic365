@@ -17,8 +17,7 @@ function setPanel(executeContext) {
       setTimeout(() => {
         if (
           !identifycompetitors.getValue() ||
-          !identifypursuitteam.getValue() ||
-          !ap_budgetandplanning.getValue()
+          !identifypursuitteam.getValue()
         ) {
           console.log("false");
           tabObj.setVisible(false);
@@ -27,16 +26,7 @@ function setPanel(executeContext) {
           tabObj.setVisible(true);
         }
 
-        console.log("entrando set panel");
-        console.log(tabObj);
-        console.log(identifycompetitors.getValue());
-        console.log(identifypursuitteam.getValue());
-        console.log(ap_budgetandplanning.getValue());
-        console.log(
-          !identifycompetitors.getValue() ||
-            !identifypursuitteam.getValue() ||
-            !ap_budgetandplanning.getValue()
-        );
+
       }, 5000);
 
       identifycompetitors.addOnChange(validar);
@@ -70,8 +60,7 @@ function validar(executeContext) {
 
       if (
         !identifycompetitors.getValue() ||
-        !identifypursuitteam.getValue() ||
-        !ap_budgetandplanning.getValue()
+        !identifypursuitteam.getValue()
       ) {
         console.log("false");
         tabObj.setVisible(false);
