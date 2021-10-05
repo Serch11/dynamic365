@@ -43,7 +43,7 @@ async function getChangeStage(executionContext) {
             }
 
         }
-  ///
+        ///
     }
     //FORMULARIO SINCO 
     if (FORM_NAME === FORM_SINCO) {

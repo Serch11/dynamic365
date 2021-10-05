@@ -44,9 +44,17 @@ Campos para mostrar  en CAC
  Bolsa de Horas = 778.210.015
  */
 
+
+//formulario de sinco ocultar campos
+//plan proactivo             778.210.017
+//cortesia comercial        778.210.003
+//servicio imputable        778.210.007
+// dispositivo dado de baja     778.210.010
+//cambio de tienda              778.210.008
+//garantia                    778.210.012
+
 function getForm(executeContext) {
   let formContext = executeContext.getFormContext();
-  console.clear();
   console.log(formContext.ui.formSelector.getCurrentItem());
   let ap_procedimientodelcaso = formContext.getAttribute(
     "ap_procedimientodelcaso"
@@ -76,6 +84,16 @@ function getForm(executeContext) {
   }
 
   if (FORM_NAME === "Caso SINCO") {
+
+    //formulario de sinco ocultar campos
+    //plan proactivo             778.210.017
+    //cortesia comercial        778.210.003
+    //servicio imputable        778.210.007
+    // dispositivo dado de baja     778.210.010
+    //cambio de tienda              778.210.008
+    //garantia                    778.210.012
+
+
     formContext.getControl("ap_procedimientodelcaso").removeOption(1);
     formContext.getControl("ap_procedimientodelcaso").removeOption(2);
     formContext.getControl("ap_procedimientodelcaso").removeOption(3);
@@ -90,6 +108,12 @@ function getForm(executeContext) {
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210020);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210021);
     formContext.getControl("ap_procedimientodelcaso").removeOption(778210022);
+    formContext.getControl('ap_procedimientodelcaso').removeOption(778210017);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210003);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210007);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210010);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210008);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210012);
   }
 
   if (FORM_NAME === "Caso CAS") {

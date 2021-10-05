@@ -8,6 +8,7 @@ function onRecordSelect(exeContext) {
         data.push(value._attributeName);
     });
     //console.log(data);
+    
     var disableFields = ["ap_exhibitpwrst", "ownerid", "parentaccountid", "estimatedvalue"];
     lockFields(exeContext, data);
 }
@@ -24,18 +25,3 @@ function lockFields(exeContext, disableFields) {
         }
     });
 }
-
-
-function prueba(executionContext) {
-    console.log(executionContext);
-    var cs = Xrm.Page.ui.controls.get();
-    for (var i in cs) {
-        var c = cs[i];
-        if (c.getName() != "" && c.getName() != null) {
-            if (!c.getDisabled()) { c.setDisabled(true); }
-        }
-    }
-}
-
-
-// Xrm.Page.data.entity.attributes.forEach(  e => { console.log(e.controls.get(0).setDisabled(true)) } )

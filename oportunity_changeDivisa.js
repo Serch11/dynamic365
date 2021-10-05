@@ -17,6 +17,7 @@ async function changeApMoneda(executionContext) {
   );
   let header_ap_ingestdolar = formContext.getAttribute("header_ap_ingestdolar");
   let header_ap_ingestdolarControl = formContext.getControl(
+    
     "header_ap_ingestdolar"
   );
   let exchangerate = formContext.getAttribute("exchangerate");
@@ -80,9 +81,12 @@ async function changeApMoneda(executionContext) {
           let result = await consultaTRM();
           console.log(result);
           if (result) {
+            console.log(result);
+
             let valor = result.entities[0].exchangerate;
             console.log(valor);
             // ap_trm.setValue(valor);
+
             exchangerate.setValue(valor);
             console.log(result);
           }

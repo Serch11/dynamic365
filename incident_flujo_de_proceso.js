@@ -1,6 +1,7 @@
 async function getChangeStage(executionContext) {
 
 
+
     //declaracion de varibales
     let FORM_CAC = "Caso CAC";
     let FORM_CAS = "Caso CAS";
@@ -27,14 +28,20 @@ async function getChangeStage(executionContext) {
     //FORMULARIO CAC
     if (FORM_NAME === FORM_CAC) {
 
-        console.log("entro CAC");
+        try {
+            console.log("entro CAC");
 
-        if (formContext.ui.getFormType() != 1) Xrm.Page.getControl("header_process_ap_requerimientointerno").setDisabled(true)
-        formContext.getControl("header_process_ap_requerimientointerno_1").setVisible(false);
-        formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
-        formContext.getControl("header_process_ap_regional").setVisible(false);
-        formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
-        // formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAC);
+            if (formContext.ui.getFormType() != 1) Xrm.Page.getControl("header_process_ap_requerimientointerno").setDisabled(true)
+            formContext.getControl("header_process_ap_requerimientointerno_1").setVisible(false);
+            formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
+            formContext.getControl("header_process_ap_regional").setVisible(false);
+            formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
+            // formContext.data.proce    
+        } catch (error) {
+            console.log(error);
+            console.log("error condicion //FORMULARIO CAC ")
+        }
+        ss.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAC);
         // function CALLBACK_CAC(result) {
         //     console.log(result);
         //     if (result === "success") {
@@ -168,7 +175,7 @@ function cambioStage(executionContext) {
     // Cumplido 2
     // Asignado 1
     try {
-        console.clear();
+
         let formContext = executionContext.getFormContext();
         let faseActiva = formContext.data.process.getActiveStage();
         let razon_para_el_estado = formContext.getAttribute("statuscode");
