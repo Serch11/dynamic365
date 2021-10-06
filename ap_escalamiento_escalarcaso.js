@@ -57,6 +57,7 @@ async function escalarCaso(executionContext) {
           "/teams(" + equipoAsignadoID + ")";
         entity["ap_Asignarcaso@odata.bind"] =
           "/systemusers(" + asignarCasoId + ")";
+        entity["OwnerId"] = "/" + ap_asignarcaso.getValue()[0].entityType + "(" + asignarCasoId + ")";
         entity.ap_area = ap_area.getValue();
         entity.contractservicelevelcode = ap_niveldeservicio.getValue();
         entity.ap_seguimientodelcaso = ap_tipodeescalamiento.getValue();
@@ -69,9 +70,9 @@ async function escalarCaso(executionContext) {
     req.open(
       "PATCH",
       formContext.context.getClientUrl() +
-        "/api/data/v9.1/incidents(" +
-        casoID +
-        ")",
+      "/api/data/v9.1/incidents(" +
+      casoID +
+      ")",
       true
     );
     req.setRequestHeader("OData-MaxVersion", "4.0");
