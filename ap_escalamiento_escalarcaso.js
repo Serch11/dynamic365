@@ -48,24 +48,24 @@ async function escalarCaso(executionContext) {
       }
 
       if (ap_tipodeescalamiento.getSelectedOption().text === "Interno") {
-        if (ap_equipoasignado.getValue())
-          equipoAsignadoID = ap_equipoasignado.getValue()[0].id.slice(1, 37);
-        if (ap_asignarcaso.getValue())
-          asignarCasoId = ap_asignarcaso.getValue()[0].id.slice(1, 37);
+        console.log("entro escalamiento interno");
+        if (ap_equipoasignado.getValue()) equipoAsignadoID = ap_equipoasignado.getValue()[0].id.slice(1, 37);
+        if (ap_asignarcaso.getValue()) asignarCasoId = ap_asignarcaso.getValue()[0].id.slice(1, 37);
 
-        entity["ap_Equipoasignado@odata.bind"] =
-          "/teams(" + equipoAsignadoID + ")";
-        entity["ap_Asignarcaso@odata.bind"] =
-          "/systemusers(" + asignarCasoId + ")";
-        entity["OwnerId"] = "/" + ap_asignarcaso.getValue()[0].entityType + "(" + asignarCasoId + ")";
+        console.log(ap_asignarcaso.getValue()[0].entityType);
+        let nombre_entidad = ap_asignarcaso.getValue()[0].entityType + "s";
+        console.log(nombre_entidad);
+
+        entity["ap_Equipoasignado@odata.bind"] = "/teams(" + equipoAsignadoID + ")";
+        entity["ap_Asignarcaso@odata.bind"] = "/systemusers(" + asignarCasoId + ")";
+        entity["ownerid@odata.bind"] = "/" + nombre_entidad + "(" + asignarCasoId + ")";
         entity.ap_area = ap_area.getValue();
         entity.contractservicelevelcode = ap_niveldeservicio.getValue();
         entity.ap_seguimientodelcaso = ap_tipodeescalamiento.getValue();
+        console.log(entity);
       }
     }
-
     console.log(entity);
-
     var req = new XMLHttpRequest();
     req.open(
       "PATCH",
@@ -85,6 +85,7 @@ async function escalarCaso(executionContext) {
         if (this.status === 204) {
           //Success - No Return Data - Do Somethingth
           console.log("data actualizada");
+          console.log(entity);
           console.log(this.responseText);
         } else {
           Xrm.Utility.alertDialog(this.statusText);
