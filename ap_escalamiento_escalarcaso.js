@@ -13,6 +13,7 @@ async function escalarCaso(executionContext) {
       "ap_numerocasofabricante"
     );
     let ap_area = formContext.getAttribute("ap_area");
+    let ap_areadeequipo = formContext.getAttribute('ap_areadeequipo');
     let ap_niveldeservicio = formContext.getAttribute("ap_niveldeservicio");
     let ap_equipoasignado = formContext.getAttribute("ap_equipoasignado");
     let ap_asignarcaso = formContext.getAttribute("ap_asignarcaso");
