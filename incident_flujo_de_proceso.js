@@ -8,6 +8,9 @@ async function getChangeStage(executionContext) {
     let FORM_SINCO = "Caso SINCO";
     let FORM_SINCO_BRASIL = "Caso SINCO BRASIL";
     let FORM_REQUERIMIENTO = "Caso Requerimiento Interno";
+
+    //formCOntex recibe el contexto de la entidad en la que se encuentra 
+    //que es el contexto , campos , subcuadriculas , vistas , paneles
     let formContext = executionContext.getFormContext();
     let FORM_NAME = formContext.ui.formSelector.getCurrentItem()._label;
     var BPF_ACTIVA = formContext.data.process.getActiveProcess();
@@ -41,7 +44,7 @@ async function getChangeStage(executionContext) {
             console.log(error);
             console.log("error condicion //FORMULARIO CAC ")
         }
-        ss.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAC);
+        //ss.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAC);
         // function CALLBACK_CAC(result) {
         //     console.log(result);
         //     if (result === "success") {
@@ -85,12 +88,15 @@ async function getChangeStage(executionContext) {
     if (FORM_NAME === FORM_CAS) {
         console.log("entro CAS")
 
-        if (formContext.ui.getFormType() != 1) Xrm.Page.getControl("header_process_ap_requerimientointerno").setDisabled(true)
+        if (formContext.ui.getFormType() != 1) formContext.getControl("header_process_ap_requerimientointerno").setDisabled(true)
 
         formContext.getControl("header_process_ap_requerimientointerno_1").setVisible(false);
         formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
         formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
         formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
+
+
+
         //formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAS);
         // function CALLBACK_CAS(result) {
         //     console.log(result);
@@ -109,7 +115,8 @@ async function getChangeStage(executionContext) {
 
         try {
 
-            if (formContext.ui.getFormType() != 1) Xrm.Page.getControl("header_process_ap_requerimientointerno").setDisabled(true);
+            console.log("Cambios en la cinta de proceso de requerimientos internos");
+            if (formContext.ui.getFormType() != 1) { Xrm.Page.getControl("header_process_ap_requerimientointerno").setDisabled(true); }
 
             formContext.getControl("header_process_ap_requerimientointerno_1").setVisible(false);
             formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
@@ -126,6 +133,9 @@ async function getChangeStage(executionContext) {
             formContext.getControl("header_process_adx_resolution").setVisible(false);
             formContext.getControl("header_process_ap_plataforma_1").setVisible(false);
             formContext.getControl("header_process_ap_imputablea").setVisible(false);
+            formContext.getControl("header_process_ap_regional").setVisible(false);
+            formContext.getControl("header_process_casetypecode").setVisible(false);
+            formContext.getControl("header_process_ap_procedimientodelcaso").setVisible(false);
 
         } catch (error) {
             console.log(error);
@@ -147,7 +157,6 @@ async function getChangeStage(executionContext) {
         // }
 
     }
-
     //metodo para esuchar el cambio de fase manualmente por le usuario
     formContext.data.process.addOnStageChange(cambioStage);
     //}

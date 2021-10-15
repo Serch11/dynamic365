@@ -12,6 +12,11 @@ function set_ap_requerimientointerno(executionContext) {
         }]
 
 
+
+
+
+
+
         if (formContext.ui.getFormType() === 1) {
             if (FORM_CURRENT.getLabel() === FORM_REQUERIMIENTO) {
                 let ap_requerimientointerno = formContext.getAttribute(
