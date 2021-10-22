@@ -7,6 +7,9 @@ function getStateAndCountry(executionContext) {
         let ap_stateprovince = formContext.getAttribute("ap_stateprovince");
         let ap_country = formContext.getAttribute("ap_country");
 
+        let address1_stateorprovince = formContext.getAttribute("address1_stateorprovince");
+        let address1_country = formContext.getAttribute("address1_country");
+
 
         if (ap_city.getValue()) {
 
@@ -15,8 +18,8 @@ function getStateAndCountry(executionContext) {
                 function success(result) {
                     if (result) {
                         //console.log(result);
-                        ap_stateprovince.setValue(result.ap_estado ? result.ap_estado : "");
-                        ap_country.setValue(result.ap_pais ? result.ap_pais : "");
+                        address1_stateorprovince.setValue(result.ap_estado ? result.ap_estado : "");
+                        address1_country.setValue(result.ap_pais ? result.ap_pais : "");
                     }
                 },
                 function (error) {
@@ -25,8 +28,8 @@ function getStateAndCountry(executionContext) {
                 }
             );
         } else if (!ap_city.getValue()) {
-            ap_stateprovince.setValue(null);
-            ap_country.setValue(null);
+            address1_stateorprovince.setValue(null);
+            address1_country.setValue(null);
         }
     } catch (error) {
         console.log(error);
