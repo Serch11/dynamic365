@@ -65,7 +65,7 @@ function asignarCoordinadorPorArea(executionContext) {
         let ap_equipoasignado = formContext.getAttribute("ap_equipoasignado");
 
 
-        if( ap_areadeequipo.getValue() ){
+        if (ap_areadeequipo.getValue()) {
             
         }
 
