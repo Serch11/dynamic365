@@ -89,7 +89,6 @@ function cambioApcuentaRequerimiento(executionContext) {
 
 function habilitarCampoApnotificacionAtencion(executionContext) {
   try {
-      
     let formContext = executionContext.getFormContext();
     let ap_enviarnotificacionatencion = formContext.getControl(
       "ap_enviarnotificacionatencion"
