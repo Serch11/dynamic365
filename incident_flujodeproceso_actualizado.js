@@ -112,33 +112,32 @@ async function getChangeStage(executionContext) {
     }
     //FORMULARIO CAS 
     if (FORM_NAME === FORM_CAS) {
-        console.log("entro CAS")
+
+        try {
+            console.log("entro CAS")
 
         if (formContext.ui.getFormType() != 1) formContext.getControl("header_process_ap_requerimientointerno").setDisabled(true)
 
-        formContext.getControl("header_process_ap_requerimientointerno_1").setVisible(false);
-        formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
-        formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
-        formContext.getControl("header_process_ap_agenteasignado").setVisible(false);
+        if (formContext.getControl("header_process_ap_requerimientointerno_1")) formContext.getControl("header_process_ap_requerimientointerno_1").setVisible(false);
+        if (formContext.getControl("header_process_ap_requerimientointerno_2")) formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
+        if (formContext.getControl("header_process_ap_tiendaintervenida")) formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
+        if (formContext.getControl("header_process_ap_agenteasignado")) formContext.getControl("header_process_ap_agenteasignado").setVisible(false);
         //formContext.getControl("header_process_ap_areadeequipo").setVisible(false);
-        formContext.getControl("header_process_ap_agenteasignados").setVisible(false);
+        if (formContext.getControl("header_process_ap_agenteasignados")) formContext.getControl("header_process_ap_agenteasignados").setVisible(false);
+        if (formContext.getControl('header_process_ap_necesidaddeescalaraterceros')) formContext.getControl('header_process_ap_necesidaddeescalaraterceros').setDisabled(true);
 
-
-        formContext.getControl('header_process_ap_necesidaddeescalaraterceros').setDisabled(true);
-        formContext.getControl('header_process_ap_asignaciondecasoafabricanteexterno').setDisabled(true);
-        formContext.getControl('header_process_ap_numerocasodelfabricanteexterno').setDisabled(true);
-        formContext.getControl("header_process_ap_areadeequipo").setDisabled(true);
-        formContext.getControl("header_process_ap_areadeequipo_1").setDisabled(true);
-        formContext.getControl("header_process_prioritycode").setDisabled(true);
-        formContext.getControl("header_process_ap_urgencia").setDisabled(true);
-        formContext.getControl("header_process_ap_impacto").setDisabled(true);
-        formContext.getControl("header_process_ap_plataforma").setDisabled(true);
-        formContext.getControl("header_process_contractservicelevelcode").setDisabled(true);
-        formContext.getControl("header_process_ap_equipoasignado").setDisabled(true);
-        formContext.getControl("header_process_ap_asignarcaso").setDisabled(true);
-
-
-        formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
+        if (formContext.getControl('header_process_ap_asignaciondecasoafabricanteexterno')) formContext.getControl('header_process_ap_asignaciondecasoafabricanteexterno').setDisabled(true);
+        if (formContext.getControl('header_process_ap_numerocasodelfabricanteexterno')) formContext.getControl('header_process_ap_numerocasodelfabricanteexterno').setDisabled(true);
+        if (formContext.getControl("header_process_ap_areadeequipo")) formContext.getControl("header_process_ap_areadeequipo").setDisabled(true);
+        if (formContext.getControl("header_process_ap_areadeequipo_1")) formContext.getControl("header_process_ap_areadeequipo_1").setDisabled(true);
+        if (formContext.getControl("header_process_prioritycode")) formContext.getControl("header_process_prioritycode").setDisabled(true);
+        if (formContext.getControl("header_process_ap_urgencia")) formContext.getControl("header_process_ap_urgencia").setDisabled(true);
+        if (formContext.getControl("header_process_ap_impacto")) formContext.getControl("header_process_ap_impacto").setDisabled(true);
+        if (formContext.getControl("header_process_ap_plataforma")) formContext.getControl("header_process_ap_plataforma").setDisabled(true);
+        if (formContext.getControl("header_process_contractservicelevelcode")) formContext.getControl("header_process_contractservicelevelcode").setDisabled(true);
+        if (formContext.getControl("header_process_ap_equipoasignado")) formContext.getControl("header_process_ap_equipoasignado").setDisabled(true);
+        if (formContext.getControl("header_process_ap_asignarcaso")) formContext.getControl("header_process_ap_asignarcaso").setDisabled(true);
+        if (formContext.getControl("ap_regional")) formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
 
 
         //formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAS);
@@ -151,6 +150,10 @@ async function getChangeStage(executionContext) {
         //         formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
         //     }
         // }
+        } catch (error) {
+            console.log("error condiciosn del cas")
+        }
+        
     }
 
     //FORMULARIO REQUERIMIENTOS INTERNOS
