@@ -12,13 +12,14 @@ async function escalarCaso(executionContext) {
     let ap_numerocasofabricante = formContext.getAttribute(
       "ap_numerocasofabricante"
     );
-    let ap_area = formContext.getAttribute("ap_area");
+    //    let ap_area = formContext.getAttribute("ap_area");
     let ap_niveldeservicio = formContext.getAttribute("ap_niveldeservicio");
     let ap_equipoasignado = formContext.getAttribute("ap_equipoasignado");
     let ap_asignarcaso = formContext.getAttribute("ap_asignarcaso");
     let ap_asignarcasoaexterno = formContext.getAttribute(
       "ap_asignarcasoaexterno"
     );
+    let ap_areadeequipo = formContext.getAttribute("ap_areadeequipo");
 
     console.log(ap_caso.getValue());
 
@@ -29,6 +30,7 @@ async function escalarCaso(executionContext) {
       var externoID;
       var casoID;
       var equipoAsignadoID;
+      var areadeEquipoID;
       var asignarCasoId;
 
       casoID = ap_caso.getValue()[0].id.slice(1, 37);
@@ -48,30 +50,35 @@ async function escalarCaso(executionContext) {
       }
 
       if (ap_tipodeescalamiento.getSelectedOption().text === "Interno") {
-        if (ap_equipoasignado.getValue())
-          equipoAsignadoID = ap_equipoasignado.getValue()[0].id.slice(1, 37);
-        if (ap_asignarcaso.getValue())
-          asignarCasoId = ap_asignarcaso.getValue()[0].id.slice(1, 37);
 
-        entity["ap_Equipoasignado@odata.bind"] =
-          "/teams(" + equipoAsignadoID + ")";
-        entity["ap_Asignarcaso@odata.bind"] =
-          "/systemusers(" + asignarCasoId + ")";
-        entity.ap_area = ap_area.getValue();
+        console.log("entro escalamiento interno");
+        if (ap_equipoasignado.getValue()) equipoAsignadoID = ap_equipoasignado.getValue()[0].id.slice(1, 37);
+        if (ap_asignarcaso.getValue()) asignarCasoId = ap_asignarcaso.getValue()[0].id.slice(1, 37);
+        if (ap_areadeequipo.getValue()) areadeEquipoID = ap_areadeequipo.getValue()[0].id.slice(1, 37);
+        console.log(ap_areadeequipo.getValue()[0].entityType);
+        console.log(areadeEquipoID);
+        console.log(ap_asignarcaso.getValue()[0].entityType);
+        let nombre_entidad = ap_asignarcaso.getValue()[0].entityType + "s";
+        console.log(nombre_entidad);
+
+        entity["ap_Equipoasignado@odata.bind"] = "/teams(" + equipoAsignadoID + ")";
+        entity["ap_Asignarcaso@odata.bind"] = "/systemusers(" + asignarCasoId + ")";
+        entity["ownerid@odata.bind"] = "/" + nombre_entidad + "(" + asignarCasoId + ")";
+        //entity.ap_area = ap_area.getValue();
+        entity["ap_Areadeequipo@odata.bind"] = "/ap_areas(" + areadeEquipoID + ")";
         entity.contractservicelevelcode = ap_niveldeservicio.getValue();
         entity.ap_seguimientodelcaso = ap_tipodeescalamiento.getValue();
+        console.log(entity);
       }
     }
-
     console.log(entity);
-
     var req = new XMLHttpRequest();
     req.open(
       "PATCH",
       formContext.context.getClientUrl() +
-        "/api/data/v9.1/incidents(" +
-        casoID +
-        ")",
+      "/api/data/v9.1/incidents(" +
+      casoID +
+      ")",
       true
     );
     req.setRequestHeader("OData-MaxVersion", "4.0");
@@ -84,6 +91,7 @@ async function escalarCaso(executionContext) {
         if (this.status === 204) {
           //Success - No Return Data - Do Somethingth
           console.log("data actualizada");
+          console.log(entity);
           console.log(this.responseText);
         } else {
           Xrm.Utility.alertDialog(this.statusText);

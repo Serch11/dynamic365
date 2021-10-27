@@ -124,11 +124,9 @@ function changeEnergiaAndConectividad(executionContext) {
 function setiarValorEnCero(exectutioncontext) {
   let formContext = exectutioncontext.getFormContext();
   let nombrecampo = formContext.getAttribute("nombrecampo");
-  //if (formContext.ui.getFormType() === 1) si es igual a 1 es un registro nuevo 
+  //if (formContext.ui.getFormType() === 1) si es igual a 1 es un registro nuevo
   if (formContext.ui.getFormType() === 1) {
-
     //valido que si exista el campo en el formulario
-    if(nombrecampo) nombrecampo.setValue(0);
-
+    if (nombrecampo) nombrecampo.setValue(0);
   }
 }
