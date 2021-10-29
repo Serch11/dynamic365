@@ -29,8 +29,10 @@ async function changeApMoneda(executionContext) {
 
   try {
     if (transactioncurrencyid.getValue()) {
-      if (transactioncurrencyid.getValue()[0].name === "Peso colombiano" || transactioncurrencyid.getValue()[0].name === "Peso Colombiano") {
-
+      if (
+        transactioncurrencyid.getValue()[0].name === "Peso colombiano" ||
+        transactioncurrencyid.getValue()[0].name === "Peso Colombiano"
+      ) {
         // Xrm.Page.getControl("header_estimatedvalue").getAttribute().setValue(null);
         header_ap_ingestdolarControl.setVisible(false);
         header_estimatedvalueControl.setDisabled(false);
@@ -39,11 +41,12 @@ async function changeApMoneda(executionContext) {
         exchangerateControl.setVisible(false);
         //ap_trmControl.setVisible(false);
 
-        if ((transactioncurrencyid.getValue()[0].name === "Peso colombiano" || transactioncurrencyid.getValue()[0].name === "Peso Colombiano") &&
-          executionContext.getDepth() === 0 ||
+        if (
+          ((transactioncurrencyid.getValue()[0].name === "Peso colombiano" ||
+            transactioncurrencyid.getValue()[0].name === "Peso Colombiano") &&
+            executionContext.getDepth() === 0) ||
           executionContext.getDepth() === 1 ||
           executionContext.getDepth() === 2
-
         ) {
           console.log("entro a esmitated PESO COLOMBIANOS");
           console.log(executionContext.getDepth());
@@ -54,6 +57,7 @@ async function changeApMoneda(executionContext) {
       }
 
       if (transactioncurrencyid.getValue()[0].name === "US Dollar") {
+        console.log("entro dolar");
         //ap_trmControl.setVisible(true);
         //ap_trmControl.setDisabled(true);
         //Xrm.Page.getControl("header_estimatedvalue").getAttribute().setValue(null);
@@ -65,15 +69,17 @@ async function changeApMoneda(executionContext) {
         formContext.getAttribute("ap_ingestdolar").setRequiredLevel("required");
         formContext.getAttribute("estimatedvalue").setRequiredLevel("none");
 
-        if ((transactioncurrencyid.getValue()[0].name === "Peso colombiano" || transactioncurrencyid.getValue()[0].name === "Peso Colombiano") &&
-          executionContext.getDepth() === 0 ||
+        if (
+          ((transactioncurrencyid.getValue()[0].name === "Peso colombiano" ||
+            transactioncurrencyid.getValue()[0].name === "Peso Colombiano") &&
+            executionContext.getDepth() === 0) ||
           executionContext.getDepth() === 1 ||
           executionContext.getDepth() === 2
-
         ) {
-          console.log("entro a esmitated US")
+          console.log("entro a esmitated US");
 
           let result = await consultaTRM();
+          console.log(result);
           if (result) {
             console.log(result);
 

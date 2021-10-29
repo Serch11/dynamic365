@@ -29,7 +29,7 @@ function quemarCPTquote(executionContext) {
     let CPT = [
       {
         entityType: "ap_inconterm",
-        id: "DCC93061-F41B-EC11-B6E7-000D3A886E71",
+        id: "556053DE-EA24-EC11-B6E6-00224837257C",
         name: "CPT",
       },
     ];
