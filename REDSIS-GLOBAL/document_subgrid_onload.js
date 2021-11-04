@@ -1,11 +1,43 @@
+/** 
+ * taks
+ * nombre con un numero de consecutivo
+ * agregar campos en la vista de create on y modified 
+ * notificacion en la parte superior cuando los documentos esten listos.
+ * 
+*/
 
 function loadSubGrid(executionContext) {
     try {
+
         let formContext = executionContext.getFormContext();
         let gridDocument = formContext.getControl("document_view");
+
+        console.log("cargando funcion loadSubgrid");
+        validaciones(executionContext);
         gridDocument.addOnLoad(documentosCargados);
     } catch (error) {
         console.log(error);
+    }
+}
+
+
+//funcion para 
+function validaciones(executionContext) {
+    try {
+
+        let formContext = executionContext.getFormContext();
+        let ap_validate_send = formContext.getAttribute("ap_validate_send");
+        let ap_validateddocuments = formContext.getControl("ap_validateddocuments");
+        if (ap_validate_send.getValue() === 1) {
+            ap_validateddocuments.setDisabled(false);
+            formContext.ui.setFormNotification('DOCUMENTS ARE READY TO BE REVIEWED NBY THE ADMINISTRATIVE AREA. A NOTICE HAS BEEN SENT', 'INFO', 'notification_unique_id');
+
+        } else {
+            formContext.ui.clearFormNotification('notification_unique_id');
+            ap_validateddocuments.setDisabled(true);
+        }
+    } catch (error) {
+
     }
 }
 
@@ -26,10 +58,12 @@ function documentosCargados(executionContext) {
         let tp3 = 0;
         let tp4 = 0;
 
+        //obtengo el contexto del formulario
         let formContext = executionContext.getFormContext();
-
+        let validate_send = formContext.getAttribute("ap_validate_send");
         let ap_validateddocuments = formContext.getControl("ap_validateddocuments");
-        ap_validateddocuments.getAttribute().setValue(false);
+        let name = formContext.getAttribute("name");
+        //ap_validateddocuments.getAttribute().setValue(false);
         //obtenemos el contexto de la subcuadricula
         let gridDocument = formContext.getControl("document_view");
         //obtenemos la coleccion de datos de la subcuadricula
@@ -75,26 +109,26 @@ function documentosCargados(executionContext) {
                             console.log(`documento con nombre ${value} no es valido`);
                             break;
                     }
-
                 }
-
             });
             console.log(tp1, tp2, tp3, tp4);
-            if ((tp1 >= 1 && tp2 >= 1 && tp3 >= 1 && tp4 >= 1) && send === 0) {
+            console.log(`validate send ${validate_send.getValue()}`);
+            if ((tp1 >= 1 && tp2 >= 1 && tp3 >= 1 && tp4 >= 1) && (validate_send.getValue() === 0 || validate_send.getValue() === null)) {
                 console.log("enviamos la notificacion");
-                ap_validateddocuments.setDisabled(true);
 
                 let urlflujo = "https://prod-10.brazilsouth.logic.azure.com:443/workflows/b90cd048530145c9b01fad3df21c7f21/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=oT4eofpTbc8yJST7AWEtU_pxTjUXt3F3mZq78JdCxfM"
                 let req = new XMLHttpRequest();
                 let salida = JSON.stringify({
-                    "send": send,
+                    "accountname": name.getValue(),
+                    "send": validate_send.getValue(),
                     "url": formContext.getAttribute("ap_url_registro_entidad").getValue()
                 });
                 req.open("POST", urlflujo, true);
                 req.setRequestHeader("Content-Type", "application/json");
                 req.send(salida);
 
-
+                validate_send.setValue(1);
+                validaciones(executionContext);
                 //validamos la respuesta de la solicitud
                 req.onreadystatechange = function () {
 
@@ -105,18 +139,16 @@ function documentosCargados(executionContext) {
                         console.log(this.status);
                         console.log("se ejecuto el flujo con exito");
                     }
-
                 }
 
 
-            } else if ((tp1 >= 0 || tp2 >= 0 || tp3 >= 0 || tp4 >= 0) && send === 1) {
+            } else if ((tp1 === 0 || tp2 === 0 || tp3 === 0 || tp4 === 0) && validate_send.getValue() === 1) {
                 console.log("restablecemos el envio de notificaciones a 0");
-                send = 0;
+                validate_send.setValue(0);
+                validaciones(executionContext);
+
             }
-        }, 2000);
-
-
-
+        }, 1000);
     } catch (error) {
         console.log(error);
     }
