@@ -20,7 +20,7 @@ function lockFields(exeContext, disableFields) {
         if (disableFields.indexOf(attribute.getName()) > -1) {
             //console.log(attribute.controls.get(0));
             var attributeToDisable = attribute.controls.get(0);
-            attributeToDisable.setDisabled(true);
+            attributeToDisable.setDisabled(false);
         }
     });
 }

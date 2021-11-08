@@ -4,6 +4,18 @@
  * agregar campos en la vista de create on y modified 
  * notificacion en la parte superior cuando los documentos esten listos.
  * 
+ * 
+ *  tipos de documentos para RMX
+    
+    ESTADOS FINANCIEROS A 31 DE DIC DEL AÑO INMEDIATAMENTE ANTERIOR (AUDITADOS)
+    ESTADOS FINANCIEROS DEL AÑO EN CURSO
+    ACTA CONSTITUTIVA
+    OPINIÓN DE CUMPLIMIENTOS
+    CONSTANCIA DE SITUACIÓN FISCAL NO MAYOR A 30 DÍAS
+    COMPROBANTE DE DOMICILIO FISCAL
+    CARÁTULA DE ESTADO DE CUENTA BANCARIO 
+
+ * 
 */
 
 function loadSubGrid(executionContext) {
@@ -30,7 +42,7 @@ function validaciones(executionContext) {
         let ap_validateddocuments = formContext.getControl("ap_validateddocuments");
         if (ap_validate_send.getValue() === 1) {
             ap_validateddocuments.setDisabled(false);
-            formContext.ui.setFormNotification('DOCUMENTS ARE READY TO BE REVIEWED NBY THE ADMINISTRATIVE AREA. A NOTICE HAS BEEN SENT', 'INFO', 'notification_unique_id');
+            formContext.ui.setFormNotification('DOCUMENTS ARE READY TO BE REVIEWED BY THE ADMINISTRATIVE AREA. A NOTICE HAS BEEN SENT', 'WARNING', 'notification_unique_id');
 
         } else {
             formContext.ui.clearFormNotification('notification_unique_id');
@@ -116,7 +128,7 @@ function documentosCargados(executionContext) {
             if ((tp1 >= 1 && tp2 >= 1 && tp3 >= 1 && tp4 >= 1) && (validate_send.getValue() === 0 || validate_send.getValue() === null)) {
                 console.log("enviamos la notificacion");
 
-                let urlflujo = "https://prod-10.brazilsouth.logic.azure.com:443/workflows/b90cd048530145c9b01fad3df21c7f21/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=oT4eofpTbc8yJST7AWEtU_pxTjUXt3F3mZq78JdCxfM"
+                let urlflujo = "https://prod-06.brazilsouth.logic.azure.com:443/workflows/31996b6eb7b9400ebfbeb38d54689c5b/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=R1zlR6HJsNihYFodTXgI76keC7D36YXON2_C_7suHSA"
                 let req = new XMLHttpRequest();
                 let salida = JSON.stringify({
                     "accountname": name.getValue(),
@@ -128,7 +140,7 @@ function documentosCargados(executionContext) {
                 req.send(salida);
 
                 validate_send.setValue(1);
-                validaciones(executionContext);
+
                 //validamos la respuesta de la solicitud
                 req.onreadystatechange = function () {
 
@@ -136,15 +148,16 @@ function documentosCargados(executionContext) {
                         this.onreadystatechange = null;
                     }
                     if (this.status === 200) {
-                        console.log(this.status);
-                        console.log("se ejecuto el flujo con exito");
+                        console.log("todook")
                     }
                 }
+                validaciones(executionContext);
 
 
             } else if ((tp1 === 0 || tp2 === 0 || tp3 === 0 || tp4 === 0) && validate_send.getValue() === 1) {
                 console.log("restablecemos el envio de notificaciones a 0");
                 validate_send.setValue(0);
+
                 validaciones(executionContext);
 
             }
