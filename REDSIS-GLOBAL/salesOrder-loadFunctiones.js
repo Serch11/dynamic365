@@ -26,19 +26,23 @@ function changeStateSaleOrder(executionContext) {
   try {
     /**
      *
-     * In Elaboration  899,080,000
-     * In Review  899,080,001
-     * Pending for Purcharses 899,080,002
+     * In Elaboration  899,080,000                           1
+     * In Review  899,080,001                                2 
+     * Pending for Purcharses 899,080,002                    3
      *
      *
-     * Pending to receive 899,080,003
-     * Pending invoice  899,080,004
-     * Partial Invoiced 899,080,005
-     * Invoiced 899,080,006
-     * Operational area 899,080,007
-     * Stopped in shopping 899,080,008
+     * Pending to receive 899,080,003                         4
+     * Pending invoice  899,080,004                           5 
+     * Partial Invoiced / billing 899,080,005                           6
+     * Invoiced 899,080,006                                   7 
+     * Operational area 899,080,007                           8
+     * Stopped in shopping 899,080,008                        9
      *
      */
+
+
+
+     
     let formContext = executionContext.getFormContext();
     var objEstado = formContext.data.process.getActiveStage();
     var estado = formContext.getAttribute("statuscode");
