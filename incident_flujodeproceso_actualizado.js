@@ -116,44 +116,44 @@ async function getChangeStage(executionContext) {
         try {
             console.log("entro CAS")
 
-        if (formContext.ui.getFormType() != 1) formContext.getControl("header_process_ap_requerimientointerno").setDisabled(true)
+            if (formContext.ui.getFormType() != 1) formContext.getControl("header_process_ap_requerimientointerno").setDisabled(true)
 
-        if (formContext.getControl("header_process_ap_requerimientointerno_1")) formContext.getControl("header_process_ap_requerimientointerno_1").setVisible(false);
-        if (formContext.getControl("header_process_ap_requerimientointerno_2")) formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
-        if (formContext.getControl("header_process_ap_tiendaintervenida")) formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
-        if (formContext.getControl("header_process_ap_agenteasignado")) formContext.getControl("header_process_ap_agenteasignado").setVisible(false);
-        //formContext.getControl("header_process_ap_areadeequipo").setVisible(false);
-        if (formContext.getControl("header_process_ap_agenteasignados")) formContext.getControl("header_process_ap_agenteasignados").setVisible(false);
-        if (formContext.getControl('header_process_ap_necesidaddeescalaraterceros')) formContext.getControl('header_process_ap_necesidaddeescalaraterceros').setDisabled(true);
+            if (formContext.getControl("header_process_ap_requerimientointerno_1")) formContext.getControl("header_process_ap_requerimientointerno_1").setVisible(false);
+            if (formContext.getControl("header_process_ap_requerimientointerno_2")) formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
+            if (formContext.getControl("header_process_ap_tiendaintervenida")) formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
+            if (formContext.getControl("header_process_ap_agenteasignado")) formContext.getControl("header_process_ap_agenteasignado").setVisible(false);
+            //formContext.getControl("header_process_ap_areadeequipo").setVisible(false);
+            if (formContext.getControl("header_process_ap_agenteasignados")) formContext.getControl("header_process_ap_agenteasignados").setVisible(false);
+            if (formContext.getControl('header_process_ap_necesidaddeescalaraterceros')) formContext.getControl('header_process_ap_necesidaddeescalaraterceros').setDisabled(true);
 
-        if (formContext.getControl('header_process_ap_asignaciondecasoafabricanteexterno')) formContext.getControl('header_process_ap_asignaciondecasoafabricanteexterno').setDisabled(true);
-        if (formContext.getControl('header_process_ap_numerocasodelfabricanteexterno')) formContext.getControl('header_process_ap_numerocasodelfabricanteexterno').setDisabled(true);
-        if (formContext.getControl("header_process_ap_areadeequipo")) formContext.getControl("header_process_ap_areadeequipo").setDisabled(true);
-        if (formContext.getControl("header_process_ap_areadeequipo_1")) formContext.getControl("header_process_ap_areadeequipo_1").setDisabled(true);
-        if (formContext.getControl("header_process_prioritycode")) formContext.getControl("header_process_prioritycode").setDisabled(true);
-        if (formContext.getControl("header_process_ap_urgencia")) formContext.getControl("header_process_ap_urgencia").setDisabled(true);
-        if (formContext.getControl("header_process_ap_impacto")) formContext.getControl("header_process_ap_impacto").setDisabled(true);
-        if (formContext.getControl("header_process_ap_plataforma")) formContext.getControl("header_process_ap_plataforma").setDisabled(true);
-        if (formContext.getControl("header_process_contractservicelevelcode")) formContext.getControl("header_process_contractservicelevelcode").setDisabled(true);
-        if (formContext.getControl("header_process_ap_equipoasignado")) formContext.getControl("header_process_ap_equipoasignado").setDisabled(true);
-        if (formContext.getControl("header_process_ap_asignarcaso")) formContext.getControl("header_process_ap_asignarcaso").setDisabled(true);
-        if (formContext.getControl("ap_regional")) formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
+            if (formContext.getControl('header_process_ap_asignaciondecasoafabricanteexterno')) formContext.getControl('header_process_ap_asignaciondecasoafabricanteexterno').setDisabled(true);
+            if (formContext.getControl('header_process_ap_numerocasodelfabricanteexterno')) formContext.getControl('header_process_ap_numerocasodelfabricanteexterno').setDisabled(true);
+            if (formContext.getControl("header_process_ap_areadeequipo")) formContext.getControl("header_process_ap_areadeequipo").setDisabled(true);
+            if (formContext.getControl("header_process_ap_areadeequipo_1")) formContext.getControl("header_process_ap_areadeequipo_1").setDisabled(true);
+            if (formContext.getControl("header_process_prioritycode")) formContext.getControl("header_process_prioritycode").setDisabled(true);
+            if (formContext.getControl("header_process_ap_urgencia")) formContext.getControl("header_process_ap_urgencia").setDisabled(true);
+            if (formContext.getControl("header_process_ap_impacto")) formContext.getControl("header_process_ap_impacto").setDisabled(true);
+            if (formContext.getControl("header_process_ap_plataforma")) formContext.getControl("header_process_ap_plataforma").setDisabled(true);
+            if (formContext.getControl("header_process_contractservicelevelcode")) formContext.getControl("header_process_contractservicelevelcode").setDisabled(true);
+            if (formContext.getControl("header_process_ap_equipoasignado")) formContext.getControl("header_process_ap_equipoasignado").setDisabled(true);
+            if (formContext.getControl("header_process_ap_asignarcaso")) formContext.getControl("header_process_ap_asignarcaso").setDisabled(true);
+            if (formContext.getControl("ap_regional")) formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
 
 
-        //formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAS);
-        // function CALLBACK_CAS(result) {
-        //     console.log(result);
-        //     if (result === "success") {
-        //         //formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
-        //         formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
-        //         formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
-        //         formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
-        //     }
-        // }
+            //formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAS);
+            // function CALLBACK_CAS(result) {
+            //     console.log(result);
+            //     if (result === "success") {
+            //         //formContext.getControl("header_process_ap_requerimientointerno").setVisible(false);
+            //         formContext.getControl("header_process_ap_requerimientointerno_2").setVisible(false);
+            //         formContext.getControl("header_process_ap_tiendaintervenida").setVisible(false);
+            //         formContext.getControl("ap_regional").getAttribute().setRequiredLevel('required');
+            //     }
+            // }
         } catch (error) {
             console.log("error condiciosn del cas")
         }
-        
+
     }
 
     //FORMULARIO REQUERIMIENTOS INTERNOS
@@ -328,10 +328,6 @@ function cambioStage(executionContext) {
     }
 }
 
-
-
-
-
 function ocultatTabIncident(executionContext) {
 
     try {
@@ -381,4 +377,35 @@ function ver(executionContext) {
 function pruebaPrevent(executionContext) {
     let formContext = executionContext.getFormContext();
     console.log(formContext);
+}
+
+
+function onLoadChangeApCategoria(executionContext) {
+    try {
+        let formContext = executionContext.getFormContext();
+
+        let ap_categoria = formContext.getAttribute("ap_categoria");
+        if (ap_categoria) ap_categoria.addOnChange(changeAp_categoria);
+    } catch (error) {
+        console.log("errror en la funcion change_Apcategoria en el script incident_flujodeprocesos_Actualizado");
+    }
+}
+
+function changeAp_categoria(executionContext) {
+    try {
+
+        let formContext = executionContext.getFormContext();
+
+        let ap_categoria = formContext.getAttribute("ap_categoria");
+        let ap_aplicativo = formContext.getAttribute("ap_aplicativo");
+        let ap_componentehw = formContext.getAttribute("ap_componentehw");
+        let ap_componentessw = formContext.getAttribute("ap_componentessw");
+
+        if (ap_aplicativo) ap_aplicativo.setValue(null);
+        if (ap_componentehw) ap_componentehw.setValue(null);
+        if (ap_componentessw) ap_componentessw.setValue(null);
+
+    } catch (error) {
+        console.log("errror en la funcion change_Apcategoria en el script incident_flujodeprocesos_Actualizado");
+    }
 }
