@@ -70,6 +70,8 @@ function documentosCargados(executionContext) {
         let tp3 = 0;
         let tp4 = 0;
 
+     
+
         //obtengo el contexto del formulario
         let formContext = executionContext.getFormContext();
         let validate_send = formContext.getAttribute("ap_validate_send");
