@@ -25,10 +25,10 @@ function set_ap_requerimientointerno(executionContext) {
           ap_requerimientointerno.setValue(true);
           formContext.getControl("ap_requerimientointerno").setDisabled(true);
         }
-        if (ap_equipoasignado) {
-          ap_equipoasignado.setValue(equipo1);
-          formContext.getControl("ap_equipoasignado").setDisabled(true);
-        }
+        // if (ap_equipoasignado) {
+        //   ap_equipoasignado.setValue(equipo1);
+        //   formContext.getControl("ap_equipoasignado").setDisabled(true);
+        // }
       } else if (FORM_CURRENT === null) {
         let ap_requerimientointerno = formContext.getAttribute(
           "ap_requerimientointerno"
@@ -38,10 +38,10 @@ function set_ap_requerimientointerno(executionContext) {
           ap_requerimientointerno.setValue(true);
           formContext.getControl("ap_requerimientointerno").setDisabled(true);
         }
-        if (ap_equipoasignado) {
-          ap_equipoasignado.setValue(equipo1);
-          formContext.getControl("ap_equipoasignado").setDisabled(true);
-        }
+        // if (ap_equipoasignado) {
+        //   ap_equipoasignado.setValue(equipo1);
+        //   formContext.getControl("ap_equipoasignado").setDisabled(true);
+        // }
       }
     }
   } catch (error) {

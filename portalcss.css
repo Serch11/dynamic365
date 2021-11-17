@@ -1077,7 +1077,8 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 body {
-  font-family: 'Libre Franklin', sans-serif;'Libre Franklin', sans-serif;
+   /*font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+   font-family: 'Libre Franklin', sans-serif;
   font-size: 15px;
   line-height: 1.42857;
   color: #666;

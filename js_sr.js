@@ -5,7 +5,7 @@ $formulario.addEventListener("submit", e => {
     body: JSON.stringify({
       DescripcionTema: "Test POST",
       DescripcionReq: 2,
-      fechaCierreEstimadaReq: new Date("2021 - 12 - 12"),
+      fechaCierreEstimadaReq:2021-12-12,
       numOptty: 122,
       numPedido: 4456,
       idClienteOptty: 566,
