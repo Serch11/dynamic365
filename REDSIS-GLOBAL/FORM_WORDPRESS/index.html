@@ -47,22 +47,27 @@
         <input type="submit" value="Send">
     </form>
 </body>
+<script type="text/javascript">
+ 
+    </script>
 <script>
     document.querySelector(".form").addEventListener("submit", consumirwebServices);
 
     function consumirwebServices(event) {
-        var titulo;
-        var res;
-        jQuery(document).ready(function ($) {
-            titulo = $('meta[property="og:title"]').attr('content');
-            res = titulo.slice(0, titulo.indexOf(" - "));
-        });
-
+          /*  var titulo;
+            var res;
+            jQuery(document).ready(function ($) {
+                titulo = $('meta[property="og:title"]').attr('content');
+                res = titulo.slice(0, titulo.indexOf(" - "));
+            });
+*/
         console.log(event);
         event.preventDefault();
 
 
         console.log(event.target);
+        let num = Number(document.getElementById("mobilephone").value);
+        console.log(Number(document.getElementById("mobilephone").value));
         let objecto = {
             firtname: document.getElementById("firstname").value,
             lastname: document.getElementById("lastname").value,
@@ -70,7 +75,7 @@
             ciudad: document.getElementById("address1_city").value,
             companyname: document.getElementById("companyname").value,
             emailaddress1: document.getElementById("emailaddress1").value,
-            mobilephone: document.getElementById("mobilephone").value,
+            mobilephone: num,
             description: document.getElementById("description").value,
             subject: "web "
         }
@@ -80,6 +85,10 @@
         console.log(objecto);
         if (Object.values(objecto).length === 9) {
             enviarDatos(objecto);
+        }
+
+        {
+            "ok":true
         }
 
 
