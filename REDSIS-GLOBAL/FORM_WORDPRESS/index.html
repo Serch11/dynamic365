@@ -48,20 +48,40 @@
     </form>
 </body>
 <script>
-    document.querySelector(".form").addEventListener("submit", consumirwebServices);
+
+
+
+
+    var $form = document.querySelector(".form");
+    var titulo;
+    var res;
+
+    // jQuery(document).ready(function ($) {
+    //     titulo = $('meta[property="og:title"]').attr('content');
+    //     res = titulo.slice(0, titulo.indexOf(" - "));
+    //     $form = document.getElementById("wpcf7-f14752-p14751-o1");
+    //     $('input#subject').val("Web " + res);
+
+
+
+    //     
+
+
+    // });
+
+    $form.addEventListener('submit', (e) => {
+        console.log(e);
+        e.preventDefault();
+        console.log(e.target);
+    });
+
+
+
+
 
     function consumirwebServices(event) {
-        var titulo;
-        var res;
-        jQuery(document).ready(function ($) {
-            titulo = $('meta[property="og:title"]').attr('content');
-            res = titulo.slice(0, titulo.indexOf(" - "));
-        });
-
         console.log(event);
         event.preventDefault();
-
-
         console.log(event.target);
         let objecto = {
             firtname: document.getElementById("firstname").value,
@@ -72,26 +92,29 @@
             emailaddress1: document.getElementById("emailaddress1").value,
             mobilephone: document.getElementById("mobilephone").value,
             description: document.getElementById("description").value,
-            subject: "web "
+            subject: document.getElementById("subject").value
         }
-
-        console.log(Object.values(objecto).length === 9, 'true/false if  object is completed');
         console.log(Object.keys(objecto).length === 0);
         console.log(objecto);
         if (Object.values(objecto).length === 9) {
-            enviarDatos(objecto);
+            if ($form) {
+                console.log($form);
+                enviarDatos(objecto);
+            }
         }
-
-
     };
+
+
+
+
+
 
 
 
 
     function enviarDatos(datos) {
         let req = new XMLHttpRequest();
-        let url =
-            "https://prod-02.brazilsouth.logic.azure.com:443/workflows/e2902bb4abcd49c0b49c9d16cb5df084/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ROI9ILHud0ES9pm-5ODQPzQgJqK7DUeRvNnNUw0u8KQ";
+        let url = "https://prod-02.brazilsouth.logic.azure.com:443/workflows/e2902bb4abcd49c0b49c9d16cb5df084/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ROI9ILHud0ES9pm-5ODQPzQgJqK7DUeRvNnNUw0u8KQ";
         let data = JSON.stringify(datos);
         req.open("POST", url, true);
         req.setRequestHeader("Content-Type", "application/json");
@@ -101,7 +124,6 @@
             if (this.onreadystatechange === 200) {
                 this.onreadystatechange = 0;
             }
-
             if (this.status === 200) {
                 console.log(this.responseText);
                 console.log("ok");
@@ -109,5 +131,6 @@
         };
     }
 </script>
+
 
 </html>
