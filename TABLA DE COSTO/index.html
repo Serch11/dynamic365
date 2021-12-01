@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <h1>
+        Tabla de costo Dynamics 365.
+    </h1>
+    <section id="encabezado">
+        <div class="container-encabezado">
+            <input type="text" id="nametable" placeholder="Ingrese el nombre de la tabla de costo">
+            <input type="file" id="filetable">
+        </div>
+
+    </section>
+
+    <section id="tabladecosto">
+        <div class="container-tablecosto">
+            <table class="tablecosto" border="1px">
+                <tr>
+                    <th>Category</th>
+                    <th>Referencia</th>
+                    <th>Product Id</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price per Unit</th>
+                    <th>Amount</th>
+                    <th>Exhibit</th>
+                    <th>Opportunity Relational</th>
+                    <th>Commercial Client</th>
+                    <th>C/U</th>
+                    <th>C/T</th>
+                    <th>Special Discount</th>
+                    <th>C/U FOB</th>
+                    <th>Import %</th>
+                    <th>C/U CIF</th>
+                    <th>Total Cost</th>
+                    <th>Margin</th>
+                    <th>P venta Unit</th>
+                    <th>Extended Amount</th>
+                    <th>Vendor</th>
+                    <th>Special code quote</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td class="category">Categoria</td>
+                        <td class="referencia">referencia</td>
+                        <td class="productid">productid</td>
+                        <td class="productname">product name</td>
+                        <td class="quantity"> cantidad</td>
+                        <td class="priceporunit">precio por unidad</td>
+                        <td class="amount">Amount</td>
+                        <td class="exhibit">exhibit</td>
+                        <td class="opportunity">Oportunidad</td>
+                        <td class="comercialcliente">cliente comercial</td>
+                        <td class="costounitario">costo unit</td>
+                        <td class="costototal"> costo total</td>
+                        <td class="specialdiscount"> special discount</td>
+                        <td class="cufob"> costo u fob</td>
+                        <td class="import"> import %</td>
+                        <td class="costounitcif">costo unit cif</td>
+                        <td class="totalcost"> total cost</td>
+                        <td class="margin">margin</td>
+                        <td class="pventaunit">precio venta unit</td>
+                        <td class="extendedamount">extended amount</td>
+                        <td class="vendor">vendor</td>
+                        <td class="specialcode">special code</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+
+
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"></script>
+<script src="index.js"></script>
+
+</html>
