@@ -14,9 +14,7 @@ function disabledNameSaved(executionContext) {
     try {
         let formContext = executionContext.getFormContext();
         let name = formContext.getControl("name");
-
         name.setDisabled(true);
-
     } catch (error) {
         console.log("disabledNameSavedY");
     }
@@ -39,9 +37,6 @@ function changeStateSaleOrder(executionContext) {
          * Stopped in shopping 899,080,008                        9
          *
          */
-
-
-
 
         let formContext = executionContext.getFormContext();
         var objEstado = formContext.data.process.getActiveStage();
