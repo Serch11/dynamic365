@@ -1,0 +1,40 @@
+body {
+  border: 0px;
+  padding: 0px;
+  font-size: 13px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#encabezado {
+  border: 1px solid transparent;
+  margin-left: 10ox;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  
+}
+
+#encabezado div {
+  border: 1px solid transparent;
+  padding: 20px;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#encabezado div input {
+  display: block;
+  justify-content: center;
+  width: 100%;
+  margin: 5px;
+}
+
+#tabladecosto {
+  border: 1px solid transparent;
+  margin: 1px;
+  padding: 1px;
+  box-shadow: 5px 5px 5px 0;
+}
