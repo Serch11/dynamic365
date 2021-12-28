@@ -19,7 +19,7 @@ function loadSubGrid(executionContext) {
     }
 }
 
-//funcion para
+//funcion para validar el mensaje.
 function validaciones(executionContext) {
     try {
         let formContext = executionContext.getFormContext();

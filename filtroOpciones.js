@@ -93,7 +93,6 @@ function getForm(executeContext) {
     //cambio de tienda              778.210.008
     //garantia                    778.210.012
 
-
     formContext.getControl("ap_procedimientodelcaso").removeOption(1);
     formContext.getControl("ap_procedimientodelcaso").removeOption(2);
     formContext.getControl("ap_procedimientodelcaso").removeOption(3);
