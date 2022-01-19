@@ -1,6 +1,48 @@
-function loadFunctionGetSubGrid(executionContext) {
-  getSubGrid(executionContext);
-  mensajeOportunidad(executionContext);
+function main(executionContext) {
+  try {
+    let formContext = executionContext.getFormContext();
+    formContext.data.process.addOnStageChange(validarNombreStage);
+  } catch (error) {
+    console.log("Erro funcion main");
+  }
+}
+
+//FUNCION PRINCIPAL PARA EJECUTAR FUNCIONES DE ESCUCHA DE EVENTOS
+
+//HACER REQUERIDO CAMPO OFERTA APROBADO SI NO SE ENCUENTRA EN LA FASE DE CIERRE DENTRO
+// DE LA CINTA DE PROCESO DE PROCESO DE VENTA DE LA OPORTUNIDAD.
+function bloquear_ap_ofertaprobada_en_la_BPF(executionContext) {
+  try {
+    let formContext = executionContext.getFormContext();
+    let activeStage = formContext.data.process.getActiveStage();
+    let header_process_ap_ofertaaprobada = formContext.getControl(
+      "header_process_ap_ofertaaprobada"
+    );
+
+    if (activeStage?.getName() !== "Cierre" && header_process_ap_ofertaaprobada)
+      header_process_ap_ofertaaprobada.setDisabled(true);
+  } catch (error) {
+    console.log(error);
+    console.log("error funcion bloquear_ap_ofertaprobada_en_la_BPF");
+  }
+}
+
+function validarNombreStage(executionContext) {
+  try {
+    let formContext = executionContext.getFormContext();
+    let activeStage = formContext.data.process.getActiveStage();
+    let header_process_ap_ofertaaprobada = formContext.getControl(
+      "header_process_ap_ofertaaprobada"
+    );
+
+    if (activeStage?.getName() === "Cierre") {
+      header_process_ap_ofertaaprobada.setDisabled(false);
+    } else {
+      header_process_ap_ofertaaprobada.setDisabled(true);
+    }
+  } catch (error) {
+    console.log("Error validarNombreStage");
+  }
 }
 
 function getSubGrid(executeContext) {
@@ -175,9 +217,11 @@ function mensajeOportunidad(executionContext) {
       : null;
 
     formContext.data.addOnLoad(viewMessage);
-    if(activeProcess){
+    if (activeProcess) {
       if (
-        formContext.getControl("header_process_ap_ofertaaprobada").getAttribute()
+        formContext
+          .getControl("header_process_ap_ofertaaprobada")
+          .getAttribute()
       ) {
         Xrm.Page.getControl("header_process_ap_ofertaaprobada")
           .getAttribute()

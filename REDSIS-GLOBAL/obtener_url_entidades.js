@@ -19,7 +19,7 @@ function obtenerURl(executionContext) {
             let url = Xrm.Utility.getGlobalContext().getCurrentAppUrl();
             idEntidad = formContext.data.entity.getId().slice(1, 37).toLowerCase();
             data = `${url}&pagetype=entityrecord&etn=${entidad}&id=${idEntidad}`;
-            console.log(data);
+            
             if (ap_url_registro_entidad) ap_url_registro_entidad.setValue(data);
         } else {
             console.log("Nuevo registro");
