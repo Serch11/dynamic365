@@ -1,9 +1,36 @@
 function main(executionContext) {
   try {
     let formContext = executionContext.getFormContext();
+
+    showOrhideOptionForecast(executionContext);
     formContext.data.process.addOnStageChange(validarNombreStage);
+    formContext.getAttribute("statuscode").addOnChange(showOrhideOptionForecast);
+
+    
   } catch (error) {
     console.log("Erro funcion main");
+  }
+}
+
+function showOrhideOptionForecast(executionContext){
+  console.log("cambio estado");
+  let formContext = executionContext.getFormContext();
+  let optionLograda = {
+    text :"Lograda",
+    value :100000005
+  }
+  let optionPerdida = {
+    text:"Perdida",
+    value :100000006
+  }
+
+  if(formContext.getAttribute("statecode").getValue() === 0 ){
+
+    formContext.getControl("msdyn_forecastcategory")?.removeOption(100000005); //Lograda
+    formContext.getControl("msdyn_forecastcategory")?.removeOption(100000006); //perdida
+  } else{
+    formContext.getControl('msdyn_forecastcategory').addOption(optionLograda);
+    formContext.getControl('msdyn_forecastcategory').addOption(optionPerdida);
   }
 }
 

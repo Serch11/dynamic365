@@ -1,7 +1,40 @@
 function loadFunctionGetSubGrid(executionContext) {
-  getSubGrid(executionContext);
-  mensajeOportunidad(executionContext);
-  verificarOportunidad(executionContext);
+  try {
+    let formContext = executionContext.getFormContext();
+
+    getSubGrid(executionContext);
+    mensajeOportunidad(executionContext);
+    verificarOportunidad(executionContext);
+    bloquear_ap_ofertaprobada_en_la_BPF(executionContext);
+    showOrhideOptionForecast(executionContext);
+    formContext.getAttribute("statuscode").addOnChange(showOrhideOptionForecast);
+
+    formContext.data.process.addOnStageChange(validarNombreStage);
+  } catch (error) {
+    console.log("Error funcion loadFunctionGetSubGrid");
+  }
+}
+
+function showOrhideOptionForecast(executionContext){
+  console.log("cambio estado");
+  let formContext = executionContext.getFormContext();
+  let optionLograda = {
+    text :"Lograda",
+    value :100000005
+  }
+  let optionPerdida = {
+    text:"Perdida",
+    value :100000006
+  }
+
+  if(formContext.getAttribute("statecode").getValue() === 0 ){
+
+    formContext.getControl("msdyn_forecastcategory")?.removeOption(100000005); //Lograda
+    formContext.getControl("msdyn_forecastcategory")?.removeOption(100000006); //perdida
+  } else{
+    formContext.getControl('msdyn_forecastcategory').addOption(optionLograda);
+    formContext.getControl('msdyn_forecastcategory').addOption(optionPerdida);
+  }
 }
 
 function getSubGrid(executeContext) {
@@ -19,7 +52,6 @@ function getSubGrid(executeContext) {
       .setDisabled(true);
 
     let nombreCinta = activeProcess.getName();
-    
 
     if (nombreCinta === cintaName || nombreCinta === cintaProspecto) {
       let gridContextCompetidores = formContext.getControl("Competitors");
@@ -84,7 +116,9 @@ function setCompetidores(executeContext) {
   let cintaName = "Opportunity Sales Process";
   let cintaProspecto = "Lead to Opportunity Sales Process";
 
-  let activeProcess = formContext.data.process.getActiveProcess() ? formContext.data.process.getActiveProcess() : null;
+  let activeProcess = formContext.data.process.getActiveProcess()
+    ? formContext.data.process.getActiveProcess()
+    : null;
   if (activeProcess) {
     let nombreCinta = activeProcess.getName();
     if (nombreCinta) {
@@ -114,43 +148,40 @@ function setCompetidores(executeContext) {
 }
 
 function setEquipoVenta(executeContext) {
-   try {
+  try {
     let formContext = executeContext.getFormContext();
     let cintaName = "Opportunity Sales Process";
     let cintaProspecto = "Lead to Opportunity Sales Process";
     let activeProcess = formContext.data.process.getActiveProcess();
-    
+
     if (activeProcess) {
       let nombreCinta = activeProcess.getName();
-      
+
       if (nombreCinta) {
         if (nombreCinta === cintaName || nombreCinta === cintaProspecto) {
           let GridPursuit_Team = formContext.getControl("Pursuit_Team");
           let Pursuit_Team = formContext.getAttribute("identifypursuitteam");
-          
+
           if (GridPursuit_Team.getGrid().getTotalRecordCount() > 0) {
             Pursuit_Team.setValue(true);
             formContext
               .getControl("header_process_identifypursuitteam")
               .getAttribute()
               .setValue(true);
-            
           } else {
             Pursuit_Team.setValue(false);
             formContext
               .getControl("header_process_identifypursuitteam")
               .getAttribute()
               .setValue(false);
-            
           }
         }
       }
     }
-   } catch (error) {
-       console.log(error);
-       console.log("Error fc setEquipoVenta");
-   } 
-  
+  } catch (error) {
+    console.log(error);
+    console.log("Error fc setEquipoVenta");
+  }
 }
 
 function mensajeOportunidad(executionContext) {
@@ -325,5 +356,45 @@ function verificarOportunidad(executionContext) {
     );
   } catch (error) {
     console.log(error);
+  }
+}
+
+function validarNombreStage(executionContext) {
+  try {
+    let formContext = executionContext.getFormContext();
+    let activeStage = formContext.data.process.getActiveStage();
+    let header_process_ap_ofertaaprobada = formContext.getControl(
+      "header_process_ap_ofertaaprobada"
+    );
+
+    if (activeStage?.getName() === "Close") {
+      header_process_ap_ofertaaprobada.setDisabled(false);
+    } else {
+      header_process_ap_ofertaaprobada.setDisabled(true);
+    }
+  } catch (error) {
+    console.log("Error validarNombreStage");
+  }
+}
+
+function bloquear_ap_ofertaprobada_en_la_BPF(executionContext) {
+  try {
+    let formContext = executionContext.getFormContext();
+    let activeStage = formContext.data.process.getActiveStage();
+    let header_process_ap_ofertaaprobada = formContext.getControl(
+      "header_process_ap_ofertaaprobada"
+    );
+
+    if (
+      activeStage?.getName() === "Close" &&
+      header_process_ap_ofertaaprobada
+    ) {
+      header_process_ap_ofertaaprobada.setDisabled(false);
+    } else {
+      header_process_ap_ofertaaprobada.setDisabled(true);
+    }
+  } catch (error) {
+    console.log(error);
+    console.log("error funcion bloquear_ap_ofertaprobada_en_la_BPF");
   }
 }
