@@ -91,6 +91,7 @@ function getForm(executeContext) {
         //cambio de tienda              778.210.008
         //garantia                    778.210.012
 
+<<<<<<< HEAD
         formContext.getControl("ap_procedimientodelcaso").removeOption(1);
         formContext.getControl("ap_procedimientodelcaso").removeOption(2);
         formContext.getControl("ap_procedimientodelcaso").removeOption(3);
@@ -120,6 +121,29 @@ function getForm(executeContext) {
             formContext.getControl("ap_accionderesolucion").removeOption(778210004);
         }
     }
+=======
+    formContext.getControl("ap_procedimientodelcaso").removeOption(1);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(2);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(3);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(4);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210002);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210004);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210005);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210006);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210009);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210011);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210019);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210020);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210021);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210022);
+    formContext.getControl('ap_procedimientodelcaso').removeOption(778210017);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210003);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210007);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210010);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210008);
+    formContext.getControl("ap_procedimientodelcaso").removeOption(778210012);
+  }
+>>>>>>> 2b55f50d48210307062009ce2a338dd47b3afc1d
 
     if (FORM_NAME === "Caso CAS") {
         formContext.getControl("ap_procedimientodelcaso").removeOption(1);

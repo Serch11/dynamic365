@@ -27,62 +27,67 @@
     <section id="tabladecosto">
         <div class="container-tablecosto">
             <table class="tablecosto" border="1px">
-                <tr>
-                    <th>Category</th>
-                    <th>Referencia</th>
-                    <th>Product Id</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price per Unit</th>
-                    <th>Amount</th>
-                    <th>Exhibit</th>
-                    <th>Opportunity Relational</th>
-                    <th>Commercial Client</th>
-                    <th>C/U</th>
-                    <th>C/T</th>
-                    <th>Special Discount</th>
-                    <th>C/U FOB</th>
-                    <th>Import %</th>
-                    <th>C/U CIF</th>
-                    <th>Total Cost</th>
-                    <th>Margin</th>
-                    <th>P venta Unit</th>
-                    <th>Extended Amount</th>
-                    <th>Vendor</th>
-                    <th>Special code quote</th>
-                </tr>
-                <tbody>
+                <thead>
                     <tr>
-                        <td class="category">Categoria</td>
-                        <td class="referencia">referencia</td>
-                        <td class="productid">productid</td>
-                        <td class="productname">product name</td>
-                        <td class="quantity"> cantidad</td>
-                        <td class="priceporunit">precio por unidad</td>
-                        <td class="amount">Amount</td>
-                        <td class="exhibit">exhibit</td>
-                        <td class="opportunity">Oportunidad</td>
-                        <td class="comercialcliente">cliente comercial</td>
-                        <td class="costounitario">costo unit</td>
-                        <td class="costototal"> costo total</td>
-                        <td class="specialdiscount"> special discount</td>
-                        <td class="cufob"> costo u fob</td>
-                        <td class="import"> import %</td>
-                        <td class="costounitcif">costo unit cif</td>
-                        <td class="totalcost"> total cost</td>
-                        <td class="margin">margin</td>
-                        <td class="pventaunit">precio venta unit</td>
-                        <td class="extendedamount">extended amount</td>
-                        <td class="vendor">vendor</td>
-                        <td class="specialcode">special code</td>
+                        <th>Category</th>
+                        <th>Referencia</th>
+                        <th>Product Id</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price per Unit</th>
+                        <th>Amount</th>
+                        <th>Exhibit</th>
+                        <th>Opportunity Relational</th>
+                        <th>Commercial Client</th>
+                        <th>C/U</th>
+                        <th>C/T</th>
+                        <th>Special Discount</th>
+                        <th>C/U FOB</th>
+                        <th>Import %</th>
+                        <th>C/U CIF</th>
+                        <th>Total Cost</th>
+                        <th>Margin</th>
+                        <th>P venta Unit</th>
+                        <th>Extended Amount</th>
+                        <th>Vendor</th>
+                        <th>Special code quote</th>
                     </tr>
+                </thead>
+
+                <tbody id="bodytable">
+
                 </tbody>
             </table>
         </div>
     </section>
 
 
-
+    <template id="template" name="component-name">
+        <tr>
+            <td class="categoria"></td>
+            <td class="referencia"></td>
+            <td class="productoid"></td>
+            <td class="productoname"></td>
+            <td class="cantidad"></td>
+            <td class="precioporunidad"></td>
+            <td class="amount"></td>
+            <td class="exhibit"></td>
+            <td class="opprelacionada"></td>
+            <td class="clientecomercial"></td>
+            <td class="costounitario"></td>
+            <td class="costototalcol"></td>
+            <td class="descuentoespecial"></td>
+            <td class="costounitariofob"></td>
+            <td class="importacion"></td>
+            <td class="costounitariocif"></td>
+            <td class="costototal"></td>
+            <td class="margen"></td>
+            <td class="precioventaunitario"></td>
+            <td class="extendedamount"></td>
+            <td class="vendor"></td>
+            <td class="specialcodequote"></td>
+        </tr>
+    </template>
 
 
 </body>

@@ -1,29 +1,20 @@
-/** 
+/**
  * taks
  * nombre con un numero de consecutivo
- * agregar campos en la vista de create on y modified 
+ * agregar campos en la vista de create on y modified
  * notificacion en la parte superior cuando los documentos esten listos.
- * 
- * 
- * 
- *  tipos de documentos para rus
-    
-    FINANCIAL STATEMENT AUDITED
-    COPY OF W-9
-    COPY OF TAX EXCEPMT FORM (IF APPLICABLE)
-    ARTICLES OF ORGANIZATION
-
- * 
- * 
-*/
+ *
+ */
 
 function loadSubGrid(executionContext) {
   try {
     let formContext = executionContext.getFormContext();
     let gridDocument = formContext.getControl("document_view");
 
-    console.log("cargando funcion loadSubgrid");
+    //se ejecuta siempre que se entra al contexto del formulario
     validaciones(executionContext);
+
+    //se ejecuta cada ves que se add , update , delete or load tab invoice - facturacion
     gridDocument.addOnLoad(documentosCargados);
   } catch (error) {
     console.log(error);
@@ -36,8 +27,9 @@ function validaciones(executionContext) {
     let formContext = executionContext.getFormContext();
     let ap_validate_send = formContext.getAttribute("ap_validate_send");
     let ap_validateddocuments = formContext.getControl("ap_validateddocuments");
+
     if (ap_validate_send.getValue() === 1) {
-      ap_validateddocuments.setDisabled(false);
+      ap_validateddocuments.setDisabled(false); //documentos no han sido validados
       formContext.ui.setFormNotification(
         "DOCUMENTS ARE READY TO BE REVIEWED BY THE ADMINISTRATIVE AREA. A NOTICE HAS BEEN SENT",
         "WARNING",
@@ -45,7 +37,7 @@ function validaciones(executionContext) {
       );
     } else {
       formContext.ui.clearFormNotification("notification_unique_id");
-      ap_validateddocuments.setDisabled(true);
+      ap_validateddocuments.setDisabled(true); //documentos fueron validados
     }
   } catch (error) {}
 }
@@ -55,6 +47,7 @@ function documentosCargados(executionContext) {
     //declaramos el array que guardara los registros creados;
     let ArrayDeRegistros = new Array();
     let send = 0;
+
     //declaramos los tipos de registros
     let tp1 = 0;
     let tp2 = 0;
@@ -63,38 +56,42 @@ function documentosCargados(executionContext) {
 
     //obtengo el contexto del formulario
     let formContext = executionContext.getFormContext();
-    let validate_send = formContext.getAttribute("ap_validate_send");
-    let ap_validateddocuments = formContext.getControl("ap_validateddocuments");
-    let name = formContext.getAttribute("name");
-    //ap_validateddocuments.getAttribute().setValue(false);
+
+    let validate_send = formContext.getAttribute("ap_validate_send"); //indica si la notificacion fue enviada.
+
+    let name = formContext.getAttribute("name"); //nombre de la cuenta
+
     //obtenemos el contexto de la subcuadricula
     let gridDocument = formContext.getControl("document_view");
+
     //obtenemos la coleccion de datos de la subcuadricula
     let myRows = gridDocument.getGrid().getRows();
     //obtenemos la cantidad de registro que se encuentran en la subcuadricula
-    let RowCount = myRows.getLength();
 
     setTimeout(() => {
       myRows.forEach((value, index) => {
         //console.log(value, index);
         let gridRowData = myRows.get(index).getData();
         //console.log(gridRowData);
+
         //obtenmos la coleccion de cada registro de la coleccion
         let entity = gridRowData.getEntity();
         //console.log(entity);
+
         //obtenemos la data relaccionada a cada registro
         let entityReference = entity.getEntityReference();
+
         //console.log(entityReference);
         ArrayDeRegistros.push(entityReference.name);
       });
       //console.log(ArrayDeRegistros);
       ArrayDeRegistros.forEach((value, index, array) => {
         //console.log(value);
+
+        //separador es un array que trae el nombre codigo y el tipo de documento
         let separador = value.split("-");
         //console.log(separador[1]);
         if (separador[1]) {
-          console.log(Number(separador[1]));
-          console.log(typeof Number(separador[1]));
           switch (Number(separador[1])) {
             case 1:
               tp1++;
@@ -116,6 +113,7 @@ function documentosCargados(executionContext) {
       });
       console.log(tp1, tp2, tp3, tp4);
       console.log(`validate send ${validate_send.getValue()}`);
+
       if (
         tp1 >= 1 &&
         tp2 >= 1 &&
@@ -125,7 +123,10 @@ function documentosCargados(executionContext) {
       ) {
         console.log("enviamos la notificacion");
 
-        let urlflujo = "https://prod-26.brazilsouth.logic.azure.com:443/workflows/5745a5e9f5804f0eb1efedab5935c0c4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=O8UvB0vEScLRHS0ZCFdU2_qsVsTSddJXFlJI0HNmMeY";
+        validate_send.setValue(1);
+
+        let urlflujo =
+          "https://prod-10.brazilsouth.logic.azure.com:443/workflows/b90cd048530145c9b01fad3df21c7f21/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=oT4eofpTbc8yJST7AWEtU_pxTjUXt3F3mZq78JdCxfM";
         let req = new XMLHttpRequest();
         let salida = JSON.stringify({
           accountname: name.getValue(),
@@ -136,8 +137,6 @@ function documentosCargados(executionContext) {
         req.setRequestHeader("Content-Type", "application/json");
         req.send(salida);
 
-        validate_send.setValue(1);
-
         //validamos la respuesta de la solicitud
         req.onreadystatechange = function () {
           if (this.onreadystatechange === 4) {
@@ -147,6 +146,7 @@ function documentosCargados(executionContext) {
             console.log("todook");
           }
         };
+
         validaciones(executionContext);
       } else if (
         (tp1 === 0 || tp2 === 0 || tp3 === 0 || tp4 === 0) &&
@@ -154,7 +154,6 @@ function documentosCargados(executionContext) {
       ) {
         console.log("restablecemos el envio de notificaciones a 0");
         validate_send.setValue(0);
-
         validaciones(executionContext);
       }
     }, 1000);
