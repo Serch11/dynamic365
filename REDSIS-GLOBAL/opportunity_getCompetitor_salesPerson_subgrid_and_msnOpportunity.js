@@ -7,33 +7,34 @@ function loadFunctionGetSubGrid(executionContext) {
     verificarOportunidad(executionContext);
     bloquear_ap_ofertaprobada_en_la_BPF(executionContext);
     showOrhideOptionForecast(executionContext);
-    formContext.getAttribute("statuscode").addOnChange(showOrhideOptionForecast);
-
+    formContext
+      .getAttribute("statuscode")
+      .addOnChange(showOrhideOptionForecast);
     formContext.data.process.addOnStageChange(validarNombreStage);
   } catch (error) {
-    console.log("Error funcion loadFunctionGetSubGrid");
+   console.log("Error funcion loadFunctionGetSubGrid");
   }
 }
 
-function showOrhideOptionForecast(executionContext){
+
+function showOrhideOptionForecast(executionContext) {
   console.log("cambio estado");
   let formContext = executionContext.getFormContext();
   let optionLograda = {
-    text :"Lograda",
-    value :100000005
-  }
+    text: "Lograda",
+    value: 100000005,
+  };
   let optionPerdida = {
-    text:"Perdida",
-    value :100000006
-  }
+    text: "Perdida",
+    value: 100000006,
+  };
 
-  if(formContext.getAttribute("statecode").getValue() === 0 ){
-
+  if (formContext.getAttribute("statecode").getValue() === 0) {
     formContext.getControl("msdyn_forecastcategory")?.removeOption(100000005); //Lograda
     formContext.getControl("msdyn_forecastcategory")?.removeOption(100000006); //perdida
-  } else{
-    formContext.getControl('msdyn_forecastcategory').addOption(optionLograda);
-    formContext.getControl('msdyn_forecastcategory').addOption(optionPerdida);
+  } else {
+    formContext.getControl("msdyn_forecastcategory").addOption(optionLograda);
+    formContext.getControl("msdyn_forecastcategory").addOption(optionPerdida);
   }
 }
 
