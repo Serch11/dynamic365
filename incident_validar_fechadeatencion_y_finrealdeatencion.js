@@ -11,6 +11,10 @@ function validarFechas(executionContext) {
     const mensajeF =
         "La fecha final de atencion no puede ser menor  a la fecha inicial de atencion. se le colocara la fecha actual";
 
+    if (ap_iniciorealdeatencion.getValue().getTime() > todayDate.getTime()) {
+        mensajeAlerta(executionContext, mensajeI, "ap_iniciorealdeatencion");
+    }
+
     if (ap_iniciorealdeatencion.getValue() && !ap_finrealdeatencion.getValue()) {
         if (ap_iniciorealdeatencion.getValue().getTime() > todayDate.getTime())
             mensajeAlerta(executionContext, mensajeI, "ap_iniciorealdeatencion");
