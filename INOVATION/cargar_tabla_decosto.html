@@ -1,51 +1,68 @@
-<html><head>
+<html>
+
+<head>
     <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
     <script src="https://redsisdesarrollo.crm2.dynamics.com//WebResources/new_js_cargar_archivo_cotizacion" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"></script>
-	<style>
-		body {
-		  background: 	#FFFFFF url("https://photos-6.dropbox.com/t/2/AAC_bdqR8LMkjEe-HPIf4K1DhtseMLRHPklBSzJSuzglvA/12/5714737/jpeg/1024x768/3/1418346000/0/2/bkg-blur.jpg/CLHm3AIgASgBKAI/b7RrveA2022yJyfO9RyRvv7LjJQESukGHssHUxVThzw") no-repeat center center fixed;
-		  background-size: cover;
-		  font-family: "Roboto";
-		  -webkit-font-smoothing: antialiased;
-		  -moz-osx-font-smoothing: grayscale;
-		  &::before {
-			z-index: -1;
-			content: '';
-			position: fixed;
-			top: 0;
-			left: 0;
-			background: #44c4e7;
-			/* IE Fallback */
-			background: rgba(68,196,231, 0.8);
-			width: 100%;
-			height: 100%;
-		  }
-		}
-		table {
-		  border-collapse: collapse;
-		  width: 100%;
-		  display: none;
-		}
+    <style>
+        body {
+            background: #FFFFFF url("https://photos-6.dropbox.com/t/2/AAC_bdqR8LMkjEe-HPIf4K1DhtseMLRHPklBSzJSuzglvA/12/5714737/jpeg/1024x768/3/1418346000/0/2/bkg-blur.jpg/CLHm3AIgASgBKAI/b7RrveA2022yJyfO9RyRvv7LjJQESukGHssHUxVThzw") no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Roboto";
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            &::before {
+                z-index: -1;
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                background: #44c4e7;
+                /* IE Fallback */
+                background: rgba(68, 196, 231, 0.8);
+                width: 100%;
+                height: 100%;
+            }
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            display: none;
+        }
+        
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+        
+        th {
+            background-color: rgb(105, 105, 105);
+            color: white;
+        }
+        
+        .error,
+        .valid {
+            display: none;
+        }
+    </style>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
 
-		th, td {
-		  text-align: left;
-		  padding: 8px;
-		}
-
-		tr:nth-child(even){background-color: #f2f2f2}
-
-		th {
-		  background-color: rgb(105, 105, 105);
-		  color: white;
-		}
-		.error, .valid{display:none;}
-	</style>
-<meta><meta><meta><meta><meta><meta></head>
 <body id="bdy" style="overflow-wrap: break-word;" onfocusout="parent.setEmailRange();">
-	<section class="form animated flipInX">
-		<form class="loginbox" autocomplete="off" style="
+    <section class="form animated flipInX">
+        <form class="loginbox" autocomplete="off" style="
 			position: absolute;
 			top: 50%;
 			left: 50%;
@@ -56,16 +73,16 @@
 			padding: 40px;
 			box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 		">
-			<h2 style="
+            <h2 style="
 				margin: 0 0 20px;
 				line-height: 1;
 				color: rgb(105, 105, 105);
 				font-size: 18px;
 				font-weight: 400;
 			">
-				Cargar Tabla de Costos
-			</h2>
-			<input placeholder="Nombre de la Hoja" type="text" id="hoja" style="
+                Cargar Tabla de Costos
+            </h2>
+            <input placeholder="Nombre de la Hoja" type="text" id="hoja" style="
 				outline: none;
 				display: block;
 				width: 100%;
@@ -84,8 +101,8 @@
 				&amp;input: focus  
 					{ color: #333;
 					  border: 1px solid #44c4e7;
-					}">			
-			<input type="file" id="input-excel" style="
+					}">
+            <input type="file" id="input-excel" style="
 				cursor: pointer;
 				background: rgb(105, 105, 105);
 				width: 100%;
@@ -100,6 +117,7 @@
 					background: #369cb8;
 				}
 			">
+<<<<<<< HEAD
 		</form>
 	</section>
 	<table id="tabla">
@@ -239,13 +257,184 @@
         (result) => {
             if (result.ok) {
             console.log(`${result.status} ${result.statusText}`);
-            }
-        },
-        (error) => {
-            console.log(error.message);
-        }
-        );
-	}
-</script>
+=======
+        </form>
+    </section>
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>Referencias no encontradas</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpo_tabla"></tbody>
+    </table>
+    <div class="modal" style="display: none; position: fixed; z-index: 1000; top: 0px; left: 0px; height: 100%; width: 100%; background: url(&quot;http://i.stack.imgur.com/FhHRx.gif&quot;) 50% 50% no-repeat rgba(255, 255, 255, 0.8); font-family: undefined;">
+        <!-- Place at bottom of page -->
+    </div>
+    <script>
+        $('#input-excel').change(function(e) {
+            $(".modal").show();
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(e.target.files[0]);
 
-</body></html>
+            reader.onload = async function(e) {
+                var data = new Uint8Array(e.target.result);
+                var workbook = XLSX.read(data, {
+                    type: 'array'
+                });
+                var resultado = XLSX.utils.sheet_to_json(workbook.Sheets[$('#hoja').val()], {
+                    header: "A"
+                });
+
+                let refs = ref_inexistentes(resultado);
+
+                var queryString = window.parent.location.search;
+                var urlParams = new URLSearchParams(queryString);
+                console.log("Primera ejecucion");
+                refs.then((result) => {
+                    console.log(result);
+                    console.log("Seegunda ejecucion");
+                    if (result.length > 0) {
+                        $("#tabla").hide();
+                        $("#cuerpo_tabla").html("");
+                        result.forEach((value) => {
+                            $("#cuerpo_tabla").append("<tr><td>" + value + "</td></tr>");
+                        });
+                        $("#tabla").show();
+                    } else {
+                        agregar_items(resultado, urlParams);
+                    }
+                });
+>>>>>>> 0f1f3d453732330b83dfb6c23ebaf957d94af228
+            }
+        });
+
+        async function ref_inexistentes(result) {
+            return new Promise((resolve, reject) => {
+                let ref_inexistentes = [];
+                result.forEach(async(value, index, array) => {
+                    if (value["B"] && index >= 3) {
+                        let ref = await existe_ref(value["B"]);
+                        if (ref.entities.length == 0) await ref_inexistentes.push(value["B"]);
+                    }
+                });
+                resolve(ref_inexistentes);
+            });
+        }
+
+        async function existe_ref(referencia) {
+            existe = await Xrm.WebApi.retrieveMultipleRecords("product", "?$select=productid&$filter=productnumber eq  '" + referencia + "' ");
+            return existe;
+        }
+
+
+
+
+        async function agregar_items(result, urlParams) {
+
+            let datos = [];
+
+
+            result.forEach(async(value, index, array) => {
+
+                if (value["B"] && index >= 3) {
+                    var referencia = value["B"];
+                    var descripcion = value["C"];
+                    var categoria = value["A"];
+
+                    let resultadoProductos = await Xrm.WebApi.retrieveMultipleRecords("product", "?$select=productid&$filter=productnumber eq  '" + referencia + "' ");
+                    console.log(resultadoProductos);
+
+                    var cantidad = value["D"];
+                    var margen = value["Q"];
+                    console.log(resultadoProductos.entities[0].productid);
+                    var data = {
+                        "quantity": Number(cantidad),
+                        "productid@odata.bind": "/products(" + resultadoProductos.entities[0].productid + ")",
+                        "ap_referenciainterna": referencia,
+                        "quoteid@odata.bind": "/quotes(" + urlParams.get("id") + ")",
+                        "uomid@odata.bind": "/uoms(f6008f58-2cf0-ea11-a815-000d3ac090ba)",
+                        "ap_margen": Number(margen) * 100,
+                        "ap_categoria": categoria
+                    };
+
+                    if (value["E"]) {
+                        var precio = value["E"];
+                        data.priceperunit = Number(precio);
+                    }
+                    if (value["J"]) {
+                        var descuento_especial = value["J"];
+                        data.ap_descuentoespecialoexhibitx = Number(descuento_especial) * 100;
+                    }
+                    if (value["H"] && !value["E"]) {
+                        var costo = value["H"];
+                        data.rd_costounit = Number(costo);
+                    }
+                    if (value["L"] && !value["E"] && !value["H"]) {
+                        var costo_fob = value["L"];
+                        data.ap_costounitfobmiami = Number(costo_fob);
+                        var porcentaje_importacion = value["M"];
+                        data.ap_porcentajedeimportacion = Number(porcentaje_importacion) * 100;
+                    }
+
+                }
+                datos.push(data)
+            });
+
+            realizarRequest(datos);
+        }
+
+
+
+
+        function realizarRequest(datosArray) {
+
+            console.log(datosArray);
+            var Sdk = window.Sdk || {};
+
+            /**
+             * Request to create a record
+             * @param {string} entityTypeName - The entity type name.
+             * @param {Object} payload - The entity payload.
+             */
+            Sdk.CreateRequest = function(entityTypeName, payload) {
+                this.etn = entityTypeName;
+                this.payload = payload;
+                this.getMetadata = function() {
+                    return {
+                        boundParameter: null,
+                        parameterTypes: {},
+                        operationType: 2,
+                        operationName: "Create",
+                    };
+                };
+            };
+            var requests = [
+
+            ];
+            console.log("Agregar item");
+            datosArray.forEach((value) => {
+                console.log(value);
+                requests.push(new Sdk.CreateRequest("quotedetail", value));
+            });
+
+            console.log(requests);
+
+
+            Xrm.WebApi.online.executeMultiple(requests).then(
+                (result) => {
+                    if (result.ok) {
+                        console.log(`${result.status} ${result.statusText}`);
+                    }
+                },
+                (error) => {
+                    console.log(error.message);
+                }
+            );
+
+        }
+    </script>
+
+</body>
+
+</html>

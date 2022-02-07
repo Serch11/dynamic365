@@ -32,9 +32,11 @@ function showOrhideOptionForecast(executionContext) {
   if (formContext.getAttribute("statecode").getValue() === 0) {
     formContext.getControl("msdyn_forecastcategory")?.removeOption(100000005); //Lograda
     formContext.getControl("msdyn_forecastcategory")?.removeOption(100000006); //perdida
+    formContext.getControl("msdyn_forecastcategory")?.removeOption(100000004);//omitiada
   } else {
     formContext.getControl("msdyn_forecastcategory").addOption(optionLograda);
     formContext.getControl("msdyn_forecastcategory").addOption(optionPerdida);
+    formContext.getControl("msdyn_forecastcategory")?.removeOption(100000004);//omitiada
   }
 }
 
