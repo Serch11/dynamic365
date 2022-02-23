@@ -43,9 +43,7 @@ function filtrado(executionContext) {
     let formContext = executionContext.getFormContext();
 
     let fetch =
-      '<filter type="and"><condition attribute="rd_tipodederecho" operator="eq" uiname=" ' +
-      formContext.getAttribute("ap_tipodederecho").getValue()[0].name +
-      ' " uitype="rd_tipodederecho" value="   ' +
+      '<filter type="and"><condition attribute="rd_tipodederecho" operator="eq" uiname=" ' + formContext.getAttribute("ap_tipodederecho").getValue()[0].name + ' " uitype="rd_tipodederecho" value="   ' +
       formContext.getAttribute("ap_tipodederecho").getValue()[0].id +
       ' "/> <condition attribute="customerid" operator="eq" uiname=" ' +
       formContext.getAttribute("customerid").getValue()[0].name +

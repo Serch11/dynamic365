@@ -10,7 +10,6 @@ function validarFechas(executionContext) {
     const mensajeF =
       "La fecha final de atencion no puede ser menor  a la fecha inicial de atencion. se le colocara la fecha actual";
 
-<<<<<<< HEAD
     if (ap_iniciorealdeatencion.getValue().getTime() > todayDate.getTime()) {
         mensajeAlerta(executionContext, mensajeI, "ap_iniciorealdeatencion");
     }
@@ -18,15 +17,6 @@ function validarFechas(executionContext) {
     if (ap_iniciorealdeatencion.getValue() && !ap_finrealdeatencion.getValue()) {
         if (ap_iniciorealdeatencion.getValue().getTime() > todayDate.getTime())
             mensajeAlerta(executionContext, mensajeI, "ap_iniciorealdeatencion");
-=======
-    if (ap_iniciorealdeatencion.getValue() && ap_finrealdeatencion.getValue()) {
-      if (
-        ap_finrealdeatencion.getValue().getTime() <
-        ap_iniciorealdeatencion.getValue().getTime()
-      ) {
-        mensajeAlerta(executionContext, mensajeF, "ap_finrealdeatencion", null);
-      }
->>>>>>> 2b55f50d48210307062009ce2a338dd47b3afc1d
     }
   } catch (error) {
     console.log(error);
