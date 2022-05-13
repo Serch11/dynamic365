@@ -37,11 +37,11 @@ function setAccount(exeContent) {
         function success(result) {
           console.log(
             "Retrieved values: Name: " +
-              result.name +
-              ", Primary Contact ID: " +
-              result.ap_Ciudad.ap_ciudad +
-              ", Primary Contact Name: " +
-              result.ap_Ciudad.ap_codigociudad
+            result.name +
+            ", Primary Contact ID: " +
+            result.ap_Ciudad.ap_ciudad +
+            ", Primary Contact Name: " +
+            result.ap_Ciudad.ap_codigociudad
           );
 
           if (result.ap_Ciudad) {
@@ -59,7 +59,7 @@ function setAccount(exeContent) {
             ap_ciudad.setValue(lookupVal);
           }
         },
-        function(error) {
+        function (error) {
           console.log(error.message);
           // handle error conditions
         }
@@ -69,7 +69,7 @@ function setAccount(exeContent) {
       .retrieveMultipleRecords(
         "account",
         "?$select=name,cr5c5_nombrecomercial,websiteurl,address1_line1,ap_Ciudad&$filter=accountid eq" +
-          userID
+        userID
       )
       .then(
         function success(result) {
@@ -91,7 +91,7 @@ function setAccount(exeContent) {
           );
           console.log(accountdid);
         },
-        function(error) {
+        function (error) {
           console.log(error.message);
           // handle error conditions
         }
