@@ -44,7 +44,7 @@ function consumirwebServices(event) {
 
     req.onreadystatechange = function() {
       if (this.onreadystatechange === 200) {
-        this.onreadystatechange = 0;
+       
       }
       if (this.status === 200) {
         console.log("ok");
