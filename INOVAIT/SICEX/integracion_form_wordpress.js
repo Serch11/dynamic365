@@ -23,9 +23,13 @@ function capturarDatos() {
 }
 
 
-function enviarDatos(data) {
+function enviarDatos() {
+    let datos = {
+        subject: document.getElementById("subject").value
+    }
+
     let req = new XMLHttpRequest();
-    let url = "url";
+    let url = "https://prod2-28.brazilsouth.logic.azure.com:443/workflows/d959e8f5874740c9bdc5419d79eb8ce0/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=wagqdYFa7xEqG_FKIH2kfrfaxh8Z83RoeamC5VYIp7k";
     req.open("POST", url, true);
     req.setRequestHeader("OData-MaxVersion", "4.0");
     req.setRequestHeader("OData-Version", "4.0");
@@ -39,7 +43,7 @@ function enviarDatos(data) {
             }
         }
     }
-    req.send(JSON.stringify(data));
+    req.send(JSON.stringify(datos));
 }
 
 

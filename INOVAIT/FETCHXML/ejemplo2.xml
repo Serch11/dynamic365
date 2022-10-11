@@ -1,0 +1,15 @@
+<!-- intruccion que recupera  todos las cuentas en donde
+el apellido del  usuario que es propietario no sea igual a Cannon 
+-->
+
+<fetch>
+    <entity name="account">
+        <attribute name="name" />
+        <attribute name="accountnumber"/>
+    </entity>
+    <link-entity name="systemuser" to="owninguser">
+        <filter type="and">
+            <condition  attribute="lastname" operator="ne" value="Cannon"/>
+        </filter>
+    </link-entity>
+</fetch>

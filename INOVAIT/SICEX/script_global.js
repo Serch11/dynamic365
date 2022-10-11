@@ -9,7 +9,6 @@ var script_global = {
 
             let invt_url_entidad = formContext.getAttribute("invt_url_entidad");
 
-
             let idEntidad;
             let url3 = ``;
             let data;
@@ -33,7 +32,6 @@ var script_global = {
 
 
     consultarEntidadId: function (id, entidad, campos = null) {
-
         try {
             return new Promise((resolve, reject) => {
                 Xrm.WebApi.retrieveRecord(entidad, id).then(
@@ -80,7 +78,7 @@ var script_global = {
 
         console.log("ingreso a enviarAlertaDeDialogo")
         let alertStrings = { confirmButtonLabel: confirmButton, text: mensaje, title: titulo };
-        let alertOptions = { height: 160, width: 260 };
+        let alertOptions = { height: 260, width: 260 };
 
 
         return new Promise((resolve, reject) => {
@@ -125,7 +123,91 @@ var script_global = {
             );
 
         })
+    },
+
+    EjecutarAccionPersonalizada: async function (url, nombreAccion, nombreEntidad, registroId, parametros, IdUsuarioPersonalizar) {
+        try {
+
+            if (Xrm.Page.ui != null) {
+                Xrm.Page.ui.clearFormNotification("NetWorkError");
+            }
+
+            let resultado = null;
+            // let error = null;
+            let oData4Path = script_global.ObtenerData4Path();
+
+            //preparar el request
+            let req = new XMLHttpRequest();
+            // let query = oData4Path + entidad + "(" + idEntidad + ")Microsoft.Dynamics.CRM." + accion;
+            var query = oData4Path + nombreEntidad + "(" + registroId + ")/Microsoft.Dynamics.CRM." + nombreAccion;
+            console.log(url);
+            req.open("POST", query, false);
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+
+
+
+            // if (idUsuarioImpersonalizar !== null) {
+            //     req.setRequestHeader("MSCRMCallerID", idUsuarioImpersonalizar);
+            // }
+            //ejecutar el request
+            req.onreadystatechange = function () {
+
+                ///completo el request
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+
+                    switch (this.status) {
+
+                        /// Request exitoso
+                        case 200:
+                            resultado = JSON.parse(this.response);
+                            break;
+                        case 204:
+                            resultado = null;
+                            break;
+                        //// se notifica el error 
+                        default:
+                            error = JSON.parse(this.response).error;
+                            break;
+                    }
+                }
+            }
+            /// Se envia el request
+            if (parametros !== null) {
+                req.send(window.JSON.stringify(parametros));
+            } else {
+                req.send();
+            }
+
+            if (error !== null && error !== undefined)
+                throw new Error(error.message);
+
+            return resultado;
+        } catch (error) {
+            if (error.name === "NetworkError") {
+                console.log(error.name);
+            }
+        }
+
+    },
+
+
+    ObtenerData4Path: function () {
+
+        let clienteUri = Xrm.Page.context.getClientUrl();
+        let oData4Path = clienteUri + "/api/data/v9.2/";
+        return oData4Path;
+    },
+
+    obtenerFechaDelDia: async function () {
+        let fechaDia = new Date();
+        let fNewDateC = new Date(`${fechaDia.getFullYear()}-${fechaDia.getMonth() + 1}-${fechaDia.getDate()}`);
+        return fNewDateC.getTime();
     }
 }
 
 
+let fetch = "<fetch mapping = 'logical' ><entity name='account'><attribute name='name'/><attribute name='accountid' /></entity></fetch >"

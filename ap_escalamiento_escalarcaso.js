@@ -71,16 +71,10 @@ async function escalarCaso(executionContext) {
         console.log(entity);
       }
     }
-    console.log(entity);
+    
+    let url = ""+formContext.context.getClientUrl() +"/api/data/v9.1/incidents(" +casoID +")";
     var req = new XMLHttpRequest();
-    req.open(
-      "PATCH",
-      formContext.context.getClientUrl() +
-      "/api/data/v9.1/incidents(" +
-      casoID +
-      ")",
-      true
-    );
+    req.open("PATCH",url,true );
     req.setRequestHeader("OData-MaxVersion", "4.0");
     req.setRequestHeader("OData-Version", "4.0");
     req.setRequestHeader("Accept", "application/json");

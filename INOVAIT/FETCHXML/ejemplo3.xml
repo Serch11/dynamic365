@@ -1,0 +1,13 @@
+<!--
+
+1. intruccion que utiliza count para definir el numero maximo 
+de registro de devolucion de la consula. en este caso las primera tres cuenta se devuelven 
+desde la consulta
+
+-->
+
+<fetch mapping="logical" count="3">
+    <entity name="account">
+        <attribute name="name" />
+    </entity>
+</fetch>

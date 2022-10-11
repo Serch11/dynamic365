@@ -1,0 +1,8 @@
+<fetch>
+    <entity name="entitymap">
+        <attribute name="sourceentityname" />
+        <attribute name="targetentityname"/>
+    </entity>
+    <link-entity name="attributemap" alias="attributemap" to="entitymapid" from="entitymapid" link-entity="inner">
+    </link-entity>
+</fetch>

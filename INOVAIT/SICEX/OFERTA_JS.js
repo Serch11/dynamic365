@@ -4,7 +4,7 @@
 var utilidadesOferta = {
 
 
-    //funcion para validar el porcentaje de descuento dentro de la linea de oferta
+    //funcion para validar el porcentaje de descuento dentro de la linea de oferta 
     ofertaValidarSolicitudCredito: async function (executionContext) {
         //valor DAECO  124510001
         //valor SICEX  124510000
@@ -166,9 +166,8 @@ var utilidadesOferta = {
             let invt_descuentosolicitado = formContext.getControl("invt_descuentosolicitado");
             let invt_descuentoactual = formContext.getControl("invt_descuentoactual");
             let invt_controldescuentosolicitado = formContext.getControl("invt_controldescuentosolicitado");
-
-
-
+            let quoteid = formContext.getControl("quoteid");
+            let productid = formContext.getControl("productid");
             let ownerid = formContext.getAttribute("ownerid");
             let invt_solicituddedescuento = formContext.getControl("invt_solicituddedescuento");
             let invt_descuentoqh = formContext.getControl("invt_descuentoqh");
@@ -194,48 +193,46 @@ var utilidadesOferta = {
                 if (resLineaDeOferta.invt_controldescuentosolicitado === true && (estado === "Aprobada" || estado === "En Aprobacion")) {
 
                     script_global.enviarAlertaDeDialogo("Ok", "En este momento existe una solicitud de descuento en estado " + estado + ".");
-                    
+
+                    /************  ----------------------------------  */
                     //realizamos solicitud de descuento
                 } else {
 
                     //obetenemos la informacion del usuario
-                    //let resusuario = await script_global.consultarEntidadId(ownerid.getValue()[0].id.slice(1, 37), ownerid.getValue()[0].entityType);
-                    let resusuario = await script_global.consultarEntidadId(resLineaDeOferta._ownerid_value, "systemuser");
+                    console.log(productid.getAttribute().getValue()[0].id.slice(1, 37));
+                    let resProductoId = await script_global.consultarEntidadId(productid.getAttribute().getValue()[0].id.slice(1, 37).toLowerCase(), "product");
+
 
                     //validamos que si venga la informacion del usuario
-                    if (resusuario) {
+                    if (resProductoId) {
 
                         //obetenemos el nombre de la unidad de negocio
-                        let nombreUnidadDeNegocio = resusuario["_businessunitid_value@OData.Community.Display.V1.FormattedValue"];
+                        //let nombreUnidadDeNegocio = resusuario["_businessunitid_value@OData.Community.Display.V1.FormattedValue"];
 
-                        //obtenemos los datos de la unidad de negocio del propietario
-                        let unidadUsuario = await script_global.consultarEntidadId(resusuario._businessunitid_value, "businessunit");
 
-                        if (unidadUsuario) {
-                            let porcentajeDescuento = unidadUsuario.invt_porcentajededescuento;
-                            let nomUnidadNegocio = unidadUsuario.name;
+                        //obtenemos la informacion de la unidad de negocio en la oportunidad
+                        let unidadProducto = await script_global.consultarEntidadId(resProductoId._invt_unidaddenegocio_value, "businessunit")
+
+                        if (unidadProducto) {
+
+                            let porcentajeDescuento = unidadProducto.invt_porcentajededescuento;
+
+                            console.log(porcentajeDescuento);
 
                             if (invt_solicitardescuento.getAttribute().getValue() === true && invt_descuentosolicitado.getAttribute().getValue() > porcentajeDescuento) {
 
                                 //formContext.data.entity.save();
-
-
                                 let saveOptions = {
                                     saveMode: 1,
                                     useSchedulingEngine: true
                                 };
-
                                 let save = await Xrm.Page.data.save(saveOptions);
 
 
-
                                 var entity = {}
-
                                 entity.id = Xrm.Page.data.entity.getId().slice(1, 37);
-
                                 //iniciamos  solicitud 
                                 let req = new XMLHttpRequest();
-
                                 req.open("POST", url, true);
                                 req.setRequestHeader("OData-MaxVersion", "4.0");
                                 req.setRequestHeader("OData-Version", "4.0");
@@ -387,6 +384,37 @@ var utilidadesOferta = {
         }
     },
 
+    /**
+     * 
+     * @param {*} executionContext 
+     * Nombre funcion: validarFechaDeInformacionOSuscripcionHastaTipoDeCompraSuscripcion
+     * Descripcion : esta funcion me permite validar de que la fecha del campo periodo de informacion o suscripcion hasta no sea menor a la fecha
+     * del campo periodo de informacion o suscripcion desde 
+     * 
+     * Sergio Andres Redondo Aycardi
+     */
+    validarFechaDeInformacionOSuscripcionHastaTipoDeCompraSuscripcion: async function (executionContext) {
+
+        try {
+            let formContext = executionContext.getFormContext();
+            let invt_tipodecompra = formContext.getControl("invt_tipodecompra");
+            let invt_periododeiniformanciaosuscripciondesde = formContext.getControl("invt_periododeiniformanciaosuscripciondesde");
+            let invt_periododeinformacionosuscripcionhasta = formContext.getControl("invt_periododeinformacionosuscripcionhasta");
+
+            if (invt_tipodecompra.getAttribute().getValue() === 2) {
+                if (invt_periododeiniformanciaosuscripciondesde.getAttribute().getValue() && invt_periododeinformacionosuscripcionhasta.getAttribute().getValue()) {
+                    if (invt_periododeinformacionosuscripcionhasta.getAttribute().getValue().getTime() < invt_periododeiniformanciaosuscripciondesde.getAttribute().getValue().getTime()) {
+                        await script_global.enviarAlertaDeDialogo("Ok", "La fecha asignada en el campo " + invt_periododeiniformanciaosuscripciondesde.getLabel() + " no puede ser menor al campo de " + invt_periododeinformacionosuscripcionhasta.getLabel() + "");
+                        invt_periododeinformacionosuscripcionhasta.getAttribute().setValue(null);
+                    }
+                }
+            }
+        } catch (error) {
+            console.log("validarFechaDeInformacionOSuscripcionHastaTipoDeCompraSuscripcion" + error);
+        }
+    },
+
+
 
     validarFechaDeFacturacionLineaOferta: async function (executionContext) {
 
@@ -401,16 +429,12 @@ var utilidadesOferta = {
             let periododefacturacionhasta = invt_periododefacturacionhasta.getAttribute().getValue() ? invt_periododefacturacionhasta.getAttribute().getValue().getTime() : null;
             let fechaDia = new Date().getTime();
 
-
             if (periododefacturaciondesde) {
-
                 if (periododefacturaciondesde > periododefacturacionhasta) {
                     await script_global.enviarAlertaDeDialogo("Ok", "La fecha asignada al campo Perido  de facturacion hasta no puede ser menor o igual al campo Periodo de facturacion desde");
                     invt_periododefacturacionhasta.getAttribute().setValue(null);
                 }
             }
-
-
             if (periododefacturaciondesde === null && periododefacturacionhasta != null) {
                 await script_global.enviarAlertaDeDialogo("Ok", "Debe seleccionar la fecha de facturacion desde para poder completar la fecha de facturacion hasta.");
                 invt_periododefacturacionhasta.getAttribute().setValue(null);
@@ -420,6 +444,36 @@ var utilidadesOferta = {
         }
     },
 
+    //validar fecha de facturacion desde
+    validarPeridoDeFacturacionDesde: async function (executionContext) {
+
+        try {
+
+            let formContext = executionContext.getFormContext();
+            let invt_periododefacturaciondesde = formContext.getControl("invt_periododefacturaciondesde");
+            let invt_periododefacturacionhasta = formContext.getControl("invt_periododefacturacionhasta");
+            let fechaDia = new Date();
+            let fNewDateC = new Date(`${fechaDia.getFullYear()}-${fechaDia.getMonth() + 1}-${fechaDia.getDate()}`);
+
+
+            let periododefacturaciondesde = invt_periododefacturaciondesde.getAttribute().getValue() ? invt_periododefacturaciondesde.getAttribute().getValue().getTime() : null;
+            let periododefacturacionhasta = invt_periododefacturacionhasta.getAttribute().getValue() ? invt_periododefacturacionhasta.getAttribute().getValue().getTime() : null;
+
+
+            if (periododefacturaciondesde) {
+                console.log(periododefacturaciondesde, fNewDateC.getTime());
+                if (periododefacturaciondesde < fNewDateC.getTime()) {
+                    await script_global.enviarAlertaDeDialogo("Ok", "El " + invt_periododefacturaciondesde.getLabel() + " no puede ser menor a la fecha de hoy");
+                    invt_periododefacturaciondesde.getAttribute().setValue(null);
+                }
+            }
+
+            // await script_global.enviarAlertaDeDialogo("Ok", "Debe seleccionar la fecha de facturacion desde para poder completar la fecha de facturacion hasta.");
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
     //no se esta utilizando
     capturarClaveParaCampos: async function (executionContext) {
@@ -485,15 +539,13 @@ var utilidadesOferta = {
         }
     },
 
+
+    //no se esta utilizando
     ejecutarBotonSolicitud2: async function (executionContext) {
 
         try {
 
-
-
             let id = Xrm.Page.data.entity.getId().slice(1, 37);
-
-
 
             console.log("Entro");
             //realizamos declaracion de contexto y campos
@@ -600,5 +652,158 @@ var utilidadesOferta = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    validarSolicitudDescuento: async function (executionContext) {
+        try {
+            let formContext = executionContext.getFormContext();
+            let invt_solicitardescuento = formContext.getControl("invt_solicitardescuento");
+            let invt_descuentopor = formContext.getControl("invt_descuentopor");
+            let manualdiscountamount = formContext.getControl("manualdiscountamount");
+
+
+
+            if (invt_solicitardescuento.getAttribute().getValue() === true && invt_descuentopor.getAttribute().getValue()) {
+                let res = await script_global.enviarAlertaDeConfirmacionDeDialogo("Desea realizar una solicitud de descuento con valores ya en el campo de descuento", "Solicitud descuento", "Solicitar Descuento");
+                console.log(res);
+
+                if (res === true) {
+                    invt_descuentopor.getAttribute().setValue(0);
+                    manualdiscountamount.getAttribute().setValue(0);
+
+                    let saveOptions = {
+                        saveMode: 1,
+                        useSchedulingEngine: true
+                    };
+
+                    formContext.data.save(saveOptions).then(
+                        function success() {
+                            formContext.data.refresh(true);
+                        },
+                        function (error) {
+                            console.log(error.message);
+                            // handle error conditions
+                        }
+                    );
+                } else {
+                    invt_solicitardescuento.getAttribute().setValue(false);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    /*
+    Creador: Sergio Andres Redondo Aycardi
+    Fecha: 18/07/2022
+    Ejecutar Cierre de la oferta y la oportunidad.
+    Parametros: 
+    primaryControl : Recibe el contexto de ejecucion.
+    */
+    ejecutarCierreDeLaOfertayOportunidad: async function (primaryControl) {
+        try {
+
+            let formContext = primaryControl;
+            let invt_ordendecompraadjunta = formContext.getAttribute("invt_ordendecompraadjunta");
+
+            console.log(formContext);
+            if (formContext.data.entity.getId() === null) {
+                return;
+            }
+
+            if (invt_ordendecompraadjunta.getValue() === null || invt_ordendecompraadjunta.getValue() === false) {
+
+                //script_global.enviarAlertaDeDialogo("OK", " Para ganar la oferta debe cargar la orden de compra adjunta", "Cargue la orden de compra");
+                script_global.enviarAlertaDeDialogo("OK", "Para ganar la oferta debe cargar obligatorio el rut (aplica solo para clientes nacionales) y la orden de compra (aplica para todos los clientes). Como adicional importante cargar los siguientes documentos: cámara de comercio (aplica solo para clientes nacionales) y formato de habeas data (aplica para todos los clientes).", "Cargue la orden de compra");
+
+            } else {
+                Xrm.Utility.showProgressIndicator('Oferta y oportunidad Ganada');
+                setTimeout(async () => {
+
+                    try {
+                        const url = "https://prod-15.brazilsouth.logic.azure.com:443/workflows/1ffeebd08d8b4884893099533e24282a/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=qfVZqr0_tiZPiK7J6yIgkoCx58B5SFuwZsm4ytT332E";
+                        const accion = "invt_EjecutarcierredelaOfertayOportunidad";
+
+                        console.log(formContext.data.entity.getId());
+                        let idOferta = formContext.data.entity.getId().slice(1, 37).toLowerCase();
+                        let respuesta = await script_global.EjecutarAccionPersonalizada(url, accion, "quotes", idOferta, null, null);
+                        console.log(respuesta);
+
+                        Xrm.Utility.closeProgressIndicator();
+                        formContext.data.refresh();
+                    } catch (error) {
+
+                        Xrm.Utility.closeProgressIndicator();
+                        let alertStrings = { text: error.message, title: 'Error' };
+                        let alertOptions = { height: 120, width: 260 };
+
+                        Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+                            function success() {
+                                // perform operations on alert dialog close
+                                console.log("Alert dialog closed");
+                            },
+                            function (error) {
+                                console.log(error.message);
+                                // handle error conditions
+                            }
+                        );
+                        formContext.data.refresh(true);
+                    }
+                }, 500);
+            }
+
+        } catch (error) {
+
+            Xrm.Utility.closeProgressIndicator();
+            let alertStrings = { text: error.message, title: 'Error' };
+            let alertOptions = { height: 120, width: 260 };
+
+            Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+                function success() {
+                    // perform operations on alert dialog close
+                    console.log("Alert dialog closed");
+                },
+                function (error) {
+                    console.log(error.message);
+                    // handle error conditions
+                }
+            );
+            formContext.data.refresh(true);
+        }
+    },
+
+
+    ocularTabsOfertas: async function (executionContext) {
+        try {
+
+            let formContext = executionContext.getFormContext();
+            let statecode = formContext.getAttribute("statecode");
+
+
+
+            console.log("Hola");
+            if (statecode.getValue() === 1 || statecode.getValue() === 2) {
+                formContext.ui.tabs.get("details_tab").setVisible(true);
+                formContext.ui.tabs.get("tab_4").setVisible(true);
+            } else {
+                formContext.ui.tabs.get("details_tab").setVisible(false);
+                formContext.ui.tabs.get("tab_4").setVisible(false);
+            }
+
+        } catch (error) {
+            console.log("ocularTabsOfertas" + error);
+        }
+    },
+
+    ejecutarAlCargar: async function (executionContext) {
+        try {
+            Xrm.Page.getAttribute("statecode").addOnChange(utilidadesOferta.ocularTabsOfertas);
+        } catch (error) {
+            console.log(error);
+        }
+
     }
+
+
 }
