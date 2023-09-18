@@ -700,6 +700,10 @@ var UtilidadesWebApi = {
             parametroTecnico.value.length > 0) {
             return parametroTecnico.value[0].ig_valoropcional;
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
         return "";
     }
 };

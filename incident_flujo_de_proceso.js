@@ -71,12 +71,21 @@ async function getChangeStage(executionContext) {
                 formContext.getControl("header_process_ap_tiempofacturablesdelcasohrs")
             )
                 formContext
+<<<<<<< HEAD
                     .getControl("header_process_ap_tiempofacturablesdelcasohrs")
                     .setDisabled(true);
             if (formContext.getControl("header_process_entitlementid_1"))
                 formContext
                     .getControl("header_process_entitlementid_1")
                     .setDisabled(true);
+=======
+                .getControl("header_process_ap_tiempofacturablesdelcasohrs")
+                .setDisabled(true);
+            if (formContext.getControl("header_process_entitlementid_1"))
+                formContext
+                .getControl("header_process_entitlementid_1")
+                .setDisabled(true);
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
             // formContext.data.proce
         } catch (error) {
             console.log(error);
@@ -138,12 +147,21 @@ async function getChangeStage(executionContext) {
                 formContext.getControl("header_process_ap_tiempofacturablesdelcasohrs")
             )
                 formContext
+<<<<<<< HEAD
                     .getControl("header_process_ap_tiempofacturablesdelcasohrs")
                     .setDisabled(true);
             if (formContext.getControl("header_process_entitlementid_1"))
                 formContext
                     .getControl("header_process_entitlementid_1")
                     .setDisabled(true);
+=======
+                .getControl("header_process_ap_tiempofacturablesdelcasohrs")
+                .setDisabled(true);
+            if (formContext.getControl("header_process_entitlementid_1"))
+                formContext
+                .getControl("header_process_entitlementid_1")
+                .setDisabled(true);
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
 
             formContext
                 .getControl("ap_tiendaintervenida")
@@ -170,6 +188,7 @@ async function getChangeStage(executionContext) {
 
             if (formContext.ui.getFormType() != 1)
                 formContext
+<<<<<<< HEAD
                     .getControl("header_process_ap_requerimientointerno")
                     .setDisabled(true);
 
@@ -194,12 +213,43 @@ async function getChangeStage(executionContext) {
                 formContext
                     .getControl("header_process_ap_agenteasignados")
                     .setVisible(false);
+=======
+                .getControl("header_process_ap_requerimientointerno")
+                .setDisabled(true);
+
+            if (formContext.getControl("header_process_ap_requerimientointerno_1"))
+                formContext
+                .getControl("header_process_ap_requerimientointerno_1")
+                .setVisible(false);
+            if (formContext.getControl("header_process_ap_requerimientointerno_2"))
+                formContext
+                .getControl("header_process_ap_requerimientointerno_2")
+                .setVisible(false);
+            if (formContext.getControl("header_process_ap_tiendaintervenida"))
+                formContext
+                .getControl("header_process_ap_tiendaintervenida")
+                .setVisible(false);
+            if (formContext.getControl("header_process_ap_agenteasignado"))
+                formContext
+                .getControl("header_process_ap_agenteasignado")
+                .setVisible(false);
+            //formContext.getControl("header_process_ap_areadeequipo").setVisible(false);
+            if (formContext.getControl("header_process_ap_agenteasignados"))
+                formContext
+                .getControl("header_process_ap_agenteasignados")
+                .setVisible(false);
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
             if (
                 formContext.getControl("header_process_ap_necesidaddeescalaraterceros")
             )
                 formContext
+<<<<<<< HEAD
                     .getControl("header_process_ap_necesidaddeescalaraterceros")
                     .setDisabled(true);
+=======
+                .getControl("header_process_ap_necesidaddeescalaraterceros")
+                .setDisabled(true);
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
 
             if (
                 formContext.getControl(
@@ -207,14 +257,20 @@ async function getChangeStage(executionContext) {
                 )
             )
                 formContext
+<<<<<<< HEAD
                     .getControl("header_process_ap_asignaciondecasoafabricanteexterno")
                     .setDisabled(true);
+=======
+                .getControl("header_process_ap_asignaciondecasoafabricanteexterno")
+                .setDisabled(true);
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
             if (
                 formContext.getControl(
                     "header_process_ap_numerocasodelfabricanteexterno"
                 )
             )
                 formContext
+<<<<<<< HEAD
                     .getControl("header_process_ap_numerocasodelfabricanteexterno")
                     .setDisabled(true);
             if (formContext.getControl("header_process_ap_areadeequipo"))
@@ -225,6 +281,18 @@ async function getChangeStage(executionContext) {
                 formContext
                     .getControl("header_process_ap_areadeequipo_1")
                     .setDisabled(true);
+=======
+                .getControl("header_process_ap_numerocasodelfabricanteexterno")
+                .setDisabled(true);
+            if (formContext.getControl("header_process_ap_areadeequipo"))
+                formContext
+                .getControl("header_process_ap_areadeequipo")
+                .setDisabled(true);
+            if (formContext.getControl("header_process_ap_areadeequipo_1"))
+                formContext
+                .getControl("header_process_ap_areadeequipo_1")
+                .setDisabled(true);
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
             if (formContext.getControl("header_process_prioritycode"))
                 formContext.getControl("header_process_prioritycode").setDisabled(true);
             if (formContext.getControl("header_process_ap_urgencia"))
@@ -233,6 +301,7 @@ async function getChangeStage(executionContext) {
                 formContext.getControl("header_process_ap_impacto").setDisabled(true);
             if (formContext.getControl("header_process_ap_plataforma"))
                 formContext
+<<<<<<< HEAD
                     .getControl("header_process_ap_plataforma")
                     .setDisabled(true);
             if (formContext.getControl("header_process_contractservicelevelcode"))
@@ -252,16 +321,46 @@ async function getChangeStage(executionContext) {
                     .getControl("ap_regional")
                     .getAttribute()
                     .setRequiredLevel("required");
+=======
+                .getControl("header_process_ap_plataforma")
+                .setDisabled(true);
+            if (formContext.getControl("header_process_contractservicelevelcode"))
+                formContext
+                .getControl("header_process_contractservicelevelcode")
+                .setDisabled(true);
+            if (formContext.getControl("header_process_ap_equipoasignado"))
+                formContext
+                .getControl("header_process_ap_equipoasignado")
+                .setDisabled(true);
+            if (formContext.getControl("header_process_ap_asignarcaso"))
+                formContext
+                .getControl("header_process_ap_asignarcaso")
+                .setDisabled(true);
+            if (formContext.getControl("ap_regional"))
+                formContext
+                .getControl("ap_regional")
+                .getAttribute()
+                .setRequiredLevel("required");
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
             if (
                 formContext.getControl("header_process_ap_tiempofacturablesdelcasohrs")
             )
                 formContext
+<<<<<<< HEAD
                     .getControl("header_process_ap_tiempofacturablesdelcasohrs")
                     .setDisabled(true);
             if (formContext.getControl("header_process_entitlementid_1"))
                 formContext
                     .getControl("header_process_entitlementid_1")
                     .setDisabled(true);
+=======
+                .getControl("header_process_ap_tiempofacturablesdelcasohrs")
+                .setDisabled(true);
+            if (formContext.getControl("header_process_entitlementid_1"))
+                formContext
+                .getControl("header_process_entitlementid_1")
+                .setDisabled(true);
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
 
             //formContext.data.process.setActiveProcess(ID_PROCES_CASO, CALLBACK_CAS);
             // function CALLBACK_CAS(result) {
@@ -505,10 +604,17 @@ function cambioStage(executionContext) {
         };
         var alertOptions = { height: 120, width: 260 };
         Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+<<<<<<< HEAD
             function (success) {
                 console.log("alerta cerrada");
             },
             function (error) {
+=======
+            function(success) {
+                console.log("alerta cerrada");
+            },
+            function(error) {
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
                 console.log(error);
             }
         );

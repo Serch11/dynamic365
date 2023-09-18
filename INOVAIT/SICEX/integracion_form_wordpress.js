@@ -1,4 +1,9 @@
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5de8aba30d5bb03e7e577f09f1b44f5cd0ca416a
 function capturarDatos() {
     let d = document;
     let objecto;
