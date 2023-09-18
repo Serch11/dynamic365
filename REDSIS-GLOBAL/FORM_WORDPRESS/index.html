@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form class="form" action="">
+
+        <div class="nombre">
+            <label for="">Firt Name</label>
+            <input type="input" id="firstname" required>
+        </div>
+        <div class="city">
+            <label for="">Lastname</label>
+            <input type="input" id="lastname" required>
+        </div>
+        <div class="city">
+            <label for="">jobtitle</label>
+            <input type="input" id="jobtitle" required>
+        </div>
+        <div class="city">
+            <label for="">Address City</label>
+            <input type="input" id="address1_city" required>
+        </div>
+        <div class="">
+            <label for="">Company name</label>
+            <input type="input" id="companyname" required>
+        </div>
+
+        <div class="city">
+            <label for="">Email</label>
+            <input type="input" id="emailaddress1" required>
+        </div>
+        <div class="city">
+            <label for="">Mobil Phone</label>
+            <input type="input" id="mobilephone" required>
+        </div>
+        <div class="city">
+            <label for="">Description</label>
+            <input type="input" id="description" required>
+        </div>
+        <input type="submit" value="Send">
+    </form>
+</body>
+<script type="text/javascript">
+ 
+    </script>
+<script>
+    document.querySelector(".form").addEventListener("submit", consumirwebServices);
+
+    function consumirwebServices(event) {
+          /*  var titulo;
+            var res;
+            jQuery(document).ready(function ($) {
+                titulo = $('meta[property="og:title"]').attr('content');
+                res = titulo.slice(0, titulo.indexOf(" - "));
+            });
+*/
+        console.log(event);
+        event.preventDefault();
+
+
+        console.log(event.target);
+        let num = Number(document.getElementById("mobilephone").value);
+        console.log(Number(document.getElementById("mobilephone").value));
+        let objecto = {
+            firtname: document.getElementById("firstname").value,
+            lastname: document.getElementById("lastname").value,
+            jobtitle: document.getElementById("jobtitle").value,
+            ciudad: document.getElementById("address1_city").value,
+            companyname: document.getElementById("companyname").value,
+            emailaddress1: document.getElementById("emailaddress1").value,
+            mobilephone: num,
+            description: document.getElementById("description").value,
+            subject: "web "
+        }
+
+        console.log(Object.values(objecto).length === 9, 'true/false if  object is completed');
+        console.log(Object.keys(objecto).length === 0);
+        console.log(objecto);
+        if (Object.values(objecto).length === 9) {
+            enviarDatos(objecto);
+        }
+
+        {
+            "ok":true
+        }
+
+
+    };
+
+
+
+
+    function enviarDatos(datos) {
+        let req = new XMLHttpRequest();
+        let url =
+            "https://prod-02.brazilsouth.logic.azure.com:443/workflows/e2902bb4abcd49c0b49c9d16cb5df084/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ROI9ILHud0ES9pm-5ODQPzQgJqK7DUeRvNnNUw0u8KQ";
+        let data = JSON.stringify(datos);
+        req.open("POST", url, true);
+        req.setRequestHeader("Content-Type", "application/json");
+        req.send(data);
+
+        req.onreadystatechange = function () {
+            if (this.onreadystatechange === 200) {
+                this.onreadystatechange = 0;
+            }
+
+            if (this.status === 200) {
+                console.log(this.responseText);
+                console.log("ok");
+            }
+        };
+    }
+</script>
+
+</html>

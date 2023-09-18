@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js">
+
+    <link href="path/to/select2.min.css" rel="stylesheet" />
+    <link src="path/to/select2.min.js">
+
+    <style>
+        .title {
+            margin-top: 10px;
+        }
+
+        .divform {
+            border-style: none;
+            border: 10px 10px black;
+            margin: 0px 10px 10px 10px;
+            padding: 10px;
+        }
+
+
+        body {
+            margin: 50px 0px;
+            padding: 0px;
+
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <h5 style="text-align: left !important; margin-left: 10px !important;" class="title">Asignar Cuentas</h5>
+
+    <div class="divform">
+        <form class="formMain">
+            <div class="mb-3 row">
+
+                <label for="getUser" class="col-sm-2 col-form-label">Asignar A:</label>
+                <div class="col-sm-10">
+                    <select name="getUser" id="getUser" class="form-select form-select-lg mb-3 getUser"
+                        aria-label="lista de usuario">
+                        <option selected value="">Seleccione usuario</option>
+                        <option selected value="">Sergio</option>
+                        <option selected value="">Camila</option>
+                    </select>
+                </div>
+            </div>
+            <input type="button" id="btn-asignar" class="btn btn-primary" value="Asignar">
+        </form>
+    </div>
+</body>
+
+</html>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+
+    let select = document.getElementById("getUser");
+    let btn = document.getElementById("btn-asignar");
+    //let option = document.createElement("option");
+
+    //console.log(document.location.href);
+    let url = document.location.href;
+    let datos = url.split("=")[1];
+    let idAccount = datos.split("%2c");
+
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function () {
+        console.log("listo");
+        $('.getUser').select2();
+    });
+
+
+    parent.Xrm.WebApi.online.retrieveMultipleRecords("systemuser", "?$select=internalemailaddress,fullname&$filter=accessmode eq 0&$top=10").then(
+        function success(results) {
+            console.log(results);
+            for (var i = 0; i < results.entities.length; i++) {
+                var result = results.entities[i];
+                var option = document.createElement("option");
+                option.value = result["systemuserid"]; // Guid
+                option.text = `${result["fullname"]} (${result["internalemailaddress"]})`; // Text
+                select.appendChild(option);
+            }
+        },
+        function (error) {
+            console.log(error.message);
+        }
+    );
+
+
+    btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (select.value) {
+            llamarFlujoAsignarPropietario();
+        } else {
+            let alertStrings = { confirmButtonLabel: 'Yes', text: 'Seleccione un usuario para asignar' };
+            let alertOptions = { height: 120, width: 260 };
+            parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+                function success() {
+                    // perform operations on alert dialog close
+
+                },
+                function (error) {
+                    console.log(error.message);
+                    // handle error conditions
+                }
+            );
+        }
+    });
+
+
+    function llamarFlujoAsignarPropietario() {
+        try {
+            let object = JSON.stringify(Object.assign({}, idAccount));
+            let idUser = select.value;
+
+
+
+            //ejecutar accion
+            let request = {};
+            request.idPropietario = idUser;
+            request.accounts = object;
+
+            request.getMetadata = function () {
+                return {
+                    boundParameter: null,
+                    operationType: 0,
+                    operationName: "sr_CA_invocarFA_AsignarPropietario",
+                    parameterTypes: {
+                        "idPropietario:": {
+                            typeName: "Edm.String",
+                            structuralProperty: 1
+                        },
+                        "accounts": {
+                            typeName: "Edm.String",
+                            structuralProperty: 1
+                        }
+                    }
+                };
+            };
+            console.clear();
+            console.log(idUser);
+            console.log(object);
+            console.log(request);
+            parent.Xrm.WebApi.online.execute(request).then(
+                function success(result) {
+                    if (result.ok) {
+                        // perform operations as required
+                        console.log(result);
+                    }
+                },
+                function (error) {
+                    console.log(error.message);
+                    // handle error conditions
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    let odata = { "0": "919fad7e-d77b-ed11-81ad-000d3a888ada", "1": "7c6ff4e8-7b7d-ed11-81ad-000d3a888ada", "2": "9970157a-7780-ed11-81ad-000d3a888ada" }
+    let idd = "4ba61f5e-1e54-ed11-9562-000d3a8885cb";
+    let jsonOdata = '{"0":"919fad7e-d77b-ed11-81ad-000d3a888ada","1":"7c6ff4e8-7b7d-ed11-81ad-000d3a888ada","2":"9970157a-7780-ed11-81ad-000d3a888ada"}'
+
+</script>

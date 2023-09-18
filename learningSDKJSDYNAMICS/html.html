@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="crcaf_HelperGlobal" type="text/javascript"></script>
+    <script>
+      function buttonClick() {
+        var accountName = parent.Xrm.Page.getAttribute("firstname").getValue();
+        console.log(accountName);
+
+        var contact = {
+          firstname: "sample contact",
+          lastname: "sample lastname",
+        };
+
+        parent.Xrm.WebApi.createRecord("contact", contact).then(
+          function success(result) {
+            // perform operations on record creation
+            console.log(result);
+            document.getElementById("text").innerHTML = result.id;
+          },
+          function (error) {
+            document.getElementById("text").innerHTML = error.message;
+            console.log(error.message);
+            // handle error conditions
+          }
+        );
+
+        Helper.DoSomeThing();
+      }
+    </script>
+  </head>
+
+  <body onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word">
+    <input
+      type="button"
+      value="MY  Button"
+      id="miButton"
+      onclick="buttonClick()"
+    />
+    <p id="text"></p>
+  </body>
+</html>

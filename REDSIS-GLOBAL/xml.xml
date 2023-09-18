@@ -1,0 +1,68 @@
+<raiz>
+<quotesIntegration>
+<quoteId>QUO-01085-N4T0W6</quoteId>
+<divisa>USD</divisa>
+<trm>1</trm>
+<efectivaDesde>2021-10-11T05:00:00Z</efectivaDesde>
+<efectivaHasta>2022-01-11T05:00:00Z</efectivaHasta>
+<clientId>0992185228001</clientId>
+<contactId></contactId>
+<incoterm>CPT</incoterm>
+<term>Prepaid 50% COD 50%</term>
+<gerenteCuenta>03ce2071-4d16-ec11-b6e7-000d3a885c58</gerenteCuenta>
+<asistenteVenta>03ce2071-4d16-ec11-b6e7-000d3a885c58</asistenteVenta>
+<arquitecto>systemuser</arquitecto><detalleOferta>
+<productId>V-VBRSTD-0S-SUBMG-00</productId>
+<descripcion>Product Migration from Veeam Backup &
+Replication Standard Socket-Based to Veeam
+Backup & Replicat</descripcion>
+<unidad>Primary Unit</unidad>
+<cantidad>2</cantidad>
+<costoTotal>372.12</costoTotal>
+<ventaUnitaria>218.89</ventaUnitaria>
+<margen>15</margen>
+<ventaTotal>437.79</ventaTotal>
+<leadTime></leadTime>
+<garantia></garantia>
+</detalleOferta><detalleOferta>
+<productId>V-VBRSTD-VS-P01MR-00</productId>
+<descripcion>Monthly Basic Maintenance Renewal -
+Veeam Backup & Replication Standard. For
+customers who own Vee</descripcion>
+<unidad>Primary Unit</unidad>
+<cantidad>2</cantidad>
+<costoTotal>0.08</costoTotal>
+<ventaUnitaria>0.05</ventaUnitaria>
+<margen>15</margen>
+<ventaTotal>0.09</ventaTotal>
+<leadTime></leadTime>
+<garantia></garantia>
+</detalleOferta><detalleOferta>
+<productId>V-ESSENT-0S-SUBMG-00</productId>
+<descripcion>Product Migration from Veeam Backup
+Essentials Enterprise Socket-Based to Veeam
+Backup Essentials </descripcion>
+<unidad>Primary Unit</unidad>
+<cantidad>3</cantidad>
+<costoTotal>1338.99</costoTotal>
+<ventaUnitaria>525.09</ventaUnitaria>
+<margen>15</margen>
+<ventaTotal>1575.28</ventaTotal>
+<leadTime></leadTime>
+<garantia></garantia>
+</detalleOferta><detalleOferta>
+<productId>V-ESSVUL-0I-SU1MG-00</productId>
+<descripcion>** LICENCIAS ESSENTIALS VUL **
+Socket migration to Veeam Backup Essentials
+Universal License. Inclu</descripcion>
+<unidad>Primary Unit</unidad>
+<cantidad>6</cantidad>
+<costoTotal>486</costoTotal>
+<ventaUnitaria>95.29</ventaUnitaria>
+<margen>15</margen>
+<ventaTotal>571.76</ventaTotal>
+<leadTime></leadTime>
+<garantia></garantia>
+</detalleOferta>
+</quotesIntegration>
+</raiz>
