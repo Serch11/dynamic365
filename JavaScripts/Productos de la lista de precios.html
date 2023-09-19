@@ -1,0 +1,453 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos de la lista de precios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@12.1/dist/handsontable.full.min.css" />
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable@12.1/dist/handsontable.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/WebResources/atm_comun" type="text/javascript"></script>
+
+    <style>
+        .title {
+            margin-top: 10px;
+        }
+
+        .divform {
+            border-style: none;
+            border: 10px 10px black;
+            margin: 0px 10px 10px 10px;
+            padding: 10px;
+        }
+
+        body {
+            margin-bottom: 60px;
+        }
+
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        .btn-crm {
+            border: 1px solid rgb(33, 181, 134);
+            color: rgb(33, 181, 134);
+        }
+
+            .btn-crm:hover {
+                background-color: rgb(33, 181, 134);
+                color: white;
+            }
+
+        p {
+            margin: 10px 0 10px 0px;
+        }
+
+        .col-form-label {
+            line-height: 1 !important;
+            margin-left: -10px !important;
+        }
+
+        .flex-div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 75px;
+            line-height: 60px;
+            background-color: #f5f5f5;
+            z-index: 1000000;
+        }
+
+        #scroll {
+            overflow-y: auto;
+            max-height: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <main class="container-xl">
+        <div style="height: 88vh;">
+            <div style="height: 8%;">
+                <div class="alert alert-warning p-1" role="alert">
+                    Recuerde que los valores deben ir sin <strong>IVA</strong>
+                </div>
+            </div>
+            <div style="height: 12%;">
+                <div class="flex-div">
+                    <div>
+                        <p>Seleccione el archivo a cargar...</p>
+                    </div>
+                    <div style="padding: 10px; display: grid;">
+                        <button type="button" class="btn btn-sm btn-success" id="descargar"
+                                title="Descargar formato de productos">
+                            <i class="bi bi-cloud-arrow-down-fill"
+                               style="padding: 10px;"></i> Descargar archivo
+                        </button>
+                        <label for="" id="modificacion" style="font-size: 12px;"></label>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 10%;">
+                <form class="formMain">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="file" class="form-control" id="input-excel">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div style="height: 10%;">
+                <div class="flex-div">
+                    <p class="text-danger" id="repetidos"></p>
+                    <p class="text">Se van a cargar <span class="fw-bold" id="cargados">0</span> productos</p>
+                </div>
+            </div>
+            <div style="height: 60%;">
+                <div id="scroll" class="col-12">
+                    <div id="containerdata" class="hot"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="row pt-2">
+                <div class="col-6">
+                    <button class="btn btn-danger  col-12 col-md-12 col-xs-12" type="button"
+                            onclick="window.close()">
+                        Cerrar
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button id="enviar" type="button" class="btn btn-crm col-12 col-md-12 col-xs-12" onclick="CargarProductos()">Cargar productos</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+<script type="text/javascript">
+    let informacion;
+    let productos = new Array();
+    const settings = {
+        data: [],
+        width: '100%',
+        height: 'auto',
+        colWidths: 100,
+        colHeaders: true,
+        rowHeaders: true,
+        stretchH: 'all',
+        // contextMenu: true,
+        colHeaders: ['Código de producto', 'Nombre', 'Precio', 'Existe?'],
+        disableVisualSelection: true,
+        columns: [
+            {
+                data: 'A',
+                className: "htCenter",
+            },
+            {
+                data: 'nombre',
+                readOnly: true
+            },
+            {
+                data: 'B',
+                type: 'numeric',
+            },
+            {
+                data: 'existe',
+                type: "checkbox",
+                className: "htCenter",
+                readOnly: true
+            }
+        ],
+        afterChange: (changes) => {
+            changes?.forEach(([row, prop, oldValue, newValue]) => {
+                if (prop === 'A') {
+                    var existe = listProducts.filter((item) => item.productnumber === datos.pais + "-" + changes[0][3])
+                    if (existe.length > 0) {
+                        var existeProd = productos.filter((item) => item['A'] === String(newValue));
+                        if (existeProd.length < 2) {
+                            productos[row].A = String(newValue);
+                            productos[row].idProd = existe[0].productid;
+                            hot.setDataAtCell(row, 3, true);
+                            hot.setDataAtCell(row, 1, existe[0].name);
+                        } else {
+                            parent.Xrm.App.addGlobalNotification({ type: 1, level: 2, message: "Ya existe un producto en la lista con ese código" }).then(
+                                function success(result) {
+                                    window.setTimeout(function () {
+                                        parent.Xrm.App.clearGlobalNotification(result);
+                                    }, 5000);
+                                },
+                                function (error) { });
+                            hot.setDataAtCell(row, 3, false);
+                            hot.setDataAtCell(row, 1, "");
+                        }
+                    } else {
+                        hot.setDataAtCell(row, 3, false);
+                        hot.setDataAtCell(row, 1, "");
+                    }
+                }
+            });
+
+        },
+        licenseKey: 'non-commercial-and-evaluation'
+    };
+
+    let inputexcel = document.querySelector("#input-excel");
+    let descargar = document.querySelector("#descargar");
+    let modificacion = document.querySelector("#modificacion");
+    const container = document.getElementById('containerdata');
+
+    let listProducts = new Array();
+    let hot = new Handsontable(container, settings);
+    let url = document.location.href;
+    let datos = JSON.parse(decodeURIComponent(url.split("=")[1]));
+    let resCount1 = 0;
+    let resCount2 = 0;
+
+    var fetchXml =
+        `<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true" no-lock="false">
+                <entity name="product">
+                <attribute name="productid" />
+                <attribute name="productnumber" />
+                <attribute name="name" />
+                <filter>
+                    <condition attribute="statecode" operator="eq" value="0" />
+                </filter>
+                </entity>
+            </fetch>`;
+
+    parent.Xrm.Utility.showProgressIndicator('Estamos cargando todo lo necesario, un momento por favor...');
+
+    retrieveAllRecords("product", fetchXml, null, null).then(
+        function success(result) {
+            listProducts = result;
+            parent.Xrm.Utility.closeProgressIndicator();
+        },
+        function error(error) {
+            parent.Xrm.Utility.closeProgressIndicator();
+        }
+    );
+
+
+    document.addEventListener("DOMContentLoaded", async (event) => {
+        await Iniciar();
+        if (informacion?.id) {
+            modificacion.textContent = `Última modificación: ${new Date(informacion.fecha).toLocaleString()}`;
+        } else {
+            descargar.disabled = true;
+        }
+
+        descargar.addEventListener("click", (event) => {
+            if (informacion?.id) {
+                fetch(informacion.url, { method: "GET" })
+                    .then((response => response.text()))
+                    .then((data) => {
+                        let fileCont = JSON.parse(data).value;
+                        var filebyte = base64ToBufferArray(fileCont);
+                        downloadFile("Formato de carga productos.xlsx", [filebyte]);
+                    });
+            }
+        });
+    });
+
+    $('#input-excel').change(async function (e) {
+        LimpiarFormulario();
+        parent.Xrm.Utility.showProgressIndicator('Creando productos, un momento por favor...');
+        let reader = new FileReader();
+        reader.readAsArrayBuffer(e.target.files[0]);
+        reader.onload = async function (e) {
+            let data = new Uint8Array(e.target.result);
+            let workbook = XLSX.read(data, {
+                type: 'array'
+            });
+            let result = XLSX.utils.sheet_to_json(workbook.Sheets["Productos"], {
+                header: "A"
+            });
+
+            resCount1 = result.length;
+
+            result = result.map(e => e['A'])
+                .map((e, i, final) => final.indexOf(e) === i && i)
+                .filter(obj => result[obj])
+                .map(e => result[e]);
+
+            resCount2 = result.length;
+
+            if (resCount1 !== resCount2) {
+                $("#repetidos").text('Existen ' + (resCount1 - resCount2) + ' productos repetidos, se excluirán de la carga.')
+            } else {
+                $("#repetidos").text("")
+            }
+
+            if (result.length > 1) {
+                result.forEach((value, index, array) => {
+                    if (value["A"] && index > 0) {
+                        var existe = listProducts.filter((item) => item.productnumber === datos.pais + "-" + value.A)
+                        value["A"] = String(value["A"]);
+                        value.existe = existe.length > 0 ? true : false;
+                        value.nombre = existe.length > 0 ? existe[0].name : '';
+                        value.idProd = existe.length > 0 ? existe[0].productid : '';
+                        productos.push(value);
+                    }
+                });
+
+                $("#cargados").text(productos.length);
+
+                hot.updateData(productos);
+                parent.Xrm.Utility.closeProgressIndicator();
+            } else {
+                parent.Xrm.Navigation.openErrorDialog({ errorCode: 1234, message: "Archivo de excel incorrecto" }).then(
+                    function (success) { },
+                    function (error) { });
+            }
+        }
+
+    });
+
+    async function CargarProductos() {
+        parent.Xrm.Utility.showProgressIndicator('Creando los elementos de la lista de precios...');
+
+        var dataProd = productos.filter((item) => item.existe === true);
+        let parametros = await VENTAS.JS.Comun.ConsultarMultiplesEntidades('atm_parametro', "?$select=atm_valor&$filter=(atm_nombre eq 'CONECTARAF')");
+        const parametro = parametros.entities[0].atm_valor.split(',');
+        var datosAF = {
+            "Ambiente": parametro[0],
+            "Usuario": parametro[1],
+            "Contrasena": parametro[2],
+            "ListaPrecio": datos.id,
+            "Productos": dataProd,
+            "Propietario": parent.Xrm.Utility.getGlobalContext().userSettings.userId.replace('{', '').replace('}', '')
+        }
+
+        fetch(`${parametro[3]}api/CargarProductoListaPrecio`, {
+            method: "POST",
+            body: JSON.stringify(datosAF),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(json => {
+                parent.Xrm.Utility.closeProgressIndicator();
+                VENTAS.JS.Comun.MostrarNotificacionToast(1, "Productos cargados con éxito");
+            })
+            .catch(err => {
+                parent.Xrm.Utility.closeProgressIndicator();
+                parent.Xrm.Navigation.openErrorDialog({ errorCode: 1234, message: err }).then(
+                    function(success) {}, function(error) {});
+            });
+    }
+
+    function LimpiarFormulario() {
+        productos = new Array();
+        $("#cargados").text("0");
+        $("#repetidos").text("");
+        resCount1 = 0;
+        resCount2 = 0;
+    }
+
+    function CreateXml(fetchXml, pagingCookie, page) {
+        var domParser = new DOMParser();
+        var xmlSerializer = new XMLSerializer();
+
+        var fetchXmlDocument = domParser.parseFromString(fetchXml, "text/xml");
+
+        if (page) {
+            fetchXmlDocument
+                .getElementsByTagName("fetch")[0]
+                .setAttribute("page", page.toString());
+        }
+
+        if (pagingCookie) {
+            var cookieDoc = domParser.parseFromString(pagingCookie, "text/xml");
+            var innerPagingCookie = domParser.parseFromString(
+                decodeURIComponent(
+                    decodeURIComponent(
+                        cookieDoc
+                            .getElementsByTagName("cookie")[0]
+                            .getAttribute("pagingcookie")
+                    )
+                ),
+                "text/xml"
+            );
+            fetchXmlDocument
+                .getElementsByTagName("fetch")[0]
+                .setAttribute(
+                    "paging-cookie",
+                    xmlSerializer.serializeToString(innerPagingCookie)
+                );
+        }
+
+        return xmlSerializer.serializeToString(fetchXmlDocument);
+    }
+
+    function retrieveAllRecords(entityName, fetchXml, page, pagingCookie) {
+        if (!page) {
+            page = 0;
+        }
+
+        return retrievePage(entityName, fetchXml, page + 1, pagingCookie).then(
+            function success(pageResults) {
+                if (pageResults.fetchXmlPagingCookie) {
+                    return retrieveAllRecords(
+                        entityName,
+                        fetchXml,
+                        page + 1,
+                        pageResults.fetchXmlPagingCookie
+                    ).then(
+                        function success(results) {
+                            if (results) {
+                                return pageResults.entities.concat(results);
+                            }
+                        },
+                        function error(e) {
+                            throw e;
+                        }
+                    );
+                } else {
+                    return pageResults.entities;
+                }
+            },
+            function error(e) {
+                throw e;
+            }
+        );
+    }
+
+    function retrievePage(entityName, fetchXml, pageNumber, pagingCookie) {
+        var fetchXml = "?fetchXml=" + CreateXml(fetchXml, pagingCookie, pageNumber);
+
+        return parent.Xrm.WebApi.online.retrieveMultipleRecords(entityName, fetchXml).then(
+            function success(result) {
+                return result;
+            },
+            function error(e) {
+                throw e;
+            }
+        );
+    }
+
+    async function Iniciar() {
+        let res = await VENTAS.JS.Comun.DescargarArchivo("FORMATOELEMENTOSLISTAPRECIOS");
+
+        if (res) {
+            informacion = res;
+        }
+    }
+</script>
+</html>

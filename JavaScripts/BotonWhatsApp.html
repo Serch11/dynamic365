@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Boton WhatsApp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+        .whatsapp {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            z-index: 100;
+            left: 40vw;
+        }
+
+        .whatsapp-icon {
+            margin-top: 13px;
+        }
+    </style>
+</head>
+<body>
+    <a id="btn" class="whatsapp" onclick="EnviarMensaje();"> <i class="fa fa-whatsapp whatsapp-icon"></i></a>
+    <script type="text/javascript">
+        function EnviarMensaje() {
+            "use strict";
+
+            var controls = parent.Xrm.Page.ui.controls;
+            let url = controls.get("atm_urlmensajedirecto").getAttribute().getValue();
+            var a = document.getElementById("btn");
+            a.href = url;
+            a.target = "_blank"
+        }
+    </script>
+</body>
+</html>

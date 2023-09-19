@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AD960265-3DA6-46DF-ADED-99055F77C058}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JavaScripts</RootNamespace>
+    <AssemblyName>JavaScripts</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Asignacion masiva.html" />
+    <Content Include="atm_DocumentoVenta.js" />
+    <Content Include="atm_ProductoFactura.js" />
+    <Content Include="atm_FrecuenciaRecoleccion.js" />
+    <Content Include="atm_LineaProductos.js" />
+    <Content Include="atm_ListaPrecio.js" />
+    <Content Include="atm_LlamadaPlanAccion.js" />
+    <Content Include="atm_LogMensajesMasivos.js" />
+    <Content Include="atm_DescuentoRol.js" />
+    <Content Include="atm_Oferta.js" />
+    <Content Include="atm_DescuentoVolumen.js" />
+    <Content Include="atm_ReglaDescuentos.js" />
+    <Content Include="atm_Objetivos.js" />
+    <Content Include="atm_Oportunidad.js" />
+    <Content Include="atm_Comun.js" />
+    <Content Include="atm_Actividad.js" />
+    <Content Include="atm_DocumentoCredito.js" />
+    <Content Include="atm_PlanAccion.js" />
+    <Content Include="atm_Producto.js" />
+    <Content Include="atm_Factura.js" />
+    <Content Include="atm_Recoleccion.js" />
+    <Content Include="atm_SolicitudCredito.js" />
+    <Content Include="atm_Lead.js" />
+    <Content Include="atm_Cuenta.js" />
+    <Content Include="atm_DocumentoSharePoint.js" />
+    <Content Include="atm_Utilidades.js" />
+    <Content Include="atm_Vehiculo.js" />
+    <Content Include="BotonWhatsApp.html" />
+    <Content Include="Comisiones.html" />
+    <Content Include="Configuracion Parametros SC1.html" />
+    <Content Include="Configuracion Mensaje Masivo.html" />
+    <Content Include="Crear Objetivos.html" />
+    <Content Include="DocumentacionCredito.html" />
+    <Content Include="GMaps.html" />
+    <Content Include="Importar Documentos .html" />
+    <Content Include="MostrarImagen.html" />
+    <Content Include="Productos de la lista de precios.html" />
+    <Content Include="Respuesta de campaña.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

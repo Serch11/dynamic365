@@ -1,0 +1,664 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="/WebResources/atm_comun" type="text/javascript"></script>
+
+    <style>
+        .flex-div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @import url('https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
+
+        .pcs:after {
+            content: " pcs";
+        }
+
+        .cur:before {
+            content: "$";
+        }
+
+        .per:after {
+            content: "%";
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 0.2em 2em;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table th {
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table th,
+        table td {
+            padding: 0.4em;
+        }
+
+        table.fold-table>tbody>tr.view td,
+        table.fold-table>tbody>tr.view th {
+            cursor: pointer;
+        }
+
+        table.fold-table>tbody>tr.view td:first-child,
+        table.fold-table>tbody>tr.view th:first-child {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        table.fold-table>tbody>tr.view td:first-child:before,
+        table.fold-table>tbody>tr.view th:first-child:before {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            width: 9px;
+            height: 16px;
+            margin-top: -8px;
+            font: 16px fontawesome;
+            color: #999;
+            content: "\f0d7";
+            transition: all 0.3s ease;
+        }
+
+        table.fold-table>tbody>tr.view:nth-child(4n-1) {
+            background: #eee;
+        }
+
+        table.fold-table>tbody>tr.view:hover {
+            background: #122148;
+            color: white;
+        }
+
+        table.fold-table>tbody>tr.view.open {
+            background: #122148;
+            color: white;
+        }
+
+        table.fold-table>tbody>tr.view.open td:first-child:before,
+        table.fold-table>tbody>tr.view.open th:first-child:before {
+            transform: rotate(-180deg);
+            color: #333;
+        }
+
+        table.fold-table>tbody>tr.fold {
+            display: none;
+        }
+
+        table.fold-table>tbody>tr.fold.open {
+            display: table-row;
+        }
+
+        .fold-content {
+            padding: 0.5em;
+        }
+
+        .fold-content h3 {
+            margin-top: 0;
+        }
+
+        .fold-content>table {
+            border: 2px solid #ccc;
+        }
+
+        .fold-content>table>tbody tr:nth-child(even) {
+            background: #eee;
+        }
+    </style>
+    <title>Creacion de objetivos</title>
+</head>
+
+<body style="overflow-wrap: break-word;">
+    <main class="container-xl">
+        <div class="flex-div">
+            <div>
+                <p>Seleccione el archivo a cargar...</p>
+            </div>
+
+            <div style="padding: 10px; display: grid;">
+                <button type="button" class="btn btn-sm btn-success" id="descargar"
+                    title="Descargar formato de objetivos">
+                    <i class="bi bi-cloud-arrow-down-fill" style="padding: 10px;"></i> Descargar archivo
+                </button>
+                <label for="" id="modificacion" style="font-size: 12px;"></label>
+            </div>
+        </div>
+
+        <div class="divform">
+            <form class="formMain">
+                <div class="mb-3 row">
+                    <input type="file" class="form-control" id="input-excel">
+                </div>
+            </form>
+            <ul class="nav nav-tabs" id="myTab" style="margin: 0 -10px 0 -12px;">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active" data-bs-toggle="tab">
+                        <i class="bi bi-card-checklist"></i>
+                        Resumen de carga
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#profile" class="nav-link" data-bs-toggle="tab">
+                        <i class="bi bi-x-octagon-fill position-relative">
+                            <span id="errorList" style="visibility: hidden;"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            </span>
+                        </i> Listado de errores
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#profilesice" class="nav-link" data-bs-toggle="tab">
+                        <i class="bi bi-x-octagon-fill position-relative">
+                            <span id="errorListSice" style="visibility: hidden;"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            </span>
+                        </i> Listado de errores SICE
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="home">
+                    <div class="resultado" id="resultado">
+                        <div class="row">
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-bar-chart-steps text-info fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Cantidad objetivos</h4>
+                                                </div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <h2 id="cantobjetivos" class="h1 mb-0"></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-list-check text-warning fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Objetivos cargados</h4>
+
+                                                </div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <h2 id="objcreados" class="h1 mb-0"></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-cash-coin text-success fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Importe cargado</h4>
+                                                    <h6 id="importe" class="h6 mb-0"></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-123 text-secondary fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Recuento cargado</h4>
+                                                </div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <h2 id="recuento" class="h1 mb-0"></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-arrow-clockwise text-secondary fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Objetivos Actualizados</h4>
+                                                </div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <h2 id="actualizado" class="h1 mb-0"></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-list-check text-warning fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Cargados en SICE</h4>
+                                                </div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <h2 id="objcreadosSICE" class="h1 mb-0"></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile">
+                    <div id="scroll" class="mb-2 row">
+                        <table class="fold-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tipo de error</th>
+                                    <th>Cantidad</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyrespuesta">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profilesice">
+                    <div id="scroll" class="mb-2 row">
+                        <table class="fold-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Vendedor</th>
+                                    <th>categoria</th>
+                                    <th>Regional</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyrespuesta2">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="row pt-2">
+                <div class="col-12">
+                    <button class="btn btn-danger  col-12 col-md-12 col-xs-12" type="button" onclick="window.close()">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    <script>
+        //variable global
+        var informacion;
+        let d = document;
+
+        //Declaracion de las variables
+        let descargar = document.querySelector("#descargar");
+        let modificacion = document.querySelector("#modificacion");
+        let divResultados = document.querySelector(".resultado");
+        let labelcantidadobjetivos = document.querySelector("#cantobjetivos");
+        let labelobjetivoscreado = document.querySelector("#objcreados");
+        let labelimporte = document.querySelector("#importe");
+        let actualizado = document.querySelector("#actualizado");
+        let labelrecuento = document.querySelector("#recuento");
+        let inputexcel = document.querySelector("#input-excel");
+        let tbodyrespuesta = document.querySelector("#tbodyrespuesta");
+        let tablaRespuesta = document.querySelector("#tablaRespuesta");
+        let lblerrorList = document.querySelector("#errorList");
+        let arrayHeader = ["#", "Nombre Documento", "Fila de excel"];
+
+        //array
+        let objetivos = new Array();
+        let parametroTipoObjetivo = new Array();
+
+        document.addEventListener("DOMContentLoaded", async (event) => {
+            await Iniciar();
+            if (informacion?.id) {
+                modificacion.textContent = `Ultima modificación: ${new Date(informacion.fecha).toLocaleString()}`;
+            } else {
+                descargar.disabled = true;
+            }
+
+            descargar.addEventListener("click", (event) => {
+                if (informacion?.id) {
+                    fetch(informacion.url, { method: "GET" })
+                        .then((response => response.text()))
+                        .then((data) => {
+                            let fileCont = JSON.parse(data).value;
+                            var filebyte = base64ToBufferArray(fileCont);
+                            downloadFile("Formato de carga Metas.xlsm", [filebyte]);
+                        });
+                }
+            });
+        });
+
+        function gestionarErrores(display, txt, elemento) {
+            lblerrorList.style.display = display;
+            // lblerrorList.textContent = txt;
+            document.querySelector(elemento).style.visibility = display;
+            document.querySelector(elemento).textContent = txt;
+
+        }
+
+        async function Iniciar() {
+            let res = await VENTAS.JS.Comun.DescargarArchivo("FORMATODEOBJETIVOS");
+
+            if (res) {
+                informacion = res;
+            }
+        }
+        //evento que se ejecuta en el momento de cargar un archivo de excel
+        $('#input-excel').change(async function (e) {
+            $(".resultado").show();
+            let reader = new FileReader();
+            reader.readAsArrayBuffer(e.target.files[0]);
+
+            reader.onload = async function (e) {
+                let data = new Uint8Array(e.target.result);
+                let workbook = XLSX.read(data, {
+                    type: 'array'
+                });
+                let result = XLSX.utils.sheet_to_json(workbook.Sheets["Objetivos"], { header: "A" });
+                let parametros = XLSX.utils.sheet_to_json(workbook.Sheets["Parametros"], { header: "A" });
+
+                await TipoDeObjetivo(parametros);
+                if (result.length > 1) {
+                    result.forEach((value, index, array) => {
+                        if (value["A"] && index > 1) {
+                            objetivos.push(value);
+                        }
+                    });
+
+                    //bloquear input
+                    inputexcel.disabled = true;
+
+                    //ejecutar custon action
+                    await llamarFlujoCreacionObjetivos();
+
+                    parent.Xrm.Utility.showProgressIndicator('Creando Objetivos');
+
+                    async function llamarFlujoCreacionObjetivos() {
+
+                        let request = {};
+                        request.Objetivos = JSON.stringify(objetivos);
+                        request.TipoObjetivo = JSON.stringify(parametroTipoObjetivo);
+                        request.getMetadata = function () {
+                            return {
+                                boundParameter: null,
+                                operationType: 0,
+                                operationName: "atm_CrearObjetivos",
+                                parameterTypes: {
+                                    "Objetivos": {
+                                        typeName: "Edm.String",
+                                        structuralProperty: 1
+                                    },
+                                    "TipoObjetivo": {
+                                        typeName: "Edm.String",
+                                        structuralProperty: 1
+                                    }
+                                }
+                            };
+                        };
+
+
+
+                        parent.Xrm.WebApi.online.execute(request).then(
+                            async function success(results) {
+                                results.json().then(function (response) {
+                                    if (response.Exito) {
+                                        let res = JSON.parse(response.Respuesta);
+                                        let pesos = new Intl.NumberFormat('en-US', { style: "currency", currency: 'COP' });
+                                        labelcantidadobjetivos.textContent = res.cantObjetivos;
+                                        labelobjetivoscreado.textContent = res.objCreados;
+                                        labelimporte.textContent = pesos.format(res.preciototal.Value);
+                                        labelrecuento.textContent = res.conteototal;
+                                        actualizado.textContent = res.actualizados;
+
+                                        if (res.usuariono.length > 0) {
+                                            gestionarErrores("visible", res.usuariono.length, "#errorList");
+                                            CrearHtml(res.usuariono);
+                                            $(".openRegistros").on("click", function () {
+                                                $(this).toggleClass("open").next(".fold").toggleClass("open");
+                                            });
+                                        } else {
+                                            gestionarErrores("hidden", "", "#errorList");
+                                        }
+                                        divResultados.style.display = "block";
+                                        parent.Xrm.Utility.closeProgressIndicator();
+
+                                        if (res.respuestasice) {
+                                            if (res.respuestasice.output.presupuestos_cargados > 0) {
+                                                document.querySelector("#objcreadosSICE").innerHTML = res.respuestasice.output.presupuestos_cargados;
+                                            }
+                                            let sice = res.respuestasice.output;
+                                            if (sice.presupuestos_error.length > 0) {
+                                                gestionarErrores("visible", sice.presupuestos_error.length, "#errorListSice");
+                                                CrearHtml2(sice.presupuestos_error);
+                                            }
+                                        }
+                                    }
+                                });
+                            },
+                            async function (error) {
+                                parent.Xrm.Utility.closeProgressIndicator();
+                                parent.Xrm.Navigation.openErrorDialog({ errorCode: 1234, message: error.message }).then(
+                                    function (success) { },
+                                    function (error) { });
+                                // handle error conditions
+                            }
+                        );
+                    }
+                } else {
+                    // alerta archivo incorrecto
+                    parent.Xrm.Navigation.openErrorDialog({ errorCode: 1234, message: "Archivo de excel incorrecto" }).then(
+                        function (success) { },
+                        function (error) { });
+                }
+            }
+        });
+
+        function TipoDeObjetivo(objParamtro) {
+
+            let objeto = {};
+
+            if (objParamtro.length > 1) {
+                objParamtro.forEach((value, index, array) => {
+                    if ((value["I"] && value["J"]) && index > 0) {
+                        let valor = value["I"].replaceAll(" ", "");
+                        objeto.tipo = value["I"];
+                        objeto.valor = value["J"];
+                        objeto.codigo = value["K"];
+                        parametroTipoObjetivo.push(objeto);
+                        objeto = {};
+                    }
+                });
+            }
+        }
+
+        function CrearHtml(info) {
+            let d = document;
+            let tbodyrespuesta = d.querySelector("#tbodyrespuesta")
+            let arrayHeader = ["#", "Codigo", "Fila de excel", "Nombre de usuario"];
+
+            if (info) {
+                if (info) {
+                    info.forEach((element, index) => {
+
+                        var newRow = tbodyrespuesta.insertRow();
+                        newRow.classList.add("view", "openRegistros");
+
+                        var newCell = newRow.insertCell();
+                        var newText = document.createTextNode(index + 1);
+
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.nombre);
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.datos.length);
+                        newCell.appendChild(newText);
+
+
+                        let tr = d.createElement("tr");
+                        let td = d.createElement("td");
+                        let th = d.createElement("th");
+                        let div = d.createElement("div");
+                        let table = d.createElement("table");
+                        let thead = d.createElement("thead");
+                        let tbody = d.createElement("tbody");
+                        let nameTbodyId = "tbody" + (index + 1);
+                        tbody.classList.add(nameTbodyId);
+                        //able.classList.add("fold-table")
+                        tr.classList.add("fold");
+                        td.colSpan = "7";
+                        div.classList.add("fold-content")
+
+
+                        tr.appendChild(td);
+                        td.appendChild(div);
+                        div.appendChild(table)
+                        table.appendChild(thead);
+                        let tr2 = d.createElement("tr");
+                        thead.appendChild(tr2);
+                        arrayHeader.forEach((item, index) => {
+                            let th2 = d.createElement("th");
+                            th2.appendChild(document.createTextNode(item));
+                            tr2.appendChild(th2);
+                        });
+                        table.appendChild(tbody);
+                        if (element.datos.length > 0) {
+                            element.datos.forEach((item, i) => {
+
+                                let newRow = tbody.insertRow();
+                                let newCell = newRow.insertCell();
+                                let newText = document.createTextNode(i + 1);
+
+                                newCell.appendChild(newText);
+
+                                newCell = newRow.insertCell();
+                                newText = document.createTextNode(item.codigo);
+                                newCell.appendChild(newText);
+
+                                newCell = newRow.insertCell();
+                                newText = document.createTextNode(item.filaexcel);
+                                newCell.appendChild(newText);
+
+                                newCell = newRow.insertCell();
+                                newText = document.createTextNode(item.nombreUsuario);
+                                newCell.appendChild(newText);
+                            });
+                        }
+                        tbodyrespuesta.appendChild(tr)
+                    });
+                }
+            }
+        }
+
+        function CrearHtml2(info) {
+            let d = document;
+            let tbodyrespuestaSice = d.querySelector("#tbodyrespuesta2");
+            let arrayHeader = ["#", "Vendedor", "Categoria", "Regional", "Error"];
+
+            if (info) {
+                if (info) {
+                    info.forEach((element, index) => {
+
+                        var newRow = tbodyrespuestaSice.insertRow();
+                        newRow.classList.add("view", "openRegistrosSice");
+
+                        var newCell = newRow.insertCell();
+                        var newText = document.createTextNode(index + 1);
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.vendedor);
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.categoria);
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.regional);
+                        newCell.appendChild(newText);
+
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.message);
+                        newCell.appendChild(newText);
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

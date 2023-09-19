@@ -1,0 +1,725 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="/WebResources/atm_comun" type="text/javascript"></script>
+
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        .flex-div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @import url('https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
+
+        .pcs:after {
+            content: " pcs";
+        }
+
+        .cur:before {
+            content: "$";
+        }
+
+        .per:after {
+            content: "%";
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin-bottom: 60px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table th {
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table th,
+        table td {
+            padding: 0.4em;
+        }
+
+        table.fold-table>tbody>tr.view td,
+        table.fold-table>tbody>tr.view th {
+            cursor: pointer;
+        }
+
+        table.fold-table>tbody>tr.view td:first-child,
+        table.fold-table>tbody>tr.view th:first-child {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        table.fold-table>tbody>tr.view td:first-child:before,
+        table.fold-table>tbody>tr.view th:first-child:before {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            width: 9px;
+            height: 16px;
+            margin-top: -8px;
+            font: 16px fontawesome;
+            color: #999;
+            content: "\f0d7";
+            transition: all 0.3s ease;
+        }
+
+        table.fold-table>tbody>tr.view:nth-child(4n-1) {
+            background: #eee;
+        }
+
+        table.fold-table>tbody>tr.view:hover {
+            background: #122148;
+            color: white;
+        }
+
+        table.fold-table>tbody>tr.view.open {
+            background: #122148;
+            color: white;
+        }
+
+        table.fold-table>tbody>tr.view.open td:first-child:before,
+        table.fold-table>tbody>tr.view.open th:first-child:before {
+            transform: rotate(-180deg);
+            color: #333;
+        }
+
+        table.fold-table>tbody>tr.fold {
+            display: none;
+        }
+
+        table.fold-table>tbody>tr.fold.open {
+            display: table-row;
+        }
+
+        .fold-content {
+            padding: 0.5em;
+        }
+
+        .fold-content h3 {
+            margin-top: 0;
+        }
+
+        .fold-content>table {
+            border: 2px solid #ccc;
+        }
+
+        .fold-content>table>tbody tr:nth-child(even) {
+            background: #eee;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 75px;
+            line-height: 60px;
+            background-color: #f5f5f5;
+            z-index: 1000000;
+        }
+    </style>
+    <title>Creacion de objetivos</title>
+</head>
+
+<body style="overflow-wrap: break-word;">
+    <main class="container-xl">
+        <div class="flex-div">
+            <div>
+                <p>Seleccione el archivo a cargar...</p>
+            </div>
+
+            <div style="padding: 10px; display: grid;">
+                <button type="button" class="btn btn-sm btn-success" id="descargar"
+                    title="Descargar formato de objetivos">
+                    <i class="bi bi-cloud-arrow-down-fill" style="padding: 10px;"></i> Descargar archivo
+                </button>
+                <label for="" id="modificacion" style="font-size: 12px;"></label>
+            </div>
+        </div>
+
+        <div class="divform">
+            <form class="formMain">
+                <div class="mb-3 row">
+                    <input type="file" class="form-control" id="input-excel">
+                </div>
+            </form>
+
+            <ul class="nav nav-tabs" id="myTab" style="margin: 0 -10px 0 -12px;">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active" data-bs-toggle="tab">
+                        <i class="bi bi-card-checklist"></i>
+                        Resumen de carga
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#profile" class="nav-link" data-bs-toggle="tab">
+                        <i class="bi bi-x-octagon-fill position-relative">
+                            <span id="errorList" style="visibility: hidden;"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            </span>
+                        </i> Listado de errores
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="home">
+                    <div class="resultado" id="resultado">
+                        <div class="row">
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-bar-chart-steps text-info fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Cantidad de documentos</h4>
+                                                </div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <h2 id="cantdocumentos" class="h1 mb-0"></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-list-check text-warning fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Documentos cargados</h4>
+
+                                                </div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <h2 id="documentoscargados" class="h1 mb-0"></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-sm-6 col-xs-12 col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between p-md-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="align-self-center">
+                                                    <i class="bi bi-bar-chart-steps text-info fa-3x me-4"></i>
+                                                </div>
+                                                <div>
+                                                    <h4>Documentos fallidos</h4>
+                                                </div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <h2 id="documentosfallidosh2" class="h1 mb-0"></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25"
+                        aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%">0%</div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile">
+                    <div id="scroll" class="mb-2 row">
+                        <table class="fold-table">
+                            <thead style="font-weight: bold;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre documento</th>
+                                    <th>Fila excel</th>
+                                    <th>Url</th>
+                                    <th>Estado peticion</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyrespuesta" style="font-size: 13px;">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profilesice">
+                    <div id="scroll" class="mb-2 row">
+                        <table class="fold-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Vendedor</th>
+                                    <th>categoria</th>
+                                    <th>Regional</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyrespuesta2">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row pt-2">
+                <div class="col-12">
+                    <button class="btn btn-danger  col-12 col-md-12 col-xs-12" type="button" onclick="window.close()">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+    <script>
+        //variable global
+        //array
+        let documentos = new Array();
+        let documentosincompletos = new Array();
+        let tipodedocumento = new Array();
+        let idsitiopredeterminado = null;
+        let documentoscargados = new Array();
+        let documentossolicitudfallida = new Array();
+
+        try {
+            var informacion;
+            let d = document;
+
+            //Declaracion de las variables
+            var bar = document.querySelector(".progress-bar");
+            let descargar = document.querySelector("#descargar");
+            let modificacion = document.querySelector("#modificacion");
+            let divResultados = document.querySelector(".resultado");
+            let labelcantidaddocumentos = document.querySelector("#cantdocumentos");
+            let labeldocumentoscargados = document.querySelector("#documentoscargados");
+            let inputexcel = document.querySelector("#input-excel");
+            let tbodyrespuesta = document.querySelector("#tbodyrespuesta");
+            let tablaRespuesta = document.querySelector("#tablaRespuesta");
+            let lblerrorList = document.querySelector("#errorList");
+            let documentosfallidosh2 = document.querySelector("#documentosfallidosh2");
+            let arrayHeader = ["#", "Nombre documento", "Fila de excel"];
+
+
+
+            document.addEventListener("DOMContentLoaded", async (event) => {
+                await Iniciar();
+                if (informacion?.id) {
+                    modificacion.textContent = `Ultima modificación: ${new Date(informacion.fecha).toLocaleString()}`;
+                } else {
+                    descargar.disabled = true;
+                }
+
+                descargar.addEventListener("click", (event) => {
+                    if (informacion?.id) {
+                        fetch(informacion.url, { method: "GET" })
+                            .then((response => response.text()))
+                            .then((data) => {
+                                let fileCont = JSON.parse(data).value;
+                                var filebyte = base64ToBufferArray(fileCont);
+                                downloadFile("Fomato de carga de documentos.xlsm", [filebyte]);
+                            });
+                    }
+                });
+            });
+
+            function gestionarErrores(display, txt, elemento) {
+                lblerrorList.style.display = display;
+                // lblerrorList.textContent = txt;
+                document.querySelector(elemento).style.visibility = display;
+                document.querySelector(elemento).textContent = txt;
+
+            }
+
+            async function Iniciar() {
+                //https://automundialdev.crm2.dynamics.com/api/data/v9.2/sharepointdocumentlocations?$select=sharepointdocumentlocationid&$filter=(relativeurl eq 'atm_documentoventa')
+                let res = await VENTAS.JS.Comun.DescargarArchivo("FORMATODEDOCUMENTOS");
+
+
+                if (res) {
+                    informacion = res;
+                }
+            }
+
+            //evento que se ejecuta en el momento de cargar un archivo de excel
+            $('#input-excel').change(async function (e) {
+
+                VENTAS.JS.Comun.MostrarNotificacionToast(1, "Carga de documentos iniciada.");
+                //parent.Xrm.Utility.showProgressIndicator('Cargando documentos');
+
+                $(".resultado").show();
+                let reader = new FileReader();
+                reader.readAsArrayBuffer(e.target.files[0]);
+
+                reader.onload = async function (e) {
+                    let data = new Uint8Array(e.target.result);
+                    let workbook = XLSX.read(data, {
+                        type: 'array'
+                    });
+                    let urlendpointcreararchivo = await VENTAS.JS.Comun.ConsultarMultiplesEntidades("atm_parametro", "?$select=atm_valor&$filter=(atm_nombre eq 'URLENDPOINTCREARARCHIVOSHAREPOINT')");
+                    idsitiopredeterminado = await VENTAS.JS.Comun.ConsultarMultiplesEntidades("sharepointdocumentlocation", "?$select=sharepointdocumentlocationid&$filter=(relativeurl eq 'atm_documentoventa')");
+                    let result = XLSX.utils.sheet_to_json(workbook.Sheets["Documentos"], { header: "A" });
+                    let parametros = XLSX.utils.sheet_to_json(workbook.Sheets["Parametros"], { header: "A" });
+                    await TipoDocumento(parametros);
+                    if (result.length > 1) {
+
+                        for await (const [index, iterator] of result.entries()) {
+                            if (iterator['A'] && iterator['B'] && iterator['C'] && index > 1) {
+                                documentos.push(new Documento(iterator));
+                            } else {
+                                documentosincompletos.push(new Documento(iterator));
+                            }
+                        }
+
+                        if (documentos.length > 0) {
+                            var contador = 1;
+                            for await (const documento of documentos) {
+
+                                let resPeticion = null;
+                                resPeticion = await PeticionFetch2(documento.url);
+                                console.log(resPeticion.resultFetch);
+                                if (resPeticion.resultFetch) {
+                                    let record = {};
+                                    record.atm_name = documento.nombredocumento; // Text
+                                    record.atm_descripcion = documento.descripcion; // Text                                    
+                                    let filtrotipodocumento = tipodedocumento.filter((x) => x.tipo === documento.tipo)
+                                    record.atm_tipocode = filtrotipodocumento[0].valor; // Choice 
+
+                                    let IDDOCUMENTO = await VENTAS.JS.Comun.CrearRegistro("atm_documentoventa", record);
+
+                                    console.log("idsharepoint", idsitiopredeterminado);
+                                    if (IDDOCUMENTO && idsitiopredeterminado) {
+
+                                        IDDOCUMENTO = IDDOCUMENTO.id.replace("{", "").replace("}", "").toUpperCase();
+                                        var ubicaciondocumento = {};
+                                        let nombre = `${documento.nombredocumento}_${IDDOCUMENTO.toUpperCase().replaceAll("-", "")}`
+                                        ubicaciondocumento.name = nombre; // Text
+                                        ubicaciondocumento["parentsiteorlocation_sharepointdocumentlocation@odata.bind"] = "/sharepointdocumentlocations(" + idsitiopredeterminado.entities[0].sharepointdocumentlocationid + ")"; // Lookup
+                                        ubicaciondocumento.relativeurl = nombre; // Text
+                                        ubicaciondocumento["regardingobjectid_atm_documentoventa@odata.bind"] = "/atm_documentoventas(" + IDDOCUMENTO + ")"; // Lookup
+                                        ubicaciondocumento.locationtype = 0; // Choice
+
+                                        let IDSITIODELDOCUMENTOVENTA = await VENTAS.JS.Comun.CrearRegistro("sharepointdocumentlocation", ubicaciondocumento);
+                                        if (IDSITIODELDOCUMENTOVENTA) {
+
+                                            let creacionArchivo = await PeticionCreacionArchivoSharepoint({
+                                                nombreruta: `/atm_documentoventa/${nombre}`,
+                                                nombrearchivo: `${documento.nombredocumento}.${resPeticion.resultFetch.tipe.split("/")[1]}`,
+                                                tipoarchivo: resPeticion.resultFetch.tipe.split("/")[1],
+                                                imagen: resPeticion.resultFetch.base64String
+                                            }, urlendpointcreararchivo.entities[0].atm_valor);
+                                            documentoscargados.push(documento);
+                                            //completeado
+                                            labeldocumentoscargados.textContent = documentoscargados.length;
+                                            labelcantidaddocumentos.textContent = documentos.length;
+                                        }
+                                    }
+                                } else {
+                                    documentossolicitudfallida.push({ documento, status: resPeticion.statuscode });
+                                    documentosfallidosh2.textContent = documentossolicitudfallida.length;
+                                }
+                                var porcentaje = (contador * 100) / documentos.length;
+                                bar.style.width = porcentaje + "%"
+                                bar.innerText = porcentaje + "%";
+                                contador++;
+                            }
+                            VENTAS.JS.Comun.MostrarNotificacionToast(1, "Carga de documentos finalizada.");
+                            if (documentossolicitudfallida.length > 0) {
+                                gestionarErrores("visible", documentossolicitudfallida.length, "#errorList");
+                                CrearHtml(documentossolicitudfallida);
+                                $(".openRegistros").on("click", function () {
+                                    $(this).toggleClass("open").next(".fold").toggleClass("open");
+                                });
+                            } else {
+                                gestionarErrores("hidden", "", "#errorList");
+                            }
+                            console.log(documentossolicitudfallida);
+                        }
+                    } else {
+                        // alerta archivo incorrecto
+                        parent.Xrm.Utility.closeProgressIndicator();
+                        parent.Xrm.Navigation.openErrorDialog({ errorCode: 1234, message: "Archivo de excel incorrecto" }).then(
+                            function (success) { },
+                            function (error) { });
+                    }
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+
+
+        function TipoDocumento(objParamtro) {
+
+            let objeto = {};
+
+            if (objParamtro.length > 1) {
+                objParamtro.forEach((value, index, array) => {
+                    if ((value["B"] && value["C"]) && index > 0) {
+                        objeto.tipo = value["B"];
+                        objeto.valor = value["C"];
+                        tipodedocumento.push(objeto);
+                        objeto = {};
+                    }
+                });
+            }
+        }
+
+
+        class Documento {
+            constructor(iterador) {
+                this.nombredocumento = iterador['A'];
+                this.tipo = iterador['B'];
+                this.url = iterador['C'];
+                this.descripcion = iterador['D'] ? iterador['D'] : "";
+                this.tipoarchivo = iterador['E'] ? iterador['E'] : "";
+                this.idexcel = iterador['F'];
+            }
+        }
+
+
+
+        async function PeticionFetch(URL) {
+            try {
+                return new Promise(async (resolve, reject) => {
+                    try {
+                        let base64String;
+                        let response = await fetch(URL, {
+                            method: "GET",
+                        });
+
+                        if (!response.ok) {
+                            console.log(response);
+                            resolve({
+                                resultFetch: false,
+                                statuscode: response.status
+                            });
+                        }
+
+
+                        const data = await response.blob()
+                        const reader = new FileReader();
+                        reader.onload = function (event) {
+                            //console.log(event.target.result.split(","));
+                            base64String = event.target.result.split(',')[1];
+                            resolve({
+                                resultFetch: {
+                                    base64String,
+                                    tipe: data.type
+                                }
+                            })
+                        }
+                        reader.readAsDataURL(data);
+                    } catch (error) {
+                        reject(error);
+                    }
+                })
+                //console.log(base64String);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        async function PeticionFetch2(URL) {
+            try {
+                return new Promise(async (resolve, reject) => {
+                    try {
+                        let base64String;
+                        fetch(URL, {
+                            method: "GET",
+                        }).then(response => response.blob())
+                            .then(data => {
+                                const reader = new FileReader();
+                                reader.onload = function (event) {
+                                    //console.log(event.target.result.split(","));
+                                    base64String = event.target.result.split(',')[1];
+                                    console.log(base64String);
+                                    resolve({
+                                        resultFetch: {
+                                            base64String,
+                                            tipe: data.type
+                                        }
+                                    })
+                                }
+                                reader.readAsDataURL(data);
+
+                            }).catch(error => {
+                                //console.log(error);
+
+                                if (error) {
+                                    console.log(error);
+                                    resolve({
+                                        resultFetch: false,
+                                        statuscode: error?.status ? error?.status : 500
+                                    });
+                                }
+                            });
+                    } catch (error) {
+                        reject(error);
+                    }
+                })
+                //console.log(base64String);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+
+        async function PeticionCreacionArchivoSharepoint(data, URL) {
+
+            return new Promise(async (resolve, reject) => {
+                try {
+                    let response = await fetch(URL, {
+                        method: "POST", headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    console.log(response);
+                    resolve(response);
+                } catch (error) {
+                    reject(error)
+                }
+
+            });
+        }
+
+        function gestionarErrores(display, txt, elemento) {
+            lblerrorList.style.display = display;
+            // lblerrorList.textContent = txt;
+            document.querySelector(elemento).style.visibility = display;
+            document.querySelector(elemento).textContent = txt;
+
+        }
+
+
+        function CrearHtml(info) {
+            let d = document;
+            let tbodyrespuesta = d.querySelector("#tbodyrespuesta")
+            let arrayHeader = ["#", "Nombre de documento", "Fila de excel", "Url"];
+
+            if (info) {
+                if (info) {
+                    info.forEach((element, index) => {
+                        console.log(element);
+                        var newRow = tbodyrespuesta.insertRow();
+                        //newRow.classList.add("view", "openRegistros");
+
+                        var newCell = newRow.insertCell();
+                        var newText = document.createTextNode(index + 1);
+
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.documento.nombredocumento);
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.documento.idexcel);
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.documento.url);
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(element.status);
+                        newCell.appendChild(newText);
+
+
+
+
+                        let tr = d.createElement("tr");
+                        let td = d.createElement("td");
+                        let th = d.createElement("th");
+                        let div = d.createElement("div");
+                        let table = d.createElement("table");
+                        let thead = d.createElement("thead");
+                        let tbody = d.createElement("tbody");
+                        let nameTbodyId = "tbody" + (index + 1);
+                        tbody.classList.add(nameTbodyId);
+                        //able.classList.add("fold-table")
+                        tr.classList.add("fold");
+                        td.colSpan = "7";
+                        div.classList.add("fold-content")
+
+
+                        tr.appendChild(td);
+                        td.appendChild(div);
+                        div.appendChild(table)
+                        table.appendChild(thead);
+                        let tr2 = d.createElement("tr");
+                        thead.appendChild(tr2);
+                        arrayHeader.forEach((item, index) => {
+                            let th2 = d.createElement("th");
+                            th2.appendChild(document.createTextNode(item));
+                            tr2.appendChild(th2);
+                        });
+                        table.appendChild(tbody);
+                        if (element.length > 0) {
+                            element.forEach((item, i) => {
+
+                                let newRow = tbody.insertRow();
+                                let newCell = newRow.insertCell();
+                                let newText = document.createTextNode(i + 1);
+
+                                newCell.appendChild(newText);
+
+                                newCell = newRow.insertCell();
+                                newText = document.createTextNode(item.nombredocumento);
+                                newCell.appendChild(newText);
+
+                                newCell = newRow.insertCell();
+                                newText = document.createTextNode(item.idexcel);
+                                newCell.appendChild(newText);
+
+                                newCell = newRow.insertCell();
+                                newText = document.createTextNode(item.url);
+                                newCell.appendChild(newText);
+                            });
+                        }
+                        tbodyrespuesta.appendChild(tr)
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A8BCC5E1-0E5E-46F2-BB5B-1EFE3D3DB9A0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PruebasATMVentas</RootNamespace>
+    <AssemblyName>PruebasATMVentas</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ATM.Utilidades">
+      <HintPath>..\ATM.Utilidades\bin\Debug\ATM.Utilidades.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.42\lib\net462\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.22.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.22.302111727\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms, Version=2.22.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.22.302111727\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Rest.ClientRuntime, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.0.2.4\lib\net452\Microsoft.Rest.ClientRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTest.TestFramework.2.1.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTest.TestFramework.2.1.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Primitives.4.0.1\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Sdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.42\lib\net462\Microsoft.Xrm.Sdk.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Sdk.Deployment, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.Deployment.9.0.2.25\lib\net462\Microsoft.Xrm.Sdk.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Sdk.Workflow, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.Workflow.9.0.2.42\lib\net462\Microsoft.Xrm.Sdk.Workflow.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Tooling.Connector, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.0.2.4\lib\net452\Microsoft.Xrm.Tooling.Connector.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Text.Encodings.Web, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.5.0.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.5.0.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Workflow.Activities" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Workflow.Runtime" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Conexion.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VENTAS.CA.Cuenta.CompartirRegistrosEquipoCSI.cs" />
+    <Compile Include="VENTAS.CA.Objetivos.CrearObjetivosV1.cs" />
+    <Compile Include="VENTAS.CA.Objetivos.RecalcularDatosReales.cs" />
+    <Compile Include="VENTAS.CA.Auditoria.EliminarRegistros.cs" />
+    <Compile Include="VENTAS.CA.RespuestaEncuesta.CrearActividad.cs" />
+    <Compile Include="VENTAS.CA.Cuenta.AsignarRegistros.cs" />
+    <Compile Include="VENTAS.CA.SolicitudCredito.AgregarDocumentacionCredito.cs" />
+    <Compile Include="VENTAS.CA.Cuenta.CompartirRegistros.cs" />
+    <Compile Include="VENTAS.PL.Actividad.CerrarRecoleccion.cs" />
+    <Compile Include="VENTAS.PL.Vehiculo.CalcularNumeroVehiculos.cs" />
+    <Compile Include="VENTAS.PL.RespuestaEncuesta.CalculoValores.cs" />
+    <Compile Include="VENTAS.PL.Cuenta.CompartirRegistros.cs" />
+    <Compile Include="VENTAS.PL.Equipo.AgregarUsuarioEquipo.cs" />
+    <Compile Include="VENTAS.PL.Factura.NotificacionTipoLocalizacion.cs" />
+    <Compile Include="VENTAS.PL.Factura.ClientesPrimeraFacturacion.cs" />
+    <Compile Include="VENTAS.PL.Factura.CalculoImporteAjustado.cs" />
+    <Compile Include="VENTAS.PL.Recoleccion.AsignarActividad.cs" />
+    <Compile Include="VENTAS.PL.Cuenta.CrearContactoPersonaNatural.cs" />
+    <Compile Include="VENTAS.PL.Recoleccion.NotificacionFinalizacion.cs" />
+    <Compile Include="VENTAS.PL.Actividad.NotificacionAsignacion.cs" />
+    <Compile Include="VENTAS.PL.Actividad.CerrarActividad.cs" />
+    <Compile Include="VENTAS.PL.Factura.CalculoConversion.cs" />
+    <Compile Include="VENTAS.PL.PVSC.ValidarEstadoProceso.cs" />
+    <Compile Include="VENTAS.PL.DSolicitudCredito.ValidarDocumentacion.cs" />
+    <Compile Include="VENTAS.PL.Lead.CalificarLead.cs" />
+    <Compile Include="VENTAS.PL.Direccion.EstablecerDireccionPrincipal.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VENTAS.Actividad.ValidarCierreRecoleciones\VENTAS.PL.Actividad.ValidarCierreRecoleciones.csproj">
+      <Project>{9e907d97-87a3-49f0-9cbb-4647556665b1}</Project>
+      <Name>VENTAS.PL.Actividad.ValidarCierreRecoleciones</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.CA.Aduditoria.EliminarRegistros\VENTAS.CA.Auditoria.EliminarRegistros.csproj">
+      <Project>{5860522f-f40d-4eb8-a584-434796324342}</Project>
+      <Name>VENTAS.CA.Auditoria.EliminarRegistros</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.CA.Cuenta.AsignarRegistros\VENTAS.CA.Cuenta.AsignarRegistros.csproj">
+      <Project>{B631B762-3DD0-4E68-B11F-EA3D92D31602}</Project>
+      <Name>VENTAS.CA.Cuenta.AsignarRegistros</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.CA.Cuenta.CompartirRegistros\VENTAS.CA.Cuenta.CompartirRegistros.csproj">
+      <Project>{18F3FB5B-7460-4D94-AB33-DF5AEC853D70}</Project>
+      <Name>VENTAS.CA.Cuenta.CompartirRegistros</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.CA.Objetivos.CrearObjetivos\VENTAS.CA.Objetivos.CrearObjetivos.csproj">
+      <Project>{3086f662-dc22-48e8-aa39-1bcdd271c782}</Project>
+      <Name>VENTAS.CA.Objetivos.CrearObjetivos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.CA.Objetivos.RecalcularDatosReales\VENTAS.CA.Objetivos.RecalcularDatosReales.csproj">
+      <Project>{4cd61d15-2c52-44fe-bb1d-2b623c233e1b}</Project>
+      <Name>VENTAS.CA.Objetivos.RecalcularDatosReales</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.CA.RespuestaEncuesta.CrearActividad\VENTAS.CA.RespuestaEncuesta.CrearActividad.csproj">
+      <Project>{93587E19-C6D6-45F2-8456-CEA170B34052}</Project>
+      <Name>VENTAS.CA.RespuestaEncuesta.CrearActividad</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.CA.SolicitudCredito.AgregarDocumentacionCredito\VENTAS.CA.SolicitudCredito.AgregarDocumentacionCredito.csproj">
+      <Project>{30b5cfd9-05a7-4d87-8365-5fa56097f77b}</Project>
+      <Name>VENTAS.CA.SolicitudCredito.AgregarDocumentacionCredito</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Actividad.CerrarActividad\VENTAS.PL.Actividad.CerrarActividad.csproj">
+      <Project>{F58E8993-E0F9-4D2C-A13D-C7F7043252C9}</Project>
+      <Name>VENTAS.PL.Actividad.CerrarActividad</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Actividad.NotificacionAsignacion\VENTAS.PL.Actividad.NotificacionAsignacion.csproj">
+      <Project>{B27DAA3B-F13A-4542-9C9B-ECCC004A5D40}</Project>
+      <Name>VENTAS.PL.Actividad.NotificacionAsignacion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Cuenta.CompartirCSI\VENTAS.PL.Cuenta.CompartirCSI.csproj">
+      <Project>{4FD2CCBE-1FB0-46EA-8490-81E8966221E3}</Project>
+      <Name>VENTAS.PL.Cuenta.CompartirCSI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Cuenta.CompartirRegistros\VENTAS.PL.Cuenta.CompartirRegistros.csproj">
+      <Project>{3D305B40-41D0-49AA-8741-23AA2E2F2525}</Project>
+      <Name>VENTAS.PL.Cuenta.CompartirRegistros</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Cuentas.CrearContactoPersonaNatural\VENTAS.PL.Cuenta.CrearContactoPersonaNatural.csproj">
+      <Project>{9cf38fca-98ce-4282-9c34-2c3913804909}</Project>
+      <Name>VENTAS.PL.Cuenta.CrearContactoPersonaNatural</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Direccion.EstablecerDireccionPrincipal\VENTAS.PL.Direccion.EstablecerDireccionPrincipal.csproj">
+      <Project>{3fbcc25f-c3a4-4865-8875-f2beec823aab}</Project>
+      <Name>VENTAS.PL.Direccion.EstablecerDireccionPrincipal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Equipo.AgregarOEliminarUsuarioDeUnEquipo\VENTAS.PL.Equipo.AgregarOEliminarUsuarioDeUnEquipo.csproj">
+      <Project>{a6ca329f-d97f-44e8-b4b2-3f8805c2d623}</Project>
+      <Name>VENTAS.PL.Equipo.AgregarOEliminarUsuarioDeUnEquipo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Factura.CalculoConversion\VENTAS.PL.Factura.CalculoConversion.csproj">
+      <Project>{378E1CAA-7DC1-4F58-A0EE-1BDB5F3DCC84}</Project>
+      <Name>VENTAS.PL.Factura.CalculoConversion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Factura.CalculoImporteAjustado\VENTAS.PL.Factura.CalculoImporteAjustado.csproj">
+      <Project>{F08BC5BC-DBC7-478D-BFAC-F99013A98855}</Project>
+      <Name>VENTAS.PL.Factura.CalculoImporteAjustado</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Factura.ClientesPrimeraFacturacion\VENTAS.PL.Factura.ClientesPrimeraFacturacion.csproj">
+      <Project>{b3ca38f5-3855-457f-a838-31b9eef54e2e}</Project>
+      <Name>VENTAS.PL.Factura.ClientesPrimeraFacturacion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Factura.EnviarCorreoLocalizacionTipoCDS\VENTAS.PL.Factura.NotificacionTipoLocalizacion.csproj">
+      <Project>{12aa1e29-d6d5-46d1-a9b9-0cffed31f9a1}</Project>
+      <Name>VENTAS.PL.Factura.NotificacionTipoLocalizacion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Lead.CalificarLead\VENTAS.PL.Lead.CalificarLead.csproj">
+      <Project>{0c6e59d4-37b4-4fd6-8c29-8541f228058d}</Project>
+      <Name>VENTAS.PL.Lead.CalificarLead</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.PVSC.ValidarEstadoProceso\VENTAS.PL.PVSC.ValidarEstadoProceso.csproj">
+      <Project>{95F700F5-ABDB-4E28-A9BB-83433E95A00D}</Project>
+      <Name>VENTAS.PL.PVSC.ValidarEstadoProceso</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Recoleccion.AsignarActividad\VENTAS.PL.Recoleccion.AsignarActividad.csproj">
+      <Project>{117D3778-37D2-4119-9163-BDD52DBBD493}</Project>
+      <Name>VENTAS.PL.Recoleccion.AsignarActividad</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Recoleccion.NotificacionFinalizacion\VENTAS.PL.Recoleccion.NotificacionFinalizacion.csproj">
+      <Project>{94323A65-23C0-46C6-9A75-3B521335693E}</Project>
+      <Name>VENTAS.PL.Recoleccion.NotificacionFinalizacion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VENTAS.PL.Vehiculo.CalcularNumeroVehiculos\VENTAS.PL.Vehiculo.CalcularNumeroVehiculos.csproj">
+      <Project>{31ee0075-c273-410d-a468-c490afaf9979}</Project>
+      <Name>VENTAS.PL.Vehiculo.CalcularNumeroVehiculos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.targets'))" />
+  </Target>
+  <Import Project="..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.2.1.2\build\net45\MSTest.TestAdapter.targets')" />
+</Project>

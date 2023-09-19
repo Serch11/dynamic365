@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="/WebResources/atm_comun" type="text/javascript"></script>
+</head>
+<style>
+    .box img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+    }
+</style>
+
+<body>
+    <div class="box">
+        <img id="imagensharepoint">
+    </div>
+</body>
+
+</html>
+<script>
+
+
+    ejecutar();
+
+    async function ejecutar() {
+
+        try {
+            let formContext = parent.Xrm.Page;
+            let ID = formContext.data.entity.getId();
+            let imagensharepoint = document.querySelector("#imagensharepoint");
+            let URL = "";
+
+            let obtenerUrl = await VENTAS.JS.Comun.ConsultarMultiplesEntidades('atm_parametro', "?$select=atm_valor&$filter=(atm_nombre eq 'URLDESCARGARIMAGENSHAREPOINT')");
+            URL = obtenerUrl.entities[0].atm_valor;
+
+            if (ID) {
+                const response = await realizarPeticion(URL, ID);
+                console.log(response.imagen);
+                if (response.ok) {
+                    //imagensharepoint.src = response.array[1]["{Link}"];
+                    imagensharepoint.src = imagensharepoint.src = "data:" + response.imagen["$content-type"] + ";base64," + response.imagen["$content"];
+                    formContext.ui.tabs.get("_general").sections.get("_imagen").setVisible(true);
+                    document.querySelector(".box").style.visibility = "visible";
+                } else {
+                    formContext.ui.tabs.get("_general").sections.get("_imagen").setVisible(false);
+                }
+            }
+        } catch (error) {
+
+        }
+    }
+
+    async function realizarPeticion(URL, ID) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch(URL,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            ID: ID.replace("{", "").replace("}", "")
+                        })
+                    }
+                );
+                if (response.ok === true)
+                    resolve(response.json());
+                else resolve({ ok: false })
+            } catch (error) {
+                reject(error);
+            }
+
+        })
+    }
+</script>

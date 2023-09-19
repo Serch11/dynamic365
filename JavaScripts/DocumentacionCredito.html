@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de credito</title>
+
+    <style>
+        ul {
+            display: block;
+            margin-left: -20px;
+        }
+
+        li {
+            float: left;
+            margin: 20px;
+        }
+
+        ul li {
+            display: block;
+            position: relative;
+            font-family: SegoeUI, "Segoe UI"
+        }
+
+            ul li:not(:last-child) {
+                margin-bottom: 16px;
+            }
+
+            ul li:before {
+                content: "";
+                position: absolute;
+                top: 1.2em;
+                left: -20px;
+                margin-top: -.9em;
+                background: #00303d;
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+            }
+    </style>
+</head>
+
+<body>
+    <ul id="documents">
+    </ul>
+
+    <script>
+        let controls = parent.Xrm.Page.ui.controls;
+        let atm_documentacionnecesaria = controls.get("atm_documentacionnecesaria").getAttribute().getValue();
+        if (atm_documentacionnecesaria) {
+            let ul = document.getElementById("documents");
+            let docNec = atm_documentacionnecesaria.split(',');
+            for (let index = 0; index < docNec.length; index++) {
+                const element = docNec[index];
+                var li = document.createElement("li");
+                li.setAttribute("id", index);
+                li.appendChild(document.createTextNode(element));
+                ul.appendChild(li);
+            }
+        }
+    </script>
+</body>
+
+</html>

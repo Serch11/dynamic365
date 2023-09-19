@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cálculo de comisiones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link type="text/css" rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/handsontable@12.4/dist/handsontable.full.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="/WebResources/atm_comun" type="text/javascript"></script>
+
+    <style>
+        .btn-crm {
+            border: 1px solid rgb(33, 181, 134);
+            color: rgb(33, 181, 134);
+        }
+
+        .btn-crm:hover {
+            background-color: rgb(33, 181, 134);
+            color: white;
+        }
+
+        .formatNumers {
+            text-align: right !important;
+            padding-right: 10px !important;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            border: none;
+            position: relative;
+            margin-bottom: 30px;
+            box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1), 0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
+        }
+
+        .l-bg-cherry {
+            background: linear-gradient(to right, #493240, #f09) !important;
+            color: #fff;
+        }
+
+        .l-bg-blue-dark {
+            background: linear-gradient(to right, #373b44, #4286f4) !important;
+            color: #fff;
+        }
+
+        .l-bg-green-dark {
+            background: linear-gradient(to right, #0a504a, #38ef7d) !important;
+            color: #fff;
+        }
+
+        .l-bg-orange-dark {
+            background: linear-gradient(to right, #a86008, #ffba56) !important;
+            color: #fff;
+        }
+
+        .hola {
+            font-size: 110px;
+        }
+
+        .card .card-statistic-3 .card-icon {
+            text-align: center;
+            line-height: 50px;
+            margin-left: 15px;
+            color: #000;
+            position: absolute;
+            right: -5px;
+            top: 20px;
+            opacity: 0.1;
+        }
+
+        .l-bg-cyan {
+            background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+            color: #fff;
+        }
+
+        .l-bg-green {
+            background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
+            color: #fff;
+        }
+
+        .l-bg-orange {
+            background: linear-gradient(to right, #f9900e, #ffba56) !important;
+            color: #fff;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="offcanvas offcanvas-end show" tabindex="-1" id="offcanvasRight" data-bs-backdrop="static"
+        aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Filtros</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <form class="row g-3 align-items-center mb-2 pt-1">
+                <div    class="col-12">
+                    <div class="form-floating">
+                        <input type="date" class="form-control form-control-sm" id="fi">
+                        <label for="fi">Fecha inicial</label>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input type="date" class="form-control form-control-sm" id="ff">
+                        <label for="ff">Fecha final</label>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="usuarios">Usuario</label>
+                    <select class="usuarios" id="usuarios">
+                        <!-- <option value="todos">Todos...</option> -->
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <button type="button" id="consultar" class="btn btn-crm"
+                        data-bs-dismiss="offcanvas">Consultar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Cálculo de comisiones</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Descargar reporte">
+                    <button type="button" class="btn btn-success">
+                        <i class="bi bi-file-earmark-spreadsheet-fill"></i> Excel
+                    </button>
+                    <button type="button" class="btn btn-danger">
+                        <i class="bi bi-filetype-pdf"></i> PDF
+                    </button>
+                    <button type="button" class="btn btn-info" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        <i class="bi bi-funnel-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid mt-2">
+        <ul class="nav nav-tabs nav-fill nav-justified" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="comisiones-tab" data-bs-toggle="tab"
+                    data-bs-target="#comisiones-tab-pane" type="button" role="tab" aria-controls="comisiones-tab-pane"
+                    aria-selected="true">
+                    Comisiones
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="castigo-tab" data-bs-toggle="tab" data-bs-target="#castigo-tab-pane"
+                    type="button" role="tab" aria-controls="castigo-tab-pane" aria-selected="false">
+                    Castigos
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="resumen-tab" data-bs-toggle="tab" data-bs-target="#resumen-tab-pane"
+                    type="button" role="tab" aria-controls="resumen-tab-pane" aria-selected="false">
+                    Resumen
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active scrollContent" id="comisiones-tab-pane" role="tabpanel"
+                aria-labelledby="comisiones-tab" tabindex="0">
+                <div id="tcomisiones"></div>
+            </div>
+            <div class="tab-pane fade scrollContent" id="castigo-tab-pane" role="tabpanel" aria-labelledby="castigo-tab"
+                tabindex="1">
+                <div id="tcastigos"></div>
+            </div>
+            <div class="tab-pane fade scrollContent" id="resumen-tab-pane" role="tabpanel" aria-labelledby="resumen-tab"
+                tabindex="2">
+                <div class="row">
+                    <div class="col-4" id="pc1">
+                        <div class="col-xl-12 col-lg-4 col-xs-12">
+                            <div class="card l-bg-blue-dark">
+                                <div class="card-statistic-3 p-4">
+                                    <div class="card-icon card-icon-large"><i class="bi bi-currency-dollar hola"></i>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h5 class="card-title mb-0">Comisiones</h5>
+                                    </div>
+                                    <div class="row align-items-center mb-2 d-flex">
+                                        <div class="col-8">
+                                            <h2 class="d-flex align-items-center mb-0">
+                                                <span id="txtComisiones"></span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                        <div class="progress-bar l-bg-green" role="progressbar" data-width="25%"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                            style="width: 25%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="col-4" id="pc2">
+                        <div class="col-xl-12 col-lg-4 col-xs-12">
+                            <div class="card l-bg-blue-dark">
+                                <div class="card-statistic-3 p-4">
+                                    <div class="card-icon card-icon-large"><i class="bi bi-currency-dollar hola"></i>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h5 class="card-title mb-0">Castigos</h5>
+                                    </div>
+                                    <div class="row align-items-center mb-2 d-flex">
+                                        <div class="col-8">
+                                            <h2 class="d-flex align-items-center mb-0">
+                                                15.07k
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                        <div class="progress-bar l-bg-green" role="progressbar" data-width="25%"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                            style="width: 25%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="col-4" id="pc3">
+                        <div class="col-xl-12 col-lg-4 col-xs-12">
+                            <div class="card l-bg-blue-dark">
+                                <div class="card-statistic-3 p-4">
+                                    <div class="card-icon card-icon-large"><i class="bi bi-currency-dollar hola"></i>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h5 class="card-title mb-0">Total</h5>
+                                    </div>
+                                    <div class="row align-items-center mb-2 d-flex">
+                                        <div class="col-8">
+                                            <h2 class="d-flex align-items-center mb-0">
+                                                15.07k
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                        <div class="progress-bar l-bg-green" role="progressbar" data-width="25%"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
+                                            style="width: 25%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>                   
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+        integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+        integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        let select = document.getElementById("usuarios");
+        var consulta = "?$select=domainname,fullname&$filter=accessmode eq 0 and isdisabled eq false";
+        const hijosComisiones = [];
+        let grid;
+        let grid1;
+        let restaComision = 0, restaCastigos = 0, dataComisiones = [], dataCastigos = [], user = {}, usuarioSeleccionado = "todos";
+        let usuariosList = [{ id: 'todos', nombre: "Todos los usuarios" }]
+        var userSettings = parent.Xrm.Utility.getGlobalContext().userSettings;
+
+        tui.Grid.applyTheme('clean', {
+            selection: {
+                background: '#4daaf9',
+                border: '#004082'
+            },
+            row: {
+                even: {
+                    // background: 'rgb(33, 181, 134, 22%)'
+                },
+                hover: {
+                    background: '#00303d73'
+                }
+            },
+            cell: {
+                normal: {
+                    background: '#fbfbfb',
+                    border: '#e0e0e0',
+                    showVerticalBorder: true
+                },
+                header: {
+                    background: '#fff',
+                    showVerticalBorder: true
+                },
+                rowHeader: {
+                    border: '#ccc',
+                    showVerticalBorder: true
+                },
+                editable: {
+                    background: '#fbfbfb'
+                },
+                selectedHeader: {
+                    background: '#d8d8d8'
+                },
+                focused: {
+                    border: '#418ed4'
+                },
+                disabled: {
+                    text: '#b0b0b0'
+                }
+            }
+        }
+        );
+
+        class FormatoNumero {
+            constructor(props) {
+                const el = document.createElement('span');
+                this.el = el;
+                this.render(props);
+            }
+
+            getElement() {
+                return this.el;
+            }
+
+            render(props) {
+                this.el.textContent = numeral(props.value).format('0,0');
+            }
+        }
+
+        class FormatoURL {
+            constructor(props) {
+                let row = hijosComisiones.filter(item => item.factura === props.value);
+                const el = document.createElement('a');
+                if (row.length > 0) {
+                    el.href = VENTAS.JS.Comun.crearURLEntidad(row[0].entidad, row[0].id);
+                    el.target = "_blank";
+                    el.style.textDecoration = "none";
+                }
+                this.el = el;
+
+                this.render(props);
+            }
+
+            getElement() {
+                return this.el;
+            }
+
+            render(props) {
+                this.el.textContent = props.value;
+            }
+        }
+
+        async function ConsultarUsuarios() {
+            user = await parent.Xrm.WebApi.online.retrieveRecord("systemuser", userSettings.userId, "?$select=fullname,_businessunitid_value,systemuserid,_atm_paisid_value&$expand=atm_paisid($select=atm_nombre),businessunitid($select=name,businessunitid)&$orderby=fullname asc")
+
+            userSettings.roles.forEach(x => {
+                switch (x.name) {
+                    case "Automundial - Director Regional":
+                        consulta = `?$select=fullname,_businessunitid_value,systemuserid,_atm_paisid_value,domainname
+                                        &$expand=atm_paisid($select=atm_nombre),businessunitid($select=name,businessunitid)
+                                        &$filter=(_businessunitid_value eq ${user.businessunitid.businessunitid}) and
+                                        (accessmode eq 0 and isdisabled eq false) and (businessunitid/businessunitid ne null)
+                                        &$orderby=fullname asc`;
+                        break;
+                    case "Automundial - Director Administrativo":
+                        if (user.atm_paisid.atm_nombre == "COLOMBIA") {
+                            consulta = `?$select=fullname,_businessunitid_value,systemuserid,_atm_paisid_value,domainname
+                                            &$expand=atm_paisid($select=atm_nombre),businessunitid($select=name,businessunitid)
+                                            &$filter=(_businessunitid_value eq ${user.businessunitid.businessunitid}) and
+                                            (accessmode eq 0 and isdisabled eq false) and (businessunitid/businessunitid ne null)
+                                            &$orderby=fullname asc`;
+                        } else {
+                            consulta = `?$select=fullname,_businessunitid_value,systemuserid,_atm_paisid_value,domainname
+                                            &$expand=atm_paisid($select=atm_nombre),businessunitid($select=name,businessunitid)
+                                            &$filter=(_atm_paisid_value eq ${user.atm_paisid.atm_paisid}) and
+                                            (accessmode eq 0 and isdisabled eq false) and (businessunitid/businessunitid ne null)
+                                            &$orderby=fullname asc`;
+                        }
+                    case "Automundial - Gerente de país":
+                        consulta = `?$select=fullname,_businessunitid_value,systemuserid,_atm_paisid_value,domainname
+                                        &$expand=atm_paisid($select=atm_nombre),businessunitid($select=name,businessunitid)
+                                        &$filter=(_atm_paisid_value eq ${user.atm_paisid.atm_paisid}) and
+                                        (accessmode eq 0 and isdisabled eq false) and (businessunitid/businessunitid ne null)
+                                        &$orderby=fullname asc`;
+                        break;
+                }
+            });
+
+            let allUsers = await VENTAS.JS.Comun.ConsultarMultiplesEntidades("systemuser", consulta);
+            allUsers.entities.forEach(x => {
+                usuariosList.push({ id: x.systemuserid, nombre: `${x.fullname} -> ${x.domainname}` });
+            });
+        }
+
+        $(document).ready(async function () {
+            await ConsultarUsuarios();
+            var $select = $('#usuarios').selectize({
+                maxItems: 1,
+                valueField: 'id',
+                labelField: 'nombre',
+                searchField: 'nombre',
+                options: usuariosList,
+                create: false,
+                onChange: (event) => {
+                    usuarioSeleccionado = event ? event : "todos";
+                }
+            });
+        });
+
+        $("#consultar").click(async function () {
+            const fi = document.getElementById("fi"), ff = document.getElementById("ff");
+            var sel = document.querySelector('#comisiones-tab')
+
+            if (fi.value && ff.value) {
+                bootstrap.Tab.getOrCreateInstance(sel).show()
+                parent.Xrm.Utility.showProgressIndicator("Estamos trabajando, un momento por favor...");
+
+                var fetchXmlComision = `<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true" no-lock="false">
+                            <entity name="invoicedetail">
+                                <attribute name="isproductoverridden" />
+                                <attribute name="producttypecode" />
+                                <attribute name="invoicedetailid" />
+                                <attribute name="atm_importeajustado" />
+                                <attribute name="extendedamount" />
+                                <link-entity name="invoice" from="invoiceid" to="invoiceid" link-type="inner" alias="factura">
+                                    <attribute name="atm_regionalid" />
+                                    <attribute name="ownerid" />
+                                    <attribute name="name" alias="factura_name" />
+                                    <attribute name="invoiceid" alias="factura_invoiceid" />
+                                    <attribute name="duedate" alias="factura_duedate" />
+                                    <filter type="and">
+                                        <condition attribute="createdon" operator="on-or-after" value="${fi.value}" />
+                                        <condition attribute="createdon" operator="on-or-before" value="${ff.value}" />
+                                        <condition attribute="statecode" operator="ne" value="3" />
+                                        <condition attribute="statecode" operator="eq" value="0" />
+                                        ${usuarioSeleccionado !== "todos" ? `<condition attribute="ownerid" operator="eq" value="${usuarioSeleccionado}" />` : null}
+                                    </filter>
+                                    <link-entity name="systemuser" from="systemuserid" to="owninguser" alias="propietario">
+                                        <attribute name="atm_paisid" alias="propietario_atm_paisid" />
+                                        <attribute name="fullname" alias="propietario_nombre" />
+                                    </link-entity>
+                                    <link-entity name="account" from="accountid" to="customerid" alias="cliente">
+                                        <attribute name="name" alias="cliente_name" />
+                                    </link-entity>
+                                </link-entity>
+                                <attribute name="invoicedetailid" />
+                                <link-entity name="product" from="productid" to="productid" link-type="outer" alias="producto">
+                                <attribute name="atm_categoriaid" alias="producto_atm_categoriaid" />
+                                <link-entity name="atm_categoria" from="atm_categoriaid" to="atm_categoriaid" alias="categoria">
+                                    <attribute name="atm_codigo" alias="categoria_codigo_categoria" />
+                                </link-entity>
+                                </link-entity>
+                            </entity>
+                        </fetch>`;
+
+                const _attributes = { className: { column: { obtenido: ['formatNumers'], monto: ['formatNumers'] } } };
+                dataComisiones = [];
+                dataCastigos = [];
+
+                let pf = await VENTAS.JS.Comun.ConsultarMultiplesEntidades('atm_porcentajedecomision', "?$select=_atm_categoriaid_value,atm_porcentajeasesor,atm_porcentajecoordinador,_atm_paisid_value");
+
+                let consultaComision = await retrieveAllRecords("invoicedetail", fetchXmlComision, null, null);
+
+                restaComision = 0;
+                restaCastigos = 0;
+
+                let categoriasData = groupBy(consultaComision, invoicedetail => invoicedetail.categoria_codigo_categoria);
+
+                categoriasData.forEach((cd, categoria) => {
+                    let monto = 0, obtenido = 0, _children = [];
+
+                    cd.forEach(item => {
+                        const calObtenido = calcularPorcentaje(item.extendedamount, pf, item.producto_atm_categoriaid, item.propietario_atm_paisid)
+                        monto += item.extendedamount;
+                        obtenido += calObtenido;
+                        restaComision += calObtenido
+
+                        hijosComisiones.push({ id: item.factura_invoiceid, factura: item.factura_name, entidad: "invoice" });
+
+                        _children.push({ categoria, factura: item.factura_name, cliente: item.cliente_name, asesor: item.propietario_nombre, monto: item.extendedamount, obtenido: calObtenido, _attributes });
+                    })
+                    dataComisiones.push({ categoria, monto, obtenido, _attributes, _children });
+                });
+
+                pintarTablaComision(
+                    "tcomisiones",
+                    [
+                        { header: 'Categoría', name: 'categoria', filter: { type: 'text', showApplyBtn: true, showClearBtn: true } },
+                        { header: 'Factura', name: 'factura', align: 'center', renderer: { type: FormatoURL } },
+                        { header: 'Cliente', name: 'cliente' },
+                        { header: 'Asesor', name: 'asesor', filter: { type: 'text', showApplyBtn: true, showClearBtn: true } },
+                        { header: 'Monto facturado', name: 'monto', renderer: { type: FormatoNumero } },
+                        { header: '% Obtenido', name: 'obtenido', renderer: { type: FormatoNumero } },
+                    ],
+                    dataComisiones
+                )
+
+                var fetchXmlCastigo = `<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true" no-lock="false">
+                            <entity name="invoicedetail">
+                                <attribute name="producttypecode" />
+                                <attribute name="invoicedetailid" />
+                                <attribute name="atm_importeajustado" />
+                                <attribute name="extendedamount" />
+                                <link-entity name="invoice" from="invoiceid" to="invoiceid" link-type="inner" alias="factura">
+                                    <attribute name="atm_regionalid" />
+                                    <attribute name="ownerid" />
+                                    <attribute name="name" alias="factura_name" />
+                                    <attribute name="invoiceid" alias="factura_invoiceid" />
+                                    <attribute name="duedate" alias="factura_duedate" />
+                                    <filter type="and">
+                                        <condition attribute="statuscode" operator="in">
+                                            <value>1</value>
+                                            <value>2</value>
+                                        </condition>
+                                        <condition attribute="atm_tipodocumentocode" operator="eq" value="963540001" />
+                                        ${usuarioSeleccionado !== "todos" ? `<condition attribute="ownerid" operator="eq" value="${usuarioSeleccionado}" />` : null}
+                                    </filter>
+                                    <link-entity name="systemuser" from="systemuserid" to="owninguser" alias="propietario">
+                                        <attribute name="atm_paisid" alias="propietario_atm_paisid" />
+                                        <attribute name="fullname" alias="propietario_nombre" />
+                                    </link-entity>
+                                    <link-entity name="account" from="accountid" to="customerid" alias="cliente">
+                                        <attribute name="name" alias="cliente_name" />
+                                    </link-entity>
+                                </link-entity>
+                                <attribute name="invoicedetailid" />
+                                <link-entity name="product" from="productid" to="productid" link-type="outer" alias="producto">
+                                <attribute name="atm_categoriaid" alias="producto_atm_categoriaid" />
+                                <link-entity name="atm_categoria" from="atm_categoriaid" to="atm_categoriaid" alias="categoria">
+                                    <attribute name="atm_codigo" alias="categoria_codigo_categoria" />
+                                </link-entity>
+                                </link-entity>
+                            </entity>
+                        </fetch>`;
+
+                let consultaCastigo = await retrieveAllRecords("invoicedetail", fetchXmlCastigo, null, null);
+
+                let fechaFinal = new Date(document.getElementById("ff").value);
+
+                categoriasData = groupBy(consultaCastigo, invoicedetail => invoicedetail.categoria_codigo_categoria);
+
+                categoriasData.forEach((cd, categoria) => {
+                    let monto = 0, _children = [];
+
+                    cd.forEach(castigo => {
+                        let fechaCastigo = addDays(castigo.factura_duedate, 60);
+                        if (fechaCastigo.getMonth() === fechaFinal.getMonth() && fechaCastigo.getDay() >= fechaFinal.getDay() && fechaCastigo.getFullYear() === fechaFinal.getFullYear()) {
+                            monto += castigo.atm_importeajustado;
+                            restaCastigos += castigo.atm_importeajustado
+                            _children.push({ categoria, factura: castigo.factura_name, cliente: castigo.cliente_name, asesor: castigo.propietario_nombre, monto: castigo.atm_importeajustado, fechaCastigo: VENTAS.JS.Comun.FormatDate(fechaCastigo, 1), _attributes });
+                        }
+                    })
+
+                    dataCastigos.push({ categoria, monto, fechaCastigo: "", _children, _attributes });
+                });
+
+                parent.Xrm.Utility.closeProgressIndicator();
+            } else {
+                VENTAS.JS.Comun.MostrarNotificacionToast(3, "Debe seleccionar un rango de fechas");
+            }
+        });
+
+        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var tab = $(e.target)[0].id
+            switch (tab) {
+                case "comisiones-tab":
+                    pintarTablaComision(
+                        "tcomisiones",
+                        [
+                            { header: 'Categoría', name: 'categoria', filter: { type: 'text', showApplyBtn: true, showClearBtn: true } },
+                            { header: 'Factura', name: 'factura', align: "center", renderer: { type: FormatoURL } },
+                            { header: 'Cliente', name: 'cliente' },
+                            { header: 'Asesor', name: 'asesor', filter: { type: 'text', showApplyBtn: true, showClearBtn: true } },
+                            { header: 'Monto facturado', name: 'monto', renderer: { type: FormatoNumero } },
+                            { header: '% Obtenido', name: 'obtenido', renderer: { type: FormatoNumero } },
+                        ],
+                        dataComisiones
+                    )
+                    break;
+                case "castigo-tab":
+                    pintarTablaCastigo(
+                        "tcastigos",
+                        [
+                            { header: 'Categoría', name: 'categoria', filter: { type: 'text', showApplyBtn: true, showClearBtn: true } },
+                            { header: 'Factura', name: 'factura', align: "center", renderer: { type: FormatoURL } },
+                            { header: 'Cliente', name: 'cliente' },
+                            { header: 'Asesor', name: 'asesor', filter: { type: 'text', showApplyBtn: true, showClearBtn: true } },
+                            { header: 'Fecha castigo', name: 'fechaCastigo', align: 'center' },
+                            { header: 'Monto castigado', name: 'monto', renderer: { type: FormatoNumero } },
+                        ],
+                        dataCastigos
+                    )
+                    break;
+                case "resumen-tab":
+                    pintarResumen();
+                    break;
+                default:
+                    break;
+            }
+        })
+
+        function pintarResumen() {
+            var txtComisiones = document.getElementById("txtComisiones");
+            txtComisiones.innerHTML = "20000000"
+        }
+
+        function calcularPorcentaje(monto, pf, categoriaId, paisId) {
+            const categoria = pf.entities.filter(ipf => ipf._atm_categoriaid_value === categoriaId && ipf._atm_paisid_value === paisId);
+            if (categoria.length > 0) {
+                return monto - (monto * categoria[0].atm_porcentajeasesor);
+            } else {
+                return 0;
+            }
+        }
+
+        function groupBy(list, keyGetter) {
+            const map = new Map();
+            list.forEach((item) => {
+                const key = keyGetter(item);
+                const collection = map.get(key);
+                if (!collection) {
+                    map.set(key, [item]);
+                } else {
+                    collection.push(item);
+                }
+            });
+            return map;
+        }
+
+        function pintarTablaComision(id, columnas, datos) {
+            if (grid1)
+                grid1.destroy();
+
+            grid1 = new tui.Grid({
+                el: document.getElementById(id),
+                data: datos,
+                scrollX: true,
+                scrollY: true,
+                rowHeight: 25,
+                bodyHeight: window.screen.availHeight - 320,
+                treeColumnOptions: {
+                    name: 'categoria',
+                    useIcon: false,
+                    useCascadingCheckbox: true
+                },
+                columnOptions: {
+                    resizable: true
+                },
+                columns: columnas,
+                theme: "striped",
+                summary: {
+                    height: 40,
+                    position: 'bottom',
+                    columnContent: {
+                        obtenido: {
+                            template: function (valueMap) {
+                                return `TOTAL: ${numeral(valueMap.sum - restaComision).format('0,0')}`;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function pintarTablaCastigo(id, columnas, datos) {
+            if (grid)
+                grid.destroy();
+
+            grid = new tui.Grid({
+                el: document.getElementById(id),
+                data: datos,
+                scrollX: true,
+                scrollY: true,
+                rowHeight: 25,
+                bodyHeight: window.screen.availHeight - 320,
+                treeColumnOptions: {
+                    name: 'categoria',
+                    useIcon: false,
+                    useCascadingCheckbox: true
+                },
+                columnOptions: {
+                    resizable: true
+                },
+                columns: columnas,
+                theme: "striped",
+                summary: {
+                    height: 40,
+                    position: 'bottom',
+                    columnContent: {
+                        monto: {
+                            template: function (valueMap) {
+                                return `TOTAL: ${numeral(valueMap.sum - restaCastigos).format('0,0')}`;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function retrieveAllRecords(entityName, fetchXml, page, pagingCookie) {
+            if (!page) {
+                page = 0;
+            }
+
+            var pageResults = await retrievePage(entityName, fetchXml, page + 1, pagingCookie)
+
+            if (pageResults.fetchXmlPagingCookie) {
+                var results = retrieveAllRecords(entityName, fetchXml, page + 1, pageResults.fetchXmlPagingCookie)
+                if (results) {
+                    return pageResults.entities.concat(results);
+                }
+
+            } else {
+                return pageResults.entities;
+            }
+        }
+
+        async function CreateXml(fetchXml, pagingCookie, page) {
+            var domParser = new DOMParser();
+            var xmlSerializer = new XMLSerializer();
+
+            var fetchXmlDocument = domParser.parseFromString(fetchXml, "text/xml");
+
+            if (page) {
+                fetchXmlDocument
+                    .getElementsByTagName("fetch")[0]
+                    .setAttribute("page", page.toString());
+            }
+
+            if (pagingCookie) {
+                var cookieDoc = domParser.parseFromString(pagingCookie, "text/xml");
+                var innerPagingCookie = domParser.parseFromString(
+                    decodeURIComponent(
+                        decodeURIComponent(
+                            cookieDoc
+                                .getElementsByTagName("cookie")[0]
+                                .getAttribute("pagingcookie")
+                        )
+                    ),
+                    "text/xml"
+                );
+                fetchXmlDocument
+                    .getElementsByTagName("fetch")[0]
+                    .setAttribute(
+                        "paging-cookie",
+                        xmlSerializer.serializeToString(innerPagingCookie)
+                    );
+            }
+
+            return xmlSerializer.serializeToString(fetchXmlDocument);
+        }
+
+        async function retrievePage(entityName, fetchXml, pageNumber, pagingCookie) {
+            var fetchXml = "?fetchXml=" + await CreateXml(fetchXml, pagingCookie, pageNumber);
+            var consulta = await parent.Xrm.WebApi.online.retrieveMultipleRecords(entityName, fetchXml);
+            return consulta;
+        }
+
+        function addDays(date, days) {
+            var result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+    </script>
+</body>
+
+</html>

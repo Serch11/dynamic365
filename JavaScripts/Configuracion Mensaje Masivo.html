@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Configuración de mensaje masivo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet" />
+    <style type="text/css">
+      #litadoEnviar {
+        max-height: 66vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+
+      body {
+        margin-bottom: 60px;
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 75px;
+        line-height: 60px;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        width: auto;
+        max-width: 680px;
+        padding: 0 15px;
+      }
+
+      .btn-crm {
+        border: 1px solid rgb(33, 181, 134);
+        color: rgb(33, 181, 134);
+      }
+
+      .btn-crm:hover {
+        background-color: rgb(33, 181, 134);
+        color: white;
+      }
+    </style>
+    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+  </head>
+  <body>
+    <main class="container-xl pt-2">
+      <div class="content">
+        <form>
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <label class="form-label" for="form6Example1"
+                  >Selecione la plantilla</label
+                >
+                <select
+                  id="plantillas"
+                  class="form-select form-select-sm"
+                  onchange="seleccionarPlantilla()">
+                  <option>Seleccione...</option>
+                </select>
+              </div>
+            </div>
+            <div class="col"></div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <ul class="list-group" id="parametros"></ul>
+            </div>
+            <div class="col">
+              <ul class="list-group" id="litadoEnviar"></ul>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="row pt-2">
+          <div class="col-6">
+            <button
+              class="btn btn-danger col-12 col-md-12 col-xs-12"
+              type="button"
+              onclick="window.close()">
+              Cerrar
+            </button>
+          </div>
+          <div class="col-6">
+            <button
+              id="enviar"
+              type="button"
+              class="btn btn-crm col-12 col-md-12 col-xs-12"
+              onclick="enviarMensajes()">
+              Enviar
+            </button>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.js"
+      integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+      let dataResp;
+      let select = document.getElementById("plantillas");
+      let listParametros = document.getElementById("parametros");
+      let litadoEnviar = document.getElementById("litadoEnviar");
+      let botonEnviar = document.getElementById("enviar");
+
+      let ArregloListadoEnviar = new Array();
+      let FlujoTerceros = new Array();
+      let urlParams = getUrlParameters("parametros");
+      let tipo = getUrlParameters("tipo");
+      let urlMB = "";
+      let nombreFlujo = "";
+
+      function getUrlParameters(nombre) {
+        var sPageUrl = decodeURIComponent(location.search).substring(6);
+        var sURLVariables = sPageUrl.split("|");
+
+        for (var i = 0; i < sURLVariables.length; i++) {
+          var sParameterName = sURLVariables[i].split("#");
+          if (sParameterName[0] === nombre) {
+            return sParameterName[1];
+          }
+        }
+      }
+
+      async function ConsultarFlujosCRM() {
+        var _FlujoTerceros =
+          await parent.Xrm.WebApi.online.retrieveMultipleRecords(
+            "atm_flujoterceros",
+            "?$select=atm_nombre&$filter=(statecode eq 0)"
+          );
+        _FlujoTerceros.entities.forEach((x) => {
+          FlujoTerceros.push(x.atm_nombre);
+        });
+      }
+
+      async function ConsultarFlujosMB() {
+        fetch("https://flows.messagebird.com/flows/", {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            Authorization: "AccessKey 7UJf4RspFJagu6PZp6mogwRAg",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            dataResp = data;
+            dataResp.items.forEach((item) => {
+              var existe = FlujoTerceros.filter((x) => x == item.title);
+              if (existe.length > 0) {
+                var opt = document.createElement("option");
+                opt.value = item.id;
+                opt.innerHTML = item.title;
+                select.appendChild(opt);
+              }
+            });
+          })
+          .catch((error) => {});
+      }
+
+      $(document).ready(async function () {
+        parent.Xrm.Utility.showProgressIndicator(
+          "Estamos cargando todo lo necesario, por favor espere..."
+        );
+        await ConsultarFlujosCRM();
+        await ConsultarFlujosMB();
+        $("#plantillas").select2();
+        parent.Xrm.Utility.closeProgressIndicator();
+      });
+
+      function seleccionarPlantilla() {
+        let parametros = dataResp.items.filter(
+          (item) => item.id == select.value
+        );
+        urlMB = parametros[0].options.invokeUrl;
+
+        if (parametros.length > 0) {
+          listParametros.innerHTML = "";
+          nombreFlujo = parametros[0].title;
+
+          parametros[0].options.variables.forEach((item, index) => {
+            var li = document.createElement("li");
+            li.classList =
+              "list-group-item d-flex justify-content-between align-items-center";
+            li.value = index;
+            li.innerHTML = item;
+
+            var span = document.createElement("span");
+            span.classList = "badge bg-danger rounded-pill";
+
+            li.appendChild(span);
+            listParametros.appendChild(li);
+          });
+
+          parent.Xrm.WebApi.retrieveMultipleRecords(tipo, urlParams).then(
+            function success(result) {
+              litadoEnviar.innerHTML = "";
+              let listado = new Array();
+              ArregloListadoEnviar = new Array();
+              if (result.entities.length > 0) {
+                result.entities.forEach((row) => {
+                  let obj = {};
+                  parametros[0].options.variables.forEach((parametro) => {
+                    if (row[parametro]) {
+                      switch (parametro) {
+                        case "telephone1":
+                        case "telephone2":
+                        case "telephone3":
+                        case "mobilephone":
+                          obj[parametro] =
+                            tipo === "campaignresponse"
+                              ? row.owninguser?.atm_paisid?.atm_indicativo
+                              : row.atm_paisid?.atm_indicativo +
+                                "" +
+                                row[parametro];
+                          break;
+                        default:
+                          obj[parametro] = row[parametro];
+                          break;
+                      }
+                    } else {
+                      let split = parametro.split("_");
+                      if (split.length > 1) {
+                        switch (split[1]) {
+                          case "telephone1":
+                          case "telephone2":
+                          case "telephone3":
+                          case "mobilephone":
+                            obj[parametro] =
+                              tipo === "campaignresponse"
+                                ? row.owninguser?.atm_paisid?.atm_indicativo
+                                : row.atm_paisid?.atm_indicativo +
+                                  "" +
+                                  row[split[0]][split[1]];
+                            break;
+                          default:
+                            obj[parametro] = row[split[0]][split[1]];
+                            break;
+                        }
+                      }
+                    }
+                  });
+                  listado.push(obj);
+                });
+
+                console.log(listado);
+                listado.forEach((item, index) => {
+                  let _class1 = "bg-success";
+                  let _class2 = "fa-check";
+
+                  if (
+                    parametros[0].options.variables.length !==
+                    Object.keys(item).length
+                  ) {
+                    _class1 = "bg-danger";
+                    _class2 = "fa-xmark";
+                  } else {
+                    ArregloListadoEnviar.push(item);
+                  }
+
+                  var li = document.createElement("li");
+                  li.classList =
+                    "list-group-item d-flex justify-content-between align-items-center";
+                  li.value = index;
+                  li.innerHTML =
+                    tipo === "account"
+                      ? item.name
+                      : tipo === "contact"
+                      ? item.fullname
+                      : item.firstname;
+
+                  var span = document.createElement("span");
+                  span.classList = `badge ${_class1} rounded-pill`;
+
+                  var i = document.createElement("i");
+                  i.classList = `fa-solid ${_class2}`;
+
+                  span.appendChild(i);
+                  li.appendChild(span);
+                  litadoEnviar.appendChild(li);
+                });
+              }
+            },
+            function (error) {}
+          );
+        }
+      }
+
+      function enviarMensajes() {
+        parent.Xrm.Utility.showProgressIndicator(
+          "Enviando mensajes, un momento por favor..."
+        );
+
+        // botonEnviar.disabled = true;
+        //Guardamos los registros enviados
+        let listaEnv = ArregloListadoEnviar.map((a) =>
+          tipo === "account"
+            ? a.accountid
+            : tipo === "lead"
+            ? a.leadid
+            : a.contactid
+        );
+
+        let request = {};
+        request.Tipo = tipo;
+        request.Flujo = nombreFlujo;
+        request.Cuentas = JSON.stringify(listaEnv);
+        request.getMetadata = function () {
+          return {
+            boundParameter: null,
+            operationType: 0,
+            operationName: "atm_RegistroMensajeMasivoWhatsApp",
+            parameterTypes: {
+              Tipo: {
+                typeName: "Edm.String",
+                structuralProperty: 1,
+              },
+              Flujo: {
+                typeName: "Edm.String",
+                structuralProperty: 1,
+              },
+              Cuentas: {
+                typeName: "Edm.String",
+                structuralProperty: 1,
+              },
+            },
+          };
+        };
+
+        parent.Xrm.WebApi.online.execute(request).then(
+          async function success(results) {
+            results.json().then(function (response) {
+              if (response.Exito) {
+                //Ejecutamos todos los elementos en MB
+                ArregloListadoEnviar.forEach((item, index) => {
+                  fetch(urlMB, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(item),
+                  })
+                    .then((res) => res)
+                    .then((data) => {})
+                    .catch((error) => {});
+                });
+              }
+            });
+
+            parent.Xrm.App.addGlobalNotification({
+              type: 1,
+              level: 1,
+              message: "Mensaje masivo enviado con éxito",
+            }).then(
+              function success(result) {
+                window.setTimeout(function () {
+                  parent.Xrm.App.clearGlobalNotification(result);
+                }, 5000);
+              },
+              function (error) {}
+            );
+            parent.Xrm.Utility.closeProgressIndicator();
+            botonEnviar.disabled = true;
+          },
+          async function (error) {
+            parent.Xrm.Utility.closeProgressIndicator();
+            parent.Xrm.Navigation.openErrorDialog({
+              errorCode: 1234,
+              message: error.message,
+            }).then(
+              function (success) {},
+              function (error) {}
+            );
+          }
+        );
+      }
+    </script>
+  </body>
+</html>
