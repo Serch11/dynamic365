@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>How to Download files Using JavaScript </title>
+</head>
+
+<body>
+
+    <button onclick="enviarFetch()">
+        Download Image
+    </button>
+</body>
+
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js">
+</script>
+<script>
+
+    let URLs = "https://automundial.sharepoint.com/:x:/s/CRMPROD/EY5PPA7ncUpCvHmu7ySERcYBw3_z7ZPB2bnzauWX-wmbEg?e=1h3G4K";
+
+    function download() {
+        axios({
+            url: 'https://source.unsplash.com/random/500x500',
+            method: 'GET',
+            responseType: 'blob'
+        })
+            .then((response) => {
+                console.log(response);
+                //const url = window.URL.createObjectURL(new Blob([response.data]));
+                console.log(response);
+                const url = window.URL.createObjectURL(URLs);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'EXCEL.xlsm');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+    }
+
+    function callPowerAutomateFlow(formContext) {
+        id = formContext.data.entity.getId().replace("{", "").replace("}", "");
+        var account = '{ "accountid": "' + id + '"' + '}';
+        var flowUrl = "https://orgaa0e12c7.crm2.dynamics.com/api/data/v9.0/serch_parametros(283fd522-21c4-ed11-b597-002248dfe152)/serch_archivo";
+
+        var req = new XMLHttpRequest();
+        req.open("GET", flowUrl, true);
+        req.setRequestHeader("Accept", "application/json");
+        req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        req.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                req.onreadystatechange = null;
+                if (this.status === 200) {
+
+                    var result = JSON.parse(this.response);
+                    //var fileName = result.Name; 
+                    var fileCont = result.value;
+                    var filebyte = base64ToBufferArray(fileCont);
+                    downloadFile("excel.xlsm", [filebyte]);
+                } else {
+                    Xrm.Utility.alertDialog(this.responseText);
+                }
+            }
+        };
+        req.send(account);
+    }
+
+    function base64ToBufferArray(base64content) {
+        var binaryString = window.atob(base64content);
+        var binaryLen = binaryString.length;
+        var bytes = new Uint8Array(binaryLen);
+        for (var i = 0; i < binaryLen; i++) {
+            var ascii = binaryString.charCodeAt(i);
+            bytes[i] = ascii;
+        }
+        return bytes;
+    }
+
+    function downloadFile(name, data) {
+
+        var blob = new Blob(data, { type: "octet/stream" }),
+            url = window.URL.createObjectURL(blob);
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, name);
+        } else {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            document.body.appendChild(a);
+            a.href = url;
+            a.download = name;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+    }
+
+
+    function enviar() {
+
+        try {
+            let URlPOST = "https://prod-25.brazilsouth.logic.azure.com:443/workflows/29a448090be54210bd143cdfcdf36d30/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LvMnDWTSTb6XONhIF9Rmse3tVsJoFBbX1ycm4pZbF10";
+            let Lead = new Object();
+            let data = {
+                subject: "lead",
+                firstname: "Sergio",
+                lastname: "redondo",
+                emailaddress1: "sadave10@hotmail.com",
+                atm_interescode: "Anda confiado"
+            };
+            let req = new XMLHttpRequest();
+            req.open("POST", URlPOST, true);
+            //req.setRequestHeader("OData-MaxVersion", "4.0");
+            //req.setRequestHeader("OData-Version", "4.0");
+            //req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; chatset=utf-8");
+            req.send(JSON.stringify(data));
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    this.onreadystatechange = 0;
+                    if (this.status === 204 || this.status === 202 || this.status === 200) {
+                        console.log("ok");
+                    }
+                }
+            }
+            console.log(data);
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+
+    function enviarFetch() {
+        let URlPOST = "https://prod-25.brazilsouth.logic.azure.com:443/workflows/29a448090be54210bd143cdfcdf36d30/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LvMnDWTSTb6XONhIF9Rmse3tVsJoFBbX1ycm4pZbF10";
+        let Lead = new Object();
+        let data = {
+            subject: "lead",
+            firstname: "Sergio",
+            lastname: "redondo",
+            emailaddress1: "sadave10@hotmail.com",
+            atm_interescode: "Anda confiado"
+        };
+
+        fetch(URlPOST, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.text()).then(result => console.log(result));
+    }
+</script>

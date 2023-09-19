@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+</head>
+
+<body>
+    <div id="larry"></div>
+</body>
+
+</html>
+
+<script>
+    const Grid = tui.Grid;
+    console.log(Grid);
+    console.log("prueba");
+
+    const instance = new Grid({
+        el: document.getElementById('larry'), // Container element
+        columns: [
+            {
+                header: 'Name',
+                name: 'name'
+            },
+            {
+                header: 'Artist',
+                name: 'artist'
+            },
+            {
+                header: 'Release',
+                name: 'release'
+            },
+            {
+                header: 'Genre',
+                name: 'genre'
+            }
+        ],
+        data: [
+            {
+                name: 'Beautiful Lies',
+                artist: 'Birdy',
+                release: '2016.03.26',
+                genre: 'Pop'
+            }
+        ]
+    });
+
+    instance.resetData(newData); // Call API of instance's public method
+
+    Grid.applyTheme('striped'); // Call API of static method
+
+
+</script>

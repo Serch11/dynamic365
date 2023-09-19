@@ -1,0 +1,10 @@
+<!--Intruccion fetchXML que me retorna todas las cuentas con
+dos atributos name y guid de la cuenta
+-->
+
+<fetch mapping="logical">
+    <entity name="account">
+        <attribute name="name" />
+        <attribute name="accountid"/>
+    </entity>
+</fetch>

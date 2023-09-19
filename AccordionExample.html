@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <title>Document</title>
+
+    <style>
+        @import url('https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
+
+        .pcs:after {
+            content: " pcs";
+        }
+
+        .cur:before {
+            content: "$";
+        }
+
+        .per:after {
+            content: "%";
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 0.2em 2em;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table th {
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table th,
+        table td {
+            padding: 0.4em;
+        }
+
+        table.fold-table>tbody>tr.view td,
+        table.fold-table>tbody>tr.view th {
+            cursor: pointer;
+        }
+
+        table.fold-table>tbody>tr.view td:first-child,
+        table.fold-table>tbody>tr.view th:first-child {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        table.fold-table>tbody>tr.view td:first-child:before,
+        table.fold-table>tbody>tr.view th:first-child:before {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            width: 9px;
+            height: 16px;
+            margin-top: -8px;
+            font: 16px fontawesome;
+            color: #999;
+            content: "\f0d7";
+            transition: all 0.3s ease;
+        }
+
+        table.fold-table>tbody>tr.view:nth-child(4n-1) {
+            background: #eee;
+        }
+
+        table.fold-table>tbody>tr.view:hover {
+            background: #000;
+        }
+
+        table.fold-table>tbody>tr.view.open {
+            background: tomato;
+            color: white;
+        }
+
+        table.fold-table>tbody>tr.view.open td:first-child:before,
+        table.fold-table>tbody>tr.view.open th:first-child:before {
+            transform: rotate(-180deg);
+            color: #333;
+        }
+
+        table.fold-table>tbody>tr.fold {
+            display: none;
+        }
+
+        table.fold-table>tbody>tr.fold.open {
+            display: table-row;
+        }
+
+        .fold-content {
+            padding: 0.5em;
+        }
+
+        .fold-content h3 {
+            margin-top: 0;
+        }
+
+        .fold-content>table {
+            border: 2px solid #ccc;
+        }
+
+        .fold-content>table>tbody tr:nth-child(even) {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tab-pane fade" id="profile">
+        <div id="scroll" class="mb-2 row">
+            <table class="fold-table">
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Amount</th>
+                        <th>Value</th>
+
+                    </tr>
+                </thead>
+                <tbody id="tbodyrespuesta">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    $(function () {
+        $(".fold-table tr.view").on("click", function () {
+            console.log(this
+            );
+            $(this).toggleClass("open").next(".fold").toggleClass("open");
+            
+        });
+    });
+
+    document.addEventListener("click", (e)=>{
+
+        console.log(e.target);
+    })
+
+</script>
+
+<script>
+    let data = {
+        "cantObjetivos": 135,
+        "objCreados": 0,
+        "usuariono": [
+            {
+                "nombre": "Registro con columnas incompletas : las columnas A,D,E,F,G,H,I para cada fila debe estar completada con la informacion correcta",
+                "datos": [
+                    {
+                        "codigo": null,
+                        "filaexcel": 4,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 5,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 83,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 84,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 85,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 86,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 87,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 88,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 89,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 90,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 91,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 92,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 93,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 94,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 95,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 96,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 97,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 98,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 99,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 100,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 101,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 102,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 103,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 104,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 105,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 106,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 107,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 108,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 109,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 110,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 111,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 112,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 113,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 114,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 115,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 116,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 117,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 118,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 119,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 120,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 121,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 122,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 123,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 124,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 125,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 126,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 127,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 128,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 129,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 130,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 131,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 132,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 133,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 134,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 135,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 136,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 137,
+                        "mensaje": null
+                    },
+                    {
+                        "codigo": null,
+                        "filaexcel": 138,
+                        "mensaje": null
+                    }
+                ]
+            },
+            {
+                "nombre": "El registro no se puede crear! agregue el producto asociado de la factura.",
+                "datos": [
+                    {
+                        "codigo": "BQ19",
+                        "filaexcel": 0,
+                        "mensaje": "El registro no se puede crear! agregue el producto asociado de la factura."
+                    }
+                ]
+            },
+            {
+                "nombre": "El usuario no tiene rol de seguridad asignado",
+                "datos": [
+                    {
+                        "codigo": "BQ7",
+                        "filaexcel": 0,
+                        "mensaje": "El usuario no tiene rol de seguridad asignado"
+                    },
+                    {
+                        "codigo": "BQ25",
+                        "filaexcel": 0,
+                        "mensaje": "El usuario no tiene rol de seguridad asignado"
+                    },
+                    {
+                        "codigo": "BQ27",
+                        "filaexcel": 0,
+                        "mensaje": "El usuario no tiene rol de seguridad asignado"
+                    },
+                    {
+                        "codigo": "BQ17",
+                        "filaexcel": 0,
+                        "mensaje": "El usuario no tiene rol de seguridad asignado"
+                    }
+                ]
+            },
+            {
+                "nombre": "No se encontro el codigo del vendedor o el usuario esta deshabilitado",
+                "datos": [
+                    {
+                        "codigo": "CT1",
+                        "filaexcel": 0,
+                        "mensaje": "No se encontro el codigo del vendedor o el usuario esta deshabilitado"
+                    }
+                ]
+            }
+        ],
+        "preciototal": {
+            "Value": 370500000
+        },
+        "conteototal": 0,
+        "actualizados": 7
+    };
+
+    let d = document;
+    let dataconvertida = JSON.parse(JSON.stringify(data));
+    let tbodyrespuesta = d.querySelector("#tbodyrespuesta")
+    let arrayHeader = ["#", "Codigo", "Fila de excel"];
+
+    console.log(dataconvertida);
+
+    if (dataconvertida) {
+        if (data.usuariono) {
+            data.usuariono.forEach((element, index) => {
+
+                var newRow = tbodyrespuesta.insertRow();
+                newRow.classList.add("view")
+                var newCell = newRow.insertCell();
+                var newText = document.createTextNode(index + 1);
+
+                newCell.appendChild(newText);
+
+                newCell = newRow.insertCell();
+                newText = document.createTextNode(element.nombre);
+                newCell.appendChild(newText);
+
+                newCell = newRow.insertCell();
+                newText = document.createTextNode(element.datos.length);
+                newCell.appendChild(newText);
+
+
+                let tr = d.createElement("tr");
+                let td = d.createElement("td");
+                let th = d.createElement("th");
+                let div = d.createElement("div");
+                let table = d.createElement("table");
+                let thead = d.createElement("thead");
+                let tbody = d.createElement("tbody");
+                let nameTbodyId = "tbody" + (index + 1);
+                tbody.classList.add(nameTbodyId);
+                //table.classList.add("fold-table")
+                tr.classList.add("fold");
+                td.colSpan = "7";
+                div.classList.add("fold-content")
+
+
+                tr.appendChild(td);
+                td.appendChild(div);
+                div.appendChild(table)
+                table.appendChild(thead);
+                let tr2 = d.createElement("tr");
+                thead.appendChild(tr2);
+                arrayHeader.forEach((item, index) => {
+                    let th2 = d.createElement("th");
+                    th2.appendChild(document.createTextNode(item));
+                    tr2.appendChild(th2);
+                });
+                table.appendChild(tbody);
+                if (element.datos.length > 0) {
+                    console.log(element.datos);
+                    element.datos.forEach((item, i) => {
+
+                        let newRow = tbody.insertRow();
+                        let newCell = newRow.insertCell();
+                        let newText = document.createTextNode(i + 1);
+
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(item.codigo);
+                        newCell.appendChild(newText);
+
+                        newCell = newRow.insertCell();
+                        newText = document.createTextNode(item.filaexcel);
+                        newCell.appendChild(newText);
+                    });
+                }
+                console.log(tr);
+                console.log(d.querySelector(`.${nameTbodyId}`));
+                console.log(d.querySelector(".tbody4"));
+                tbodyrespuesta.appendChild(tr);
+
+
+            });
+        }
+    }
+</script>

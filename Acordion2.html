@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<style>
+    .collapse-row.collapsed+tr {
+        display: none;
+    }
+</style>
+<table class="table table-hover">
+    <thead>
+        <th></th>
+        <th></th>
+        <th></th>
+    </thead>
+
+    <tbody>
+        <tr data-toggle="collapse" data-target="#accordion" class="clickable">
+            <td>Some Stuff</td>
+            <td>Some more stuff</td>
+            <td>And some more</td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div id="accordion" class="collapse">Hidden by default</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    $('.collapse').on('show.bs.collapse', function () {
+        $('.collapse.in').collapse('hide');
+    });
+</script>

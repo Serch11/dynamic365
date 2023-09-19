@@ -1,0 +1,303 @@
+<html>
+
+<head>
+	<script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+	<script src="https://redsisdesarrollo.crm2.dynamics.com//WebResources/new_js_cargar_archivo_cotizacion"
+		type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/xlsx@0.14.1/dist/xlsx.full.min.js"></script>
+	<style>
+		body {
+			background: #FFFFFF url("https://photos-6.dropbox.com/t/2/AAC_bdqR8LMkjEe-HPIf4K1DhtseMLRHPklBSzJSuzglvA/12/5714737/jpeg/1024x768/3/1418346000/0/2/bkg-blur.jpg/CLHm3AIgASgBKAI/b7RrveA2022yJyfO9RyRvv7LjJQESukGHssHUxVThzw") no-repeat center center fixed;
+			background-size: cover;
+			font-family: "Roboto";
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+
+			&::before {
+				z-index: -1;
+				content: '';
+				position: fixed;
+				top: 0;
+				left: 0;
+				background: #44c4e7;
+				/* IE Fallback */
+				background: rgba(68, 196, 231, 0.8);
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			display: none;
+		}
+
+		th,
+		td {
+			text-align: left;
+			padding: 8px;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f2f2f2
+		}
+
+		th {
+			background-color: rgb(105, 105, 105);
+			color: white;
+		}
+
+		.error,
+		.valid {
+			display: none;
+		}
+	</style>
+	<meta>
+	<meta>
+	<meta>
+	<meta>
+	<meta>
+	<meta>
+	<meta>
+	<meta>
+</head>
+
+<body id="bdy" style="overflow-wrap: break-word;" onfocusout="parent.setEmailRange();">
+	<section class="form animated flipInX">
+		<form class="loginbox" autocomplete="off" style="
+			position: absolute;
+			top: 50%;
+			left: 50%;
+            border-radius: 5px;
+			background: #fff;
+			width: 285px;
+			margin: -140px 0 0 -182px;
+			padding: 40px;
+			box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+		">
+			<h2 style="
+				margin: 0 0 20px;
+				line-height: 1;
+				color: rgb(105, 105, 105);
+				font-size: 18px;
+				font-weight: 400;
+			">
+				Cargar Tabla de Costos
+			</h2>
+			<input placeholder="Nombre de la Hoja" type="text" id="hoja" style="
+				outline: none;
+				display: block;
+				width: 100%;
+				margin: 0 0 20px;
+				padding: 10px 15px;
+				border: 1px solid #ccc;
+                border-radius: 5px;
+				color: rgb(0, 0, 0);
+				font-family: roboto;
+				box-sizing: border-box;
+				font-size: 14px;
+				font-wieght: 400;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				transition: 0.2s linear;
+				&amp;input: focus  
+					{ color: #333;
+					  border: 1px solid #44c4e7;
+					}">
+			<input type="file" id="input-excel" style="
+				cursor: pointer;
+				background: rgb(105, 105, 105);
+				width: 100%;
+				padding: 10px 15px;
+				border: 0;
+                border-radius: 5px;
+				color: #fff;
+				font-family: roboto;
+				font-size: 14px;
+				font-weight: 400;
+				&amp;:hover {
+					background: #369cb8;
+				}
+			">
+		</form>
+	</section>
+	<table id="tabla">
+		<thead>
+			<tr>
+				<th>Referencias no encontradas</th>
+			</tr>
+		</thead>
+		<tbody id="cuerpo_tabla"></tbody>
+	</table>
+	<div class="modal"
+		style="display: none; position: fixed; z-index: 1000; top: 0px; left: 0px; height: 100%; width: 100%; background: url(&quot;http://i.stack.imgur.com/FhHRx.gif&quot;) 50% 50% no-repeat rgba(255, 255, 255, 0.8); font-family: undefined;">
+		<!-- Place at bottom of page -->
+	</div>
+	<script>
+		var Sdk = window.Sdk || {};
+
+		/**
+		 * Request to create a record
+		 * @param {string} entityTypeName - The entity type name.
+		 * @param {Object} payload - The entity payload.
+		 */
+		Sdk.CreateRequest = function (entityTypeName, payload) {
+			this.etn = entityTypeName;
+			this.payload = payload;
+			this.getMetadata = function () {
+				return {
+					boundParameter: null,
+					parameterTypes: {},
+					operationType: 2,
+					operationName: "Create",
+				};
+			};
+		};
+		$('#input-excel').change(function (e) {
+			$(".modal").show();
+			var reader = new FileReader();
+			reader.readAsArrayBuffer(e.target.files[0]);
+
+			reader.onload = async function (e) {
+				var data = new Uint8Array(e.target.result);
+				var workbook = XLSX.read(data, { type: 'array' });
+				var result = XLSX.utils.sheet_to_json(workbook.Sheets[$('#hoja').val()], { header: "A" });
+
+				var queryString = window.parent.location.search;
+				var urlParams = new URLSearchParams(queryString);
+
+				(async function () {
+					let refs = await ref_inexistentes(result);
+					if (refs.length > 0) {
+						$("#tabla").hide();
+						$("#cuerpo_tabla").html("");
+						refs.forEach((value) => {
+							$("#cuerpo_tabla").append("<tr><td>" + value + "</td></tr>");
+						});
+						$("#tabla").show();
+					} else {
+						agregar_items(result, urlParams);
+					}
+				})();
+			}
+		});
+
+		async function ref_inexistentes(result) {
+			let ref_inexistentes = [];
+			for (let index = 0; index < result.length; index++) {
+				if (result[index]["B"] && index >= 3) {
+					let ref = await existe_ref(result[index]["B"]);
+					console.log(ref);
+					if (!ref) await ref_inexistentes.push(result[index]["B"]);
+				}
+			}
+			return ref_inexistentes;
+		}
+
+		async function existe_ref(referencia) {
+			return new Promise((resolve, reject) => {
+				var req = new XMLHttpRequest();
+				req.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.1/products?$select=productid&$filter=productnumber eq '" + referencia + "'", true);
+				req.setRequestHeader("OData-MaxVersion", "4.0");
+				req.setRequestHeader("OData-Version", "4.0");
+				req.setRequestHeader("Accept", "application/json");
+				req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+				req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+				req.onreadystatechange = function () {
+					if (this.readyState === 4) {
+						req.onreadystatechange = null;
+						if (this.status === 200) {
+							var results = JSON.parse(this.response);
+							if (results.value[0]?.productid) {
+								resolve(results.value[0]?.productid);
+							} else {
+								resolve(null);
+							}
+						} else {
+							reject("Estado: 400, Bad request");
+						}
+					}
+				};
+				req.send();
+			});
+
+		}
+
+		async function agregar_items(result, urlParams) {
+			for (let index = 0; index < result.length; index++) {
+				let value = result[index];
+				if (value["B"] && index >= 3) {
+					var referencia = value["B"];
+					var descripcion = value["C"];
+					var categoria = value["A"];
+					let productid = await existe_ref(referencia);
+					var cantidad = value["D"];
+					var margen = value["Q"];
+					var precio = value["E"] ? Number(value["E"]) : 0;
+					var descuento_especial = value["J"] ? Number(value["J"]) * 100 : 0;
+					var costo = 0;
+					if (value["H"] && !value["E"]) {
+						costo = Number(value["H"]);
+					}
+					var costo_fob = 0;
+					var porcentaje_importacion = 0;
+					if (value["L"] && !value["E"] && !value["H"]) {
+						costo_fob = Number(value["L"]);
+						porcentaje_importacion = Number(value["M"]) * 100;
+					}
+					let datos =
+					{
+						"quantity": Number(cantidad),
+						"productid@odata.bind": "/products(" + productid + ")",
+						"quoteid@odata.bind": "/quotes(" + urlParams.get("id") + ")",
+						"uomid@odata.bind": "/uoms(b9c9fcf2-bf4a-eb11-a812-000d3a887093)",
+						"ap_referenciainterna": referencia,
+						"ap_margen": Number(margen) * 100,
+						"ap_categoria": categoria,
+						"priceperunit": precio,
+						"ap_descuentoespecialoexhibitx": descuento_especial,
+						"rd_costounit": costo,
+						"ap_costounitfobmiami": costo_fob,
+						"ap_porcentajedeimportacion": porcentaje_importacion
+					};
+					insertar(datos);
+				}
+			}
+		}
+
+		function insertar(datos) {
+			console.log(datos);
+			var entity = {};
+			entity.quantity = 2;
+			entity.quotedetailname = "Texting";
+			entity["quoteid@odata.bind"] = "/quotes(c9c0bce2-6f75-ec11-8943-000d3a885698)";
+			var req = new XMLHttpRequest();
+			req.open("POST", Xrm.Page.context.getClientUrl() + "/api/data/v9.1/quotedetails", true);
+			req.setRequestHeader("OData-MaxVersion", "4.0");
+			req.setRequestHeader("OData-Version", "4.0");
+			req.setRequestHeader("Accept", "application/json");
+			req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+			req.onreadystatechange = function () {
+				if (this.readyState === 4) {
+					req.onreadystatechange = null;
+					if (this.status === 204) {
+						var uri = this.getResponseHeader("OData-EntityId");
+						var regExp = /\(([^)]+)\)/;
+						var matches = regExp.exec(uri);
+						var newEntityId = matches[1];
+					} else {
+						console.log("Estado: 400, Bad request");
+					}
+				}
+			};
+			req.send(JSON.stringify(datos));
+		}
+	</script>
+
+
+
+</body>
+
+</html>

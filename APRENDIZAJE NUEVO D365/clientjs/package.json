@@ -1,0 +1,21 @@
+{
+  "name": "clientjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/xrm": "^9.0.73",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "code": "^5.2.4",
+    "eslint": "^8.47.0",
+    "npx": "^10.2.2",
+    "prettier": "3.0.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.1.6"
+  }
+}
